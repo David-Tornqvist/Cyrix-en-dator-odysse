@@ -107,14 +107,18 @@ love.draw = function()
 
     love.graphics.scale(screenScale,screenScale);
 
-    menu.draw();
-
+    love.graphics.push();
 
     love.graphics.scale(zoom,zoom);
     love.graphics.translate(translate.x,translate.y);
 
     gates.draw();
-            
+    
+    love.graphics.pop();
+
+    menu.draw();
+
+
 end
 
 
