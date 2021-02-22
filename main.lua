@@ -1,40 +1,23 @@
+local camera = require "camera"
 --gammal windows style
+
+
 
 love.load = function()
 
-    love.window.setMode(love.graphics.getWidth(),love.graphics.getWidth()*19/16,{fullscreen = true});
-
-    gameWidth = 1920;
-
-    screenScale = 1/(love.graphics.getWidth()/gameWidth);
-    zoom = 1;
-
-    translate = {x = 0, y = 0};
- 
+    camera = require "camera";
+    camera.load();
 
     rectangles = {};
   
 end    
 
-function screenToWorldcords(x,y)
-
-    return {x = x/screenScale/zoom - translate.x, y = y/screenScale/zoom - translate.y};
-    
-end
-
-function worldToScreencords(x,y)
-
-    return x*screenScale*zoom, y*screenScale*zoom;
-    
-end
-
-
 
 function love.mousepressed(mousex,mousey,button)
   
 
-    local x =  screenToWorldcords(mousex,mousey).x;
-    local y =  screenToWorldcords(mousex,mousey).y;
+    local x =  camera.screenToWorldcords(mousex,mousey).x;
+    local y =  camera.screenToWorldcords(mousex,mousey).y;
 
     for i = #rectangles, 1, -1 do
 
@@ -53,9 +36,12 @@ function love.mousepressed(mousex,mousey,button)
         end 
     end
    
-    if(button == 1 and x/screenScale > 0 and x/screenScale < 40 and y/screenScale > 0 and y/screenScale < 40) then
+
+    if(button == 1 and mousex/screenScale > 0 and mousex/screenScale < 40 and mousey/screenScale > 0 and mousey/screenScale < 40) then
         createrectangle();
     end    
+
+    camera.update("mPush",button);
 end
 
 function love.mousereleased(x,y,button)
@@ -64,6 +50,10 @@ function love.mousereleased(x,y,button)
             rectangles[i].clicked = false;
         end
     end    
+
+    
+
+    camera.update("mRel",button);
 end
 
 function love.keypressed(key)
@@ -76,31 +66,26 @@ end
 
 function love.wheelmoved(x,y)
 
-
-    local bmouse = screenToWorldcords(love.mouse.getX(),love.mouse.getY());
-
-    zoom = zoom + 0.1*y;
- 
-    local amouse = screenToWorldcords(love.mouse.getX(),love.mouse.getY());
-
-    local d = {x = amouse.x - bmouse.x, y = amouse.y - bmouse.y}; 
-
-    translate.x = translate.x + d.x;
-    translate.y = translate.y + d.y;
+    camera.update("scrl",y);
 
 end
 
 love.update = function(dt)
 
+    local x = camera.screenToWorldcords(love.mouse.getX(),love.mouse.getY()).x;
+    local y = camera.screenToWorldcords(love.mouse.getX(),love.mouse.getY()).y;
+
     for i = 1, #rectangles do
         if(rectangles[i].clicked) then
-            local x = screenToWorldcords(love.mouse.getX(),love.mouse.getY()).x;
-            local y = screenToWorldcords(love.mouse.getX(),love.mouse.getY()).y;
+
 
             rectangles[i].x = x - rectangles[i].clickedOffsetX;
             rectangles[i].y = y - rectangles[i].clickedOffsetY;
         end 
     end
+
+    camera.update("pan");
+
 end
 
 love.draw = function()
