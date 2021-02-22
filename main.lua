@@ -8,6 +8,7 @@ local menu = require "menu";
 
 
 
+
 love.load = function()
 
     camera = require "camera";
@@ -33,6 +34,13 @@ function love.keypressed(key)
 end
 
 
+
+
+
+
+
+
+
 function love.mousepressed(mousex,mousey,button)
 
     gates.click(mousex,mousey,button);
@@ -41,6 +49,15 @@ function love.mousepressed(mousex,mousey,button)
 
     camera.update("mPush",button);
 end
+
+
+
+
+
+
+
+
+
 
 
 function love.mousereleased(x,y,button)
