@@ -1,4 +1,4 @@
-#Workings of computers, really.
+#Cyrix, a computer odssey
 
 This is a game aimed at teaching the basics of how computers work in a fun and interactive way.
 
