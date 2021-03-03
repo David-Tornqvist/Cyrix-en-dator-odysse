@@ -4,6 +4,7 @@ local gates = {};
 
 gates.load = function ()
     rectangles = {};
+    and_gate = {file = love.graphics.newImage("And_gate.png"),width = 1080,height = 1080};
 end
 
 gates.click = function (mousex,mousey,button)
@@ -55,8 +56,10 @@ end
 gates.draw = function ()
     for i = 1, #rectangles do
     
-        love.graphics.setColor(1,1,1,1);
-        love.graphics.rectangle("fill", rectangles[i].x,rectangles[i].y,rectangles[i].width,rectangles[i].height);
+        if(rectangles[i].type == "and") then
+            love.graphics.setColor(0,1,0,1);
+            love.graphics.draw(and_gate.file,rectangles[i].x,rectangles[i].y,0,rectangles[i].width/and_gate.width,rectangles[i].height/and_gate.width);
+        end
         if(rectangles[i].clicked) then
             love.graphics.setColor(0,0,1,1);
             love.graphics.setLineWidth(10)
@@ -67,10 +70,13 @@ gates.draw = function ()
     end
 end
 
-gates.create = function ()
+gates.create = function (type)
 
-    rectangles[#rectangles + 1] = {x = love.mouse.getX(), y = love.mouse.getY(), width = 100, height = 100, clicked = true,clickedOffsetY = 50, clickedOffsetX = 50}; 
-
+    if(type == "and") then
+        local width = 200;
+        local height = 200;
+        rectangles[#rectangles + 1] = {x = love.mouse.getX(), y = love.mouse.getY(), width = width, height = height, clicked = true,clickedOffsetY = height/2, clickedOffsetX = width/2, type = "and", input = {a = nil, b = nil}, output = {y = nil}, rank = 1}; 
+    end
 end
 
 gates.setfirst = function (arr,index)

@@ -16,8 +16,8 @@ love.load = function()
     camera.load();
     gates.load();
 
-    
-  
+   
+
 end    
 
 
