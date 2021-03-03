@@ -19,7 +19,7 @@ end
 menu.click = function (mousex,mousey,button)
     
     for i = 1, #buttons do
-        if((button == 1 and mousex/screenScale > buttons[i].x and mousex/screenScale < buttons[i].width and mousey/screenScale > buttons[i].y and mousey/screenScale < buttons[i].height)) then
+        if((button == 1 and mousex/screenScale > buttons[i].x and mousex/screenScale < buttons[i].x + buttons[i].width and mousey/screenScale > buttons[i].y and mousey/screenScale < buttons[i].y + buttons[i].height)) then
             buttons[i].funct();
         end    
     end
