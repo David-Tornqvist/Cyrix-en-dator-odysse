@@ -1,4 +1,5 @@
 local camera = require "camera";
+local starting_block = require "starting_block"
 
 local gates = {};
 
@@ -12,27 +13,26 @@ end
 gates.click = function (mousex,mousey,button)
     local x =  camera.screenToWorldcords(mousex,mousey).x;
     local y =  camera.screenToWorldcords(mousex,mousey).y;
-    local portUpdate = false;
-
+    
     for i = #rectangles, 1, -1 do
 
         if(button == 1 and x > (rectangles[i].x + rectangles[i].input.a.coords.x - 10) and x < (rectangles[i].x + rectangles[i].input.a.coords.x + 10) and y > (rectangles[i].y + rectangles[i].input.a.coords.y - 10) and y < (rectangles[i].y + rectangles[i].input.a.coords.y + 10)) then
             rectangles[i].input.a.clicked = true;
             portUpdate = true;
-            gates.connect();
-            break
+
+            
 
         elseif (button == 1 and x > (rectangles[i].x + rectangles[i].input.b.coords.x - 10) and x < (rectangles[i].x + rectangles[i].input.b.coords.x + 10) and y > (rectangles[i].y + rectangles[i].input.b.coords.y - 10) and y < (rectangles[i].y + rectangles[i].input.b.coords.y + 10)) then  
             rectangles[i].input.b.clicked = true;
             portUpdate = true;
-            gates.connect();
-            break
+      
+         
 
         elseif (button == 1 and x > (rectangles[i].x + rectangles[i].output.q.coords.x - 10) and x < (rectangles[i].x + rectangles[i].output.q.coords.x + 10) and y > (rectangles[i].y + rectangles[i].output.q.coords.y - 10) and y < (rectangles[i].y + rectangles[i].output.q.coords.y + 10)) then    
             rectangles[i].output.q.clicked = true;
             portUpdate = true;
-            gates.connect();
-            break
+            
+      
 
         elseif(button == 1 and x > rectangles[i].x and x < (rectangles[i].x + rectangles[i].width) and y > rectangles[i].y and y < (rectangles[i].y + rectangles[i].height)) then
             if (rectangles[i].clicked == false) then    
@@ -47,12 +47,11 @@ gates.click = function (mousex,mousey,button)
         
        
             break     
-        end    
+        end   
+        
     end
 
-    if(portUpdate == false) then
-        gates.IOrelease();
-    end
+    
 end
 
 gates.connect = function ()
@@ -77,6 +76,16 @@ gates.connect = function ()
         end      
     end
 
+    for i = 1, #arrStart_block do
+        for b = 1, #arrStart_block[i].output do
+            if(arrStart_block[i].output[b].clicked)then
+                gatepair.output.gate_name = arrStart_block[i].name + b;
+                gatepair.output.currentIndex = i;
+                gatepair.output.rank = 0;
+            end    
+        end
+    end
+
     if((gatepair.input.gate_name ~= nil) and (gatepair.output.gate_name ~= nil)) then
         if(gatepair.input.port == "a") then
             rectangles[gatepair.input.currentIndex].input.a.connect = gatepair.output.gate_name;
@@ -87,7 +96,7 @@ gates.connect = function ()
         rectangles[gatepair.input.currentIndex].rank = gatepair.output.rank + 1;
         rectangles[gatepair.output.currentIndex].output.q.connect = {name = gatepair.input.gate_name, port = gatepair.input.port};
         gates.IOrelease();
-        print("test");
+ 
     end    
 
 
@@ -99,6 +108,12 @@ gates.IOrelease = function ()
         rectangles[i].input.b.clicked = false;
         rectangles[i].output.q.clicked = false;
 
+    end
+
+    for i = 1, #arrStart_block do
+        for b = 1, #arrStart_block[i].output do
+            arrStart_block[i].output[b].clicked = false;
+        end
     end
 end
 
@@ -133,9 +148,11 @@ gates.draw = function ()
         if(rectangles[i].type == "and") then
             love.graphics.setColor(0,1,0,1);
             love.graphics.draw(and_gate_img.file,rectangles[i].x,rectangles[i].y,0,rectangles[i].width/and_gate_img.width,rectangles[i].height/and_gate_img.width);
+            love.graphics.print(rectangles[i].rank, rectangles[i].x, rectangles[i].y);
         elseif(rectangles[i].type == "or") then
             love.graphics.setColor(0,1,0,1);
             love.graphics.draw(or_gate_img.file,rectangles[i].x,rectangles[i].y,0,rectangles[i].width/or_gate_img.width,rectangles[i].height/or_gate_img.width);
+            love.graphics.print(rectangles[i].rank, rectangles[i].x, rectangles[i].y);
         end    
 
       
@@ -157,8 +174,7 @@ gates.draw = function ()
             love.graphics.circle("line",rectangles[i].x + rectangles[i].output.q.coords.x,rectangles[i].y + rectangles[i].output.q.coords.y,20);
             
         end    
-        
-    ;
+    
         
         
         
@@ -169,7 +185,7 @@ end
 
 gates.getIndex = function (name)
     for i = 1, #rectangles do
-        print(rectangles[i].name); 
+    
         if(rectangles[i].name == name) then
             return i;
         end        
@@ -203,6 +219,15 @@ gates.setfirst = function (arr,index)
     return arr;
     
     
+end
+
+
+gates.simulate = function ()
+    local gatesByRank = rectangles;
+    table.sort(gatesByRank,function (a,b)
+        return a.rank < b.rank;    
+    end);
+    print(gatesByRank[1].rank);
 end
 
 return gates;

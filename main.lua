@@ -20,7 +20,7 @@ love.load = function()
     starting_block.load();
 
 
-    starting_block.create(500,500,5);
+    starting_block.create(500,900,8);
 
 end    
 
@@ -33,7 +33,7 @@ function love.keypressed(key)
 
     if(key == "escape")then love.event.quit(); end
 
-    if(key == "q")then translate.x = translate.x + 10; end
+    if(key == "q")then gates.simulate(); end
 
 end
 
@@ -47,9 +47,16 @@ end
 
 function love.mousepressed(mousex,mousey,button)
 
+    portUpdate = false;
+
     gates.click(mousex,mousey,button);
-  
+    starting_block.click(mousey,mousey,button);
+    gates.connect(); 
     menu.click(mousex,mousey,button);
+
+    if(portUpdate == false) then
+        gates.IOrelease();
+    end
 
     camera.update("mPush",button);
 end
@@ -116,8 +123,10 @@ love.draw = function()
     love.graphics.scale(zoom,zoom);
     love.graphics.translate(translate.x,translate.y);
 
+    starting_block.draw();
     gates.draw();
     wires.draw();
+    
 
     
     love.graphics.pop();
