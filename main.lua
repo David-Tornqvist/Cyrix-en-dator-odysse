@@ -33,8 +33,6 @@ function love.keypressed(key)
 
     if(key == "escape")then love.event.quit(); end
 
-    if(key == "q")then gates.simulate(); end
-
 end
 
 
