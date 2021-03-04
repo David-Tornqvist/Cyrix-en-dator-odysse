@@ -1,6 +1,16 @@
 
 --gammal windows style
+--todo:
+--fix bug with gate sim
+--implement deletion
+--implement more gates
+--impletent goal block
+--implement movable goal/start block
+--implement game mode
+--implement tutorial
 
+--implement packaged gates
+--implement story mode
 
 local camera = require "camera";
 local gates = require "gates";
