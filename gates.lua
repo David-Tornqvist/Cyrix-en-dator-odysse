@@ -7,7 +7,7 @@ gates.load = function ()
     rectangles = {};
     and_gate_img = {file = love.graphics.newImage("And_gate.png"),width = 1080,height = 1080};
     or_gate_img = {file = love.graphics.newImage("Or_gate.png"),width = 1080,height = 1080};
-    gate_name = 0;
+    gate_name = 1;
 end
 
 gates.click = function (mousex,mousey,button)
@@ -94,7 +94,15 @@ gates.connect = function ()
             rectangles[gatepair.input.currentIndex].input.b.connect = gatepair.output.gate_name;
         end    
         rectangles[gatepair.input.currentIndex].rank = gatepair.output.rank + 1;
-        rectangles[gatepair.output.currentIndex].output.q.connect = {name = gatepair.input.gate_name, port = gatepair.input.port};
+        if(gatepair.output.gate_name >= first_startname) then 
+
+            arrStart_block[starting_block.getIndex(gatepair.output.gate_name)].output[gatepair.output.gate_name-first_startname].connect = {name = gatepair.input.gate_name, port = gatepair.input.port};
+        else
+            rectangles[gatepair.output.currentIndex].output.q.connect = {name = gatepair.input.gate_name, port = gatepair.input.port};  
+        end
+
+        
+
         gates.IOrelease();
  
     end    
@@ -148,11 +156,9 @@ gates.draw = function ()
         if(rectangles[i].type == "and") then
             love.graphics.setColor(0,1,0,1);
             love.graphics.draw(and_gate_img.file,rectangles[i].x,rectangles[i].y,0,rectangles[i].width/and_gate_img.width,rectangles[i].height/and_gate_img.width);
-            love.graphics.print(rectangles[i].rank, rectangles[i].x, rectangles[i].y);
         elseif(rectangles[i].type == "or") then
             love.graphics.setColor(0,1,0,1);
             love.graphics.draw(or_gate_img.file,rectangles[i].x,rectangles[i].y,0,rectangles[i].width/or_gate_img.width,rectangles[i].height/or_gate_img.width);
-            love.graphics.print(rectangles[i].rank, rectangles[i].x, rectangles[i].y);
         end    
 
       
@@ -199,13 +205,13 @@ gates.create = function (type)
         local height = 200;
         rectangles[#rectangles + 1] = {x = love.mouse.getX(), y = love.mouse.getY(), width = width, height = height, clicked = true,clickedOffsetY = height/2, clickedOffsetX = width/2, 
         type = "and", input = {a = {connect = nil, coords = {x = 76, y = 175},status = false,clicked = false}, b = {connect = nil, coords = {x = 125, y = 175},status = false,clicked = false}}, 
-        output = {q = {connect = nil, coords = {x = 102, y = 10},status = false,clicked = false}}, rank = 1, name = gate_name}; 
+        output = {q = {connect = {name = nil, port = nil}, coords = {x = 102, y = 10},status = false,clicked = false}}, rank = 1, name = gate_name}; 
     elseif(type == "or") then
         local width = 200;
         local height = 200;
         rectangles[#rectangles + 1] = {x = love.mouse.getX(), y = love.mouse.getY(), width = width, height = height, clicked = true,clickedOffsetY = height/2, clickedOffsetX = width/2, 
         type = "or", input = {a = {connect = nil, coords = {x = 76, y = 175},status = false,clicked = false}, b = {connect = nil, coords = {x = 125, y = 175},status = false,clicked = false}}, 
-        output = {q = {connect = nil, coords = {x = 102, y = 10},status = false,clicked = false}}, rank = 1, name = gate_name}; 
+        output = {q = {connect = {name = nil, port = nil}, coords = {x = 102, y = 10},status = false,clicked = false}}, rank = 1, name = gate_name}; 
     end
 
     gate_name = gate_name + 1;
@@ -223,11 +229,103 @@ end
 
 
 gates.simulate = function ()
-    local gatesByRank = rectangles;
-    table.sort(gatesByRank,function (a,b)
-        return a.rank < b.rank;    
-    end);
-    print(gatesByRank[1].rank);
-end
+
+    local preparedGates = {};
+    
+    for i = 0, #rectangles do
+        preparedGates[i] = {a = false, b = false, handeld = false}
+    end
+
+    for i = 1, #arrStart_block do
+        for b = 1, #arrStart_block[i].output do
+            if(arrStart_block[i].output[b].connect.name ~= nil) then
+
+                if(arrStart_block[i].output[b].connect.port == "a") then
+                    rectangles[gates.getIndex(arrStart_block[i].output[b].connect.name)].input.a.status = arrStart_block[i].output[b].status;
+                    preparedGates[arrStart_block[i].output[b].connect.name].a = true;
+                    
+                  
+                    
+                end  
+                if(arrStart_block[i].output[b].connect.port == "b") then
+                    rectangles[gates.getIndex(arrStart_block[i].output[b].connect.name)].input.b.status = arrStart_block[i].output[b].status;
+                    preparedGates[arrStart_block[i].output[b].connect.name].b = true;
+
+                end    
+            end    
+        end
+    end
+
+
+    for i = 1, #rectangles do
+        if(rectangles[i].input.a.connect ~= nil and rectangles[i].input.b.connect == nil) then
+            preparedGates[rectangles[i].name].b = true;
+        end 
+        if(rectangles[i].input.b.connect ~= nil and rectangles[i].input.a.connect == nil) then
+            preparedGates[rectangles[i].name].a = true;
+        end    
+    end
+
+    for i = 1, #rectangles do
+        if(rectangles[i].input.a.connect == nil and rectangles[i].input.b.connect == nil) then
+           
+            preparedGates[rectangles[i].name].handeld = true;
+        end    
+    end
+
+
+    local allGatesHandeld = false
+    local i = 0;
+
+    while (allGatesHandeld == false) do
+
+        for i = 1, #preparedGates do
+            
+                if(preparedGates[i].a and preparedGates[i].b) then
+                    if(rectangles[gates.getIndex(i)].type == "and") then
+                        if(rectangles[gates.getIndex(i)].input.a.status and rectangles[gates.getIndex(i)].input.b.status) then
+                            rectangles[gates.getIndex(i)].output.q.status = true;
+                        else
+                            rectangles[gates.getIndex(i)].output.q.status = false;   
+                        end    
+                    end
+                    
+                    if(rectangles[gates.getIndex(i)].type == "or") then
+                        if(rectangles[gates.getIndex(i)].input.a.status or rectangles[gates.getIndex(i)].input.b.status) then
+                            rectangles[gates.getIndex(i)].output.q.status = true;
+                        else
+                            rectangles[gates.getIndex(i)].output.q.status = false;   
+                        end    
+                    end    
+                    if(rectangles[gates.getIndex(i)].output.q.connect.name ~= nil) then
+                        if(rectangles[gates.getIndex(i)].output.q.connect.port == "a") then
+                            rectangles[gates.getIndex(rectangles[gates.getIndex(i)].output.q.connect.name)].input.a.status = rectangles[gates.getIndex(i)].output.q.status;
+                            preparedGates[gates.getIndex(rectangles[gates.getIndex(i)].output.q.connect.name)].a = true;
+                        end  
+                        if(rectangles[gates.getIndex(i)].output.q.connect.port == "b") then
+                            rectangles[gates.getIndex(rectangles[gates.getIndex(i)].output.q.connect.name)].input.b.status = rectangles[gates.getIndex(i)].output.q.status;
+                            preparedGates[gates.getIndex(rectangles[gates.getIndex(i)].output.q.connect.name)].b = true;
+                        end  
+                    end    
+                    preparedGates[i].handeld = true;    
+                end
+            
+        end
+    
+        allGatesHandeld = true;
+    
+        for i = 1, #preparedGates do
+            if(preparedGates[i].handeld == false) then allGatesHandeld = false end
+        end
+
+
+        i = i + 1;
+        if(i > 10000)then break end
+
+    end
+    
+
+
+end    
 
 return gates;

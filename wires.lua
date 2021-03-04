@@ -13,8 +13,9 @@ wires.draw = function ()
     for i = 1, #rectangles do
         
         if(rectangles[i].input.a.connect ~= nil) then
-        
-            if(rectangles[i].input.status) then love.graphics.setColor(1,0,0,1); end
+
+            love.graphics.setColor(0,1,0,1);
+            if(rectangles[i].input.a.status) then love.graphics.setColor(1,0,0,1); end
 
             if(rectangles[i].input.a.connect < first_startname) then
                 local currentIndexOfOutputGate = gates.getIndex(rectangles[i].input.a.connect);
@@ -29,7 +30,8 @@ wires.draw = function ()
         
         if(rectangles[i].input.b.connect ~= nil) then
 
-            if(rectangles[i].input.status) then love.graphics.setColor(1,0,0,1); end
+            love.graphics.setColor(0,1,0,1);
+            if(rectangles[i].input.b.status) then love.graphics.setColor(1,0,0,1); end
             
             if(rectangles[i].input.b.connect < first_startname) then
                 local currentIndexOfOutputGate = gates.getIndex(rectangles[i].input.b.connect);

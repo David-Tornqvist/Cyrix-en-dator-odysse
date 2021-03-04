@@ -105,6 +105,8 @@ love.update = function(dt)
 
     gates.update();
 
+    gates.simulate();
+
     camera.update("pan");
 
 end

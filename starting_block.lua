@@ -17,7 +17,7 @@ starting_block.create = function (x,y,nOutput)
 
 
     for i = 1, nOutput do
-        arrStart_block[#arrStart_block].output[i] = {connect = nil, coords = {x = i*50, y = -40},status = false,clicked = false};
+        arrStart_block[#arrStart_block].output[i] = {connect = {name = nil, port = nil}, coords = {x = i*50, y = -40},status = false,clicked = false};
     end
 
 end
