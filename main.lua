@@ -30,7 +30,7 @@ love.load = function()
     starting_block.load();
 
 
-    starting_block.create(500,900,8);
+    starting_block.create(500,900,64);
 
 end    
 
