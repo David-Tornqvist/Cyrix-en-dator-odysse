@@ -1,4 +1,4 @@
-local camera = require "camera";
+local camera = require "screen_related.camera";
 
 local starting_block = {};
 

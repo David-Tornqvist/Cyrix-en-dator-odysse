@@ -1,5 +1,5 @@
-local gates = require "gates";
-local starting_block = require "starting_block"
+local gates = require "world_related.gates";
+local starting_block = require "world_related.starting_block"
 
 local wires = {};
 

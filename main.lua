@@ -1,19 +1,16 @@
-local camera = require "camera";
-local gates = require "gates";
-local menu = require "menu";
-local wires = require "wires";
-local starting_block = require "starting_block";
+local camera = require "screen_related.camera";
+local gates = require "world_related.gates";
+local menu = require "screen_related.menu";
+local wires = require "world_related.wires";
+local starting_block = require "world_related.starting_block";
 
 
 
 love.load = function()
-
-    camera = require "camera";
-    gates = require "gates";
+  
     camera.load();
     gates.load();
     starting_block.load();
-
 
     starting_block.create(500,900,64);
 

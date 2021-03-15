@@ -1,4 +1,4 @@
-local gates = require "gates";
+local gates = require "world_related.gates";
 
 local menu = {};
 

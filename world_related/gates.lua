@@ -1,5 +1,5 @@
-local camera = require "camera";
-local starting_block = require "starting_block"
+local camera = require "screen_related.camera";
+local starting_block = require "world_related.starting_block"
 
 local gates = {};
 
@@ -7,8 +7,8 @@ local gates = {};
 
 gates.load = function ()
     rectangles = {};
-    and_gate_img = {file = love.graphics.newImage("And_gate.png"),width = 1080,height = 1080};
-    or_gate_img = {file = love.graphics.newImage("Or_gate.png"),width = 1080,height = 1080};
+    and_gate_img = {file = love.graphics.newImage("graphics/And_gate.png"),width = 1080,height = 1080};
+    or_gate_img = {file = love.graphics.newImage("graphics/Or_gate.png"),width = 1080,height = 1080};
     gate_name = 1;
 end
 
