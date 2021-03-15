@@ -3,12 +3,16 @@ local starting_block = require "starting_block"
 
 local gates = {};
 
+
+
 gates.load = function ()
     rectangles = {};
     and_gate_img = {file = love.graphics.newImage("And_gate.png"),width = 1080,height = 1080};
     or_gate_img = {file = love.graphics.newImage("Or_gate.png"),width = 1080,height = 1080};
     gate_name = 1;
 end
+
+
 
 gates.click = function (mousex,mousey,button)
     local x =  camera.screenToWorldcords(mousex,mousey).x;
@@ -53,6 +57,8 @@ gates.click = function (mousex,mousey,button)
 
     
 end
+
+
 
 gates.connect = function ()
     
@@ -110,6 +116,8 @@ gates.connect = function ()
 
 end
 
+
+
 gates.IOrelease = function ()
     for i = 1, #rectangles do
         rectangles[i].input.a.clicked = false;
@@ -125,6 +133,8 @@ gates.IOrelease = function ()
     end
 end
 
+
+
 gates.release = function (button)
     if(button == 1) then
         for i = 1, #rectangles do
@@ -133,6 +143,8 @@ gates.release = function (button)
         end
     end    
 end
+
+
 
 gates.update = function ()
     
@@ -149,6 +161,8 @@ gates.update = function ()
     end
 
 end
+
+
 
 gates.draw = function ()
     for i = 1, #rectangles do
@@ -189,6 +203,8 @@ gates.draw = function ()
     end
 end
 
+
+
 gates.getIndex = function (name)
     for i = 1, #rectangles do
     
@@ -197,6 +213,8 @@ gates.getIndex = function (name)
         end        
     end
 end
+
+
 
 gates.create = function (type)
 
@@ -218,6 +236,8 @@ gates.create = function (type)
 
 end
 
+
+
 gates.setfirst = function (arr,index)
         
     local topindex = table.remove(arr,index);
@@ -226,6 +246,7 @@ gates.setfirst = function (arr,index)
     
     
 end
+
 
 
 gates.simulate = function ()
@@ -326,6 +347,8 @@ gates.simulate = function ()
     
 
 
-end    
+end   
+
+
 
 return gates;

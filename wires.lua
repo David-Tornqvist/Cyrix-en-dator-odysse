@@ -3,9 +3,13 @@ local starting_block = require "starting_block"
 
 local wires = {};
 
+
+
 wires.load = function ()
     
 end
+
+
 
 wires.draw = function ()
     love.graphics.setLineWidth(5);
@@ -46,5 +50,7 @@ wires.draw = function ()
         end 
     end
 end
+
+
 
 return wires;

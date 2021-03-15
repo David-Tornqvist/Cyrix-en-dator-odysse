@@ -1,13 +1,16 @@
 local camera = require "camera";
 
-
 local starting_block = {};
+
+
 
 starting_block.load = function ()
     arrStart_block = {};
     startName = 10000000000000;
     first_startname = 10000000000000;
 end
+
+
 
 starting_block.create = function (x,y,nOutput)
 
@@ -21,6 +24,8 @@ starting_block.create = function (x,y,nOutput)
     end
 
 end
+
+
 
 starting_block.draw = function ()
     love.graphics.setColor(0,1,0,1);
@@ -47,6 +52,8 @@ starting_block.draw = function ()
     
 end
 
+
+
 starting_block.getIndex = function (name)
     for i = 1, #arrStart_block do
        -- print(name);
@@ -60,6 +67,8 @@ starting_block.getIndex = function (name)
     end
     return (1);
 end
+
+
 
 starting_block.click = function (mousex,mousey,button)
     local x =  camera.screenToWorldcords(love.mouse.getX(),love.mouse.getY()).x;
@@ -93,6 +102,7 @@ starting_block.click = function (mousex,mousey,button)
 
     end
 end
+
 
 
 return starting_block

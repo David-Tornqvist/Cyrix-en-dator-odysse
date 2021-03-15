@@ -2,12 +2,17 @@ local gates = require "gates";
 
 local menu = {};
 
-local buttons = {{x = 0, y = 0, width = 40, height = 40, color = {0,1,0,1}, graphics = "circle",funct = function ()
-    gates.create("and");
-end},
-{x = 0, y = 100,width = 40, height = 40, color = {0,1,0,1}, graphics = "circle",funct = function ()
-    gates.create("or");
-end}};
+local buttons = {
+    {x = 0, y = 0, width = 40, height = 40, color = {0,1,0,1}, graphics = "circle",funct = function ()
+        gates.create("and");
+    end},
+
+    {x = 0, y = 100,width = 40, height = 40, color = {0,1,0,1}, graphics = "circle",funct = function ()
+        gates.create("or");
+    end}
+};
+
+
 
 local function drawMenuElements(button)
     if(button.graphics == "circle") then
@@ -15,6 +20,8 @@ local function drawMenuElements(button)
         love.graphics.circle("fill",button.x + button.width/2, button.y + button.height/2, button.width/2);
     end    
 end
+
+
 
 menu.click = function (mousex,mousey,button)
     
@@ -25,6 +32,8 @@ menu.click = function (mousex,mousey,button)
     end
 
 end
+
+
 
 menu.draw = function ()
     
