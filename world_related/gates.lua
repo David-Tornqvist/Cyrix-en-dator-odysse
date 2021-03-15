@@ -161,9 +161,9 @@ gates.update = function ()
     for i = 1, #rectangles do
         if(rectangles[i].clicked) then
 
-
             rectangles[i].x = x - rectangles[i].clickedOffsetX;
             rectangles[i].y = y - rectangles[i].clickedOffsetY;
+
         end 
     end
 
