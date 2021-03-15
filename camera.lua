@@ -1,5 +1,7 @@
 local camera = {};
 
+
+
 camera.load = function ()
     
     love.window.setMode(love.graphics.getWidth(),love.graphics.getWidth()*9/16,{fullscreen = true});
@@ -11,11 +13,15 @@ camera.load = function ()
     
 end
 
+
+
 camera.screenToWorldcords = function (x,y)
     
     return {x = x/screenScale/zoom - translate.x, y = y/screenScale/zoom - translate.y};
 
 end
+
+
 
 camera.worldToScreencords = function (x,y)
     
@@ -25,8 +31,8 @@ end
 
 
 
-
 local function scrl(y)
+
     local bmouse = camera.screenToWorldcords(love.mouse.getX(),love.mouse.getY());
 
     zoom = zoom + 0.1*y;
@@ -39,13 +45,19 @@ local function scrl(y)
     translate.y = translate.y + d.y;
 end
 
+
+
 local function setPan(button)
     if(button == 3) then isPan = true; end
 end
 
+
+
 local function resPan(button)
     if(button == 3) then isPan = false; end
 end
+
+
 
 local function updatePan ()
     local mouse = {x = love.mouse.getX(), y = love.mouse.getY();}; 
@@ -57,7 +69,9 @@ local function updatePan ()
 
     prevX = mouse.x;
     prevY = mouse.y;
-end    
+end  
+
+
 
 camera.update = function (type,value)
     
@@ -67,5 +81,7 @@ camera.update = function (type,value)
     elseif(type == "pan") then updatePan(); end    
 
 end
+
+
 
 return camera;
