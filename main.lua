@@ -1,6 +1,13 @@
 
 --gammal windows style
 --todo:
+
+--Zoom limits
+--disconect wires
+--radera
+--nodes/prevent multiple wires at the same point
+--högre kvalité på game art
+
 --fix bug with gate sim
 --implement deletion
 --implement more gates
