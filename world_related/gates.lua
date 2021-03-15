@@ -6,56 +6,63 @@ local gates = {};
 
 
 gates.load = function ()
+
     rectangles = {};
+
     and_gate_img = {file = love.graphics.newImage("graphics/And_gate.png"),width = 1080,height = 1080};
     or_gate_img = {file = love.graphics.newImage("graphics/Or_gate.png"),width = 1080,height = 1080};
+
     gate_name = 1;
+
 end
 
 
 
 gates.click = function (mousex,mousey,button)
+
     local x =  camera.screenToWorldcords(mousex,mousey).x;
     local y =  camera.screenToWorldcords(mousex,mousey).y;
     
+    --loops through all currently created gates
     for i = #rectangles, 1, -1 do
 
-        if(button == 1 and x > (rectangles[i].x + rectangles[i].input.a.coords.x - 10) and x < (rectangles[i].x + rectangles[i].input.a.coords.x + 10) and y > (rectangles[i].y + rectangles[i].input.a.coords.y - 10) and y < (rectangles[i].y + rectangles[i].input.a.coords.y + 10)) then
-            rectangles[i].input.a.clicked = true;
-            portUpdate = true;
+                --checks if either of the two inputs a,b or the output q is clicked
+        if(     button == 1 and x > (rectangles[i].x + rectangles[i].input.a.coords.x - 10) and x < (rectangles[i].x + rectangles[i].input.a.coords.x + 10) 
+                and y > (rectangles[i].y + rectangles[i].input.a.coords.y - 10) and y < (rectangles[i].y + rectangles[i].input.a.coords.y + 10)) then
 
+                    rectangles[i].input.a.clicked = true;
+                    portUpdate = true;
+
+        elseif (button == 1 and x > (rectangles[i].x + rectangles[i].input.b.coords.x - 10) and x < (rectangles[i].x + rectangles[i].input.b.coords.x + 10) 
+                and y > (rectangles[i].y + rectangles[i].input.b.coords.y - 10) and y < (rectangles[i].y + rectangles[i].input.b.coords.y + 10)) then  
+          
+                    rectangles[i].input.b.clicked = true;
+                    portUpdate = true;
+
+        elseif (button == 1 and x > (rectangles[i].x + rectangles[i].output.q.coords.x - 10) and x < (rectangles[i].x + rectangles[i].output.q.coords.x + 10) 
+                and y > (rectangles[i].y + rectangles[i].output.q.coords.y - 10) and y < (rectangles[i].y + rectangles[i].output.q.coords.y + 10)) then
+
+                    rectangles[i].output.q.clicked = true;
+                    portUpdate = true;
             
+                --or if the gate itseld where clicked
+        elseif( button == 1 and x > rectangles[i].x and x < (rectangles[i].x + rectangles[i].width) and y > rectangles[i].y and y < (rectangles[i].y + rectangles[i].height)) then
+              
+                    if (rectangles[i].clicked == false) then    
+                
+                        rectangles[i].clicked = true;
 
-        elseif (button == 1 and x > (rectangles[i].x + rectangles[i].input.b.coords.x - 10) and x < (rectangles[i].x + rectangles[i].input.b.coords.x + 10) and y > (rectangles[i].y + rectangles[i].input.b.coords.y - 10) and y < (rectangles[i].y + rectangles[i].input.b.coords.y + 10)) then  
-            rectangles[i].input.b.clicked = true;
-            portUpdate = true;
-      
-         
-
-        elseif (button == 1 and x > (rectangles[i].x + rectangles[i].output.q.coords.x - 10) and x < (rectangles[i].x + rectangles[i].output.q.coords.x + 10) and y > (rectangles[i].y + rectangles[i].output.q.coords.y - 10) and y < (rectangles[i].y + rectangles[i].output.q.coords.y + 10)) then    
-            rectangles[i].output.q.clicked = true;
-            portUpdate = true;
-            
-      
-
-        elseif(button == 1 and x > rectangles[i].x and x < (rectangles[i].x + rectangles[i].width) and y > rectangles[i].y and y < (rectangles[i].y + rectangles[i].height)) then
-            if (rectangles[i].clicked == false) then    
-                rectangles[i].clicked = true;
-
-            end
+                    end
     
-            rectangles[i].clickedOffsetX = x - rectangles[i].x;
-            rectangles[i].clickedOffsetY = y - rectangles[i].y;
+                    rectangles[i].clickedOffsetX = x - rectangles[i].x;
+                    rectangles[i].clickedOffsetY = y - rectangles[i].y;
 
-            rectangles = gates.setfirst(rectangles,i);
+                    rectangles = gates.setfirst(rectangles,i);
         
-       
-            break     
+                    break   
+                      
         end   
-        
     end
-
-    
 end
 
 

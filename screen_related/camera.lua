@@ -5,10 +5,12 @@ local camera = {};
 camera.load = function ()
     
     love.window.setMode(love.graphics.getWidth(),love.graphics.getWidth()*9/16,{fullscreen = true});
+
     local gameWidth = 1920;
     screenScale = (love.graphics.getWidth()/gameWidth);
     zoom = 1;
     translate = {x = 0, y = 0};
+    
     local isPan = false;
     
 end
@@ -33,13 +35,17 @@ end
 
 local function scrl(y)
 
+    --mouse-screencoords translated to mouse-worldcoords before zoom 
     local bmouse = camera.screenToWorldcords(love.mouse.getX(),love.mouse.getY());
 
     zoom = zoom + 0.1*y;
  
+    --mouse-screencoords translated to mouse-worldcoords before zoom
     local amouse = camera.screenToWorldcords(love.mouse.getX(),love.mouse.getY());
 
+    --diffrence to translate by such that mouse-worldcoords are unnafected
     local d = {x = amouse.x - bmouse.x, y = amouse.y - bmouse.y}; 
+
 
     translate.x = translate.x + d.x;
     translate.y = translate.y + d.y;
