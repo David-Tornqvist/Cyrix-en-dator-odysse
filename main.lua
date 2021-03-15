@@ -1,30 +1,8 @@
-
---gammal windows style
---todo:
-
---Zoom limits
---disconect wires
---radera
---nodes/prevent multiple wires at the same point
---högre kvalité på game art
-
---fix bug with gate sim
---implement deletion
---implement more gates
---impletent goal block
---implement movable goal/start block
---implement game mode
---implement tutorial
-
---implement packaged gates
---implement story mode
-
 local camera = require "camera";
 local gates = require "gates";
 local menu = require "menu";
 local wires = require "wires";
 local starting_block = require "starting_block";
-
 
 
 
@@ -43,20 +21,11 @@ end
 
 
 
-
-
-
 function love.keypressed(key)
 
     if(key == "escape")then love.event.quit(); end
 
 end
-
-
-
-
-
-
 
 
 
@@ -78,27 +47,12 @@ end
 
 
 
-
-
-
-
-
-
-
-
 function love.mousereleased(x,y,button)
 
-   gates.release(button);
+    gates.release(button);
 
     camera.update("mRel",button);
 end
-
-
-
-
-
-
-
 
 
 
@@ -107,12 +61,6 @@ function love.wheelmoved(x,y)
     camera.update("scrl",y);
 
 end
-
-
-
-
-
-
 
 
 
@@ -128,9 +76,6 @@ end
 
 
 
-
-
-
 love.draw = function()
 
     love.graphics.scale(screenScale,screenScale);
@@ -143,14 +88,9 @@ love.draw = function()
     starting_block.draw();
     gates.draw();
     wires.draw();
-    
 
-    
     love.graphics.pop();
 
     menu.draw();
 
-
 end
-
-
