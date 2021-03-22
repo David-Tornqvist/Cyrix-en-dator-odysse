@@ -311,8 +311,7 @@ gates.simulate = function ()
         for i = 1, #preparedGates do
             if(preparedGates[i].handeld == false) then allGatesHandeld = false end
         end
-
-
+        
     end
 end   
 
