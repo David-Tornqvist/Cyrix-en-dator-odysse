@@ -237,7 +237,7 @@ end
 gates.setfirst = function (arr,index)
         
     local topindex = table.remove(arr,index);
-    arr[#arr+1] = topindex;
+    arr[#arr + 1] = topindex;
     return arr;
     
     
