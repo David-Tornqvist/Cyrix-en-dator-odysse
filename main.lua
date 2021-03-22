@@ -12,7 +12,7 @@ love.load = function()
     gates.load();
     starting_block.load();
 
-    starting_block.create(500,900,64);
+    starting_block.create(500, 900, 64);
 
 end    
 
@@ -26,36 +26,36 @@ end
 
 
 
-function love.mousepressed(mousex,mousey,button)
+function love.mousepressed(mousex, mousey, button)
 
     portUpdate = false;
 
-    gates.click(mousex,mousey,button);
-    starting_block.click(mousey,mousey,button);
+    gates.click(mousex, mousey, button);
+    starting_block.click(mousey, mousey, button);
     gates.connect(); 
-    menu.click(mousex,mousey,button);
+    menu.click(mousex, mousey, button);
 
     if(portUpdate == false) then
         gates.IOrelease();
     end
 
-    camera.update("mPush",button);
+    camera.update("mPush", button);
 end
 
 
 
-function love.mousereleased(x,y,button)
+function love.mousereleased(x, y, button)
 
     gates.release(button);
 
-    camera.update("mRel",button);
+    camera.update("mRel", button);
 end
 
 
 
-function love.wheelmoved(x,y)
+function love.wheelmoved(x, y)
  
-    camera.update("scrl",y);
+    camera.update("scrl", y);
 
 end
 
@@ -75,12 +75,12 @@ end
 
 love.draw = function()
 
-    love.graphics.scale(screenScale,screenScale);
+    love.graphics.scale(screenScale, screenScale);
 
     love.graphics.push();
 
-    love.graphics.scale(zoom,zoom);
-    love.graphics.translate(translate.x,translate.y);
+    love.graphics.scale(zoom, zoom);
+    love.graphics.translate(translate.x, translate.y);
 
     starting_block.draw();
     gates.draw();

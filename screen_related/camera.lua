@@ -4,7 +4,7 @@ local camera = {};
 
 camera.load = function ()
     
-    love.window.setMode(love.graphics.getWidth(),love.graphics.getWidth()*9/16,{fullscreen = true});
+    love.window.setMode(love.graphics.getWidth(), love.graphics.getWidth()*9/16, {fullscreen = true});
 
     local gameWidth = 1920;
     screenScale = (love.graphics.getWidth()/gameWidth);
@@ -17,7 +17,7 @@ end
 
 
 
-camera.screenToWorldcords = function (x,y)
+camera.screenToWorldcords = function (x, y)
     
     return {x = x/screenScale/zoom - translate.x, y = y/screenScale/zoom - translate.y};
 
@@ -25,7 +25,7 @@ end
 
 
 
-camera.worldToScreencords = function (x,y)
+camera.worldToScreencords = function (x, y)
     
     return {x = x*screenScale*zoom - translate.x, y = y*screenScale*zoom - translate.y};
 
@@ -36,12 +36,12 @@ end
 local function scrl(y)
 
     --mouse-screencoords translated to mouse-worldcoords before zoom 
-    local bmouse = camera.screenToWorldcords(love.mouse.getX(),love.mouse.getY());
+    local bmouse = camera.screenToWorldcords(love.mouse.getX(), love.mouse.getY());
 
     zoom = zoom + 0.1*y;
  
     --mouse-screencoords translated to mouse-worldcoords before zoom
-    local amouse = camera.screenToWorldcords(love.mouse.getX(),love.mouse.getY());
+    local amouse = camera.screenToWorldcords(love.mouse.getX(), love.mouse.getY());
 
     --diffrence to translate by such that mouse-worldcoords are unnafected
     local d = {x = amouse.x - bmouse.x, y = amouse.y - bmouse.y}; 
@@ -49,23 +49,29 @@ local function scrl(y)
 
     translate.x = translate.x + d.x;
     translate.y = translate.y + d.y;
+
 end
 
 
 
 local function setPan(button)
+
     if(button == 3) then isPan = true; end
+
 end
 
 
 
 local function resPan(button)
+
     if(button == 3) then isPan = false; end
+
 end
 
 
 
 local function updatePan ()
+
     local mouse = {x = love.mouse.getX(), y = love.mouse.getY();}; 
 
     if(isPan) then
@@ -75,11 +81,12 @@ local function updatePan ()
 
     prevX = mouse.x;
     prevY = mouse.y;
+
 end  
 
 
 
-camera.update = function (type,value)
+camera.update = function (type, value)
     
     if(type == "scrl") then scrl(value);
     elseif(type == "mPush") then setPan(value);

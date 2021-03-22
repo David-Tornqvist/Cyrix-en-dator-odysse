@@ -9,19 +9,19 @@ gates.load = function ()
 
     rectangles = {};
 
-    and_gate_img = {file = love.graphics.newImage("graphics/And_gate.png"),width = 1080,height = 1080};
-    or_gate_img = {file = love.graphics.newImage("graphics/Or_gate.png"),width = 1080,height = 1080};
+    andGateImg = {file = love.graphics.newImage("graphics/And_gate.png"), width = 1080, height = 1080};
+    orGateImg = {file = love.graphics.newImage("graphics/Or_gate.png"), width = 1080, height = 1080};
 
-    gate_name = 1;
+    gateName = 1;
 
 end
 
 
 
-gates.click = function (mousex,mousey,button)
+gates.click = function (mouseX, mouseY, button)
 
-    local x =  camera.screenToWorldcords(mousex,mousey).x;
-    local y =  camera.screenToWorldcords(mousex,mousey).y;
+    local x =  camera.screenToWorldcords(mouseX, mouseY).x;
+    local y =  camera.screenToWorldcords(mouseX, mouseY).y;
     
     --loops through all currently created gates
     for i = #rectangles, 1, -1 do
@@ -45,7 +45,7 @@ gates.click = function (mousex,mousey,button)
                     rectangles[i].output.q.clicked = true;
                     portUpdate = true;
             
-                --or if the gate itseld where clicked
+                --or if the gate itself where clicked
         elseif( button == 1 and x > rectangles[i].x and x < (rectangles[i].x + rectangles[i].width) and y > rectangles[i].y and y < (rectangles[i].y + rectangles[i].height)) then
               
                     if (rectangles[i].clicked == false) then    
@@ -57,7 +57,7 @@ gates.click = function (mousex,mousey,button)
                     rectangles[i].clickedOffsetX = x - rectangles[i].x;
                     rectangles[i].clickedOffsetY = y - rectangles[i].y;
 
-                    rectangles = gates.setfirst(rectangles,i);
+                    rectangles = gates.setFirst(rectangles, i);
         
                     break   
                       
@@ -66,52 +66,54 @@ gates.click = function (mousex,mousey,button)
 end
 
 
-
+--gates.connect first loops through all the gates and determines which two gates have been clicked. Then, if two gates have been clicked. Connects them
+--by setting the connected input/output names of the corresponding ports to the correct names.
 gates.connect = function ()
     
-    local gatepair = {input = {gate_name = nil, port = nil,currentIndex = nil}, output = {gate_name = nil, rank = nil,currentIndex = nil}}
+    local gatepair = {input = {gateName = nil, port = nil, currentIndex = nil}, output = {gateName = nil, rank = nil, currentIndex = nil}}
     
     for i = 1, #rectangles do
         if(rectangles[i].input.a.clicked) then
-            gatepair.input.gate_name = rectangles[i].name;
+            gatepair.input.gateName = rectangles[i].name;
             gatepair.input.port = "a";
             gatepair.input.currentIndex = i;
         end    
         if (rectangles[i].input.b.clicked) then
-            gatepair.input.gate_name = rectangles[i].name;
+            gatepair.input.gateName = rectangles[i].name;
             gatepair.input.port = "b"; 
             gatepair.input.currentIndex = i;
         end    
         if (rectangles[i].output.q.clicked) then     
-            gatepair.output.gate_name = rectangles[i].name;
+            gatepair.output.gateName = rectangles[i].name;
             gatepair.output.currentIndex = i;
             gatepair.output.rank = rectangles[i].rank;   
         end      
     end
 
-    for i = 1, #arrStart_block do
-        for b = 1, #arrStart_block[i].output do
-            if(arrStart_block[i].output[b].clicked)then
-                gatepair.output.gate_name = arrStart_block[i].name + b;
+    for i = 1, #arrStartBlock do
+        for b = 1, #arrStartBlock[i].output do
+            if(arrStartBlock[i].output[b].clicked)then
+                gatepair.output.gateName = arrStartBlock[i].name + b;
                 gatepair.output.currentIndex = i;
                 gatepair.output.rank = 0;
             end    
         end
     end
 
-    if((gatepair.input.gate_name ~= nil) and (gatepair.output.gate_name ~= nil)) then
+    if((gatepair.input.gateName ~= nil) and (gatepair.output.gateName ~= nil)) then
         if(gatepair.input.port == "a") then
-            rectangles[gatepair.input.currentIndex].input.a.connect = gatepair.output.gate_name;
+            rectangles[gatepair.input.currentIndex].input.a.connect = gatepair.output.gateName;
         end
         if(gatepair.input.port == "b") then
-            rectangles[gatepair.input.currentIndex].input.b.connect = gatepair.output.gate_name;
+            rectangles[gatepair.input.currentIndex].input.b.connect = gatepair.output.gateName;
         end    
         rectangles[gatepair.input.currentIndex].rank = gatepair.output.rank + 1;
-        if(gatepair.output.gate_name >= first_startname) then 
+        if(gatepair.output.gateName >= firstStartBlockName) then 
 
-            arrStart_block[starting_block.getIndex(gatepair.output.gate_name)].output[gatepair.output.gate_name-first_startname].connect = {name = gatepair.input.gate_name, port = gatepair.input.port};
+            arrStartBlock[starting_block.getIndex(gatepair.output.gateName)].output[gatepair.output.gateName-firstStartBlockName].connect = 
+            {name = gatepair.input.gateName, port = gatepair.input.port};
         else
-            rectangles[gatepair.output.currentIndex].output.q.connect = {name = gatepair.input.gate_name, port = gatepair.input.port};  
+            rectangles[gatepair.output.currentIndex].output.q.connect = {name = gatepair.input.gateName, port = gatepair.input.port};  
         end
 
         gates.IOrelease();
@@ -129,9 +131,9 @@ gates.IOrelease = function ()
 
     end
 
-    for i = 1, #arrStart_block do
-        for b = 1, #arrStart_block[i].output do
-            arrStart_block[i].output[b].clicked = false;
+    for i = 1, #arrStartBlock do
+        for b = 1, #arrStartBlock[i].output do
+            arrStartBlock[i].output[b].clicked = false;
         end
     end
 end
@@ -170,30 +172,28 @@ gates.draw = function ()
     for i = 1, #rectangles do
     
         if(rectangles[i].type == "and") then
-            love.graphics.setColor(0,1,0,1);
-            love.graphics.draw(and_gate_img.file,rectangles[i].x,rectangles[i].y,0,rectangles[i].width/and_gate_img.width,rectangles[i].height/and_gate_img.width);
+            love.graphics.setColor(0, 1, 0, 1);
+            love.graphics.draw(andGateImg.file, rectangles[i].x, rectangles[i].y, 0, rectangles[i].width/andGateImg.width, rectangles[i].height/andGateImg.width);
         elseif(rectangles[i].type == "or") then
-            love.graphics.setColor(0,1,0,1);
-            love.graphics.draw(or_gate_img.file,rectangles[i].x,rectangles[i].y,0,rectangles[i].width/or_gate_img.width,rectangles[i].height/or_gate_img.width);
+            love.graphics.setColor(0, 1, 0, 1);
+            love.graphics.draw(orGateImg.file, rectangles[i].x, rectangles[i].y, 0, rectangles[i].width/orGateImg.width, rectangles[i].height/orGateImg.width);
         end    
 
-      
-        love.graphics.setColor(0,0,1,1);
+        love.graphics.setColor(0, 0, 1, 1);
         love.graphics.setLineWidth(5);
-
 
         if(rectangles[i].clicked) then
             love.graphics.setLineWidth(10)
-            love.graphics.rectangle("line",rectangles[i].x,rectangles[i].y,rectangles[i].width,rectangles[i].height);
+            love.graphics.rectangle("line", rectangles[i].x, rectangles[i].y, rectangles[i].width, rectangles[i].height);
 
         elseif(rectangles[i].input.a.clicked) then
-            love.graphics.circle("line",rectangles[i].x + rectangles[i].input.a.coords.x,rectangles[i].y + rectangles[i].input.a.coords.y,20);
+            love.graphics.circle("line", rectangles[i].x + rectangles[i].input.a.coords.x, rectangles[i].y + rectangles[i].input.a.coords.y, 20);
 
         elseif (rectangles[i].input.b.clicked) then  
-            love.graphics.circle("line",rectangles[i].x + rectangles[i].input.b.coords.x,rectangles[i].y + rectangles[i].input.b.coords.y,20);
+            love.graphics.circle("line", rectangles[i].x + rectangles[i].input.b.coords.x, rectangles[i].y + rectangles[i].input.b.coords.y, 20);
             
         elseif (rectangles[i].output.q.clicked) then   
-            love.graphics.circle("line",rectangles[i].x + rectangles[i].output.q.coords.x,rectangles[i].y + rectangles[i].output.q.coords.y,20);
+            love.graphics.circle("line", rectangles[i].x + rectangles[i].output.q.coords.x, rectangles[i].y + rectangles[i].output.q.coords.y, 20);
             
         end    
     end
@@ -215,36 +215,57 @@ end
 gates.create = function (type)
 
     if(type == "and") then
+
         local width = 200;
         local height = 200;
-        rectangles[#rectangles + 1] = {x = love.mouse.getX(), y = love.mouse.getY(), width = width, height = height, clicked = true,clickedOffsetY = height/2, clickedOffsetX = width/2, 
-        type = "and", input = {a = {connect = nil, coords = {x = 76, y = 175},status = false,clicked = false}, b = {connect = nil, coords = {x = 125, y = 175},status = false,clicked = false}}, 
-        output = {q = {connect = {name = nil, port = nil}, coords = {x = 102, y = 10},status = false,clicked = false}}, rank = 1, name = gate_name}; 
+
+        rectangles[#rectangles + 1] = {
+            x = love.mouse.getX(), y = love.mouse.getY(), width = width, height = height, 
+            clicked = true, clickedOffsetY = height/2, clickedOffsetX = width/2, 
+            type = "and",   
+                input = {
+                        a = {connect = nil, coords = {x = 76, y = 175},     status = false, clicked = false}, 
+                        b = {connect = nil, coords = {x = 125, y = 175},    status = false, clicked = false}}, 
+                output = {  
+                        q = {connect = {name = nil, port = nil}, coords = {x = 102, y = 10}, status = false, clicked = false}}, 
+            rank = 1, --unused variable 
+            name = gateName}; 
+
     elseif(type == "or") then
+
         local width = 200;
         local height = 200;
-        rectangles[#rectangles + 1] = {x = love.mouse.getX(), y = love.mouse.getY(), width = width, height = height, clicked = true,clickedOffsetY = height/2, clickedOffsetX = width/2, 
-        type = "or", input = {a = {connect = nil, coords = {x = 76, y = 175},status = false,clicked = false}, b = {connect = nil, coords = {x = 125, y = 175},status = false,clicked = false}}, 
-        output = {q = {connect = {name = nil, port = nil}, coords = {x = 102, y = 10},status = false,clicked = false}}, rank = 1, name = gate_name}; 
+        
+        rectangles[#rectangles + 1] = {
+            x = love.mouse.getX(), y = love.mouse.getY(), width = width, height = height, 
+            clicked = true, clickedOffsetY = height/2, clickedOffsetX = width/2, 
+            type = "or",    
+                input = {
+                        a = {connect = nil, coords = {x = 76, y = 175},     status = false, clicked = false}, 
+                        b = {connect = nil, coords = {x = 125, y = 175},    status = false, clicked = false}}, 
+                output = {
+                        q = {connect = {name = nil, port = nil}, coords = {x = 102, y = 10}, status = false, clicked = false}}, 
+            rank = 1, --unused variable 
+            name = gateName}; 
     end
 
-    gate_name = gate_name + 1;
+    gateName = gateName + 1;
 
 end
 
 
 
-gates.setfirst = function (arr,index)
+gates.setFirst = function (arr, index)
         
-    local topindex = table.remove(arr,index);
-    arr[#arr + 1] = topindex;
+    local topIndex = table.remove(arr, index);
+    arr[#arr + 1] = topIndex;
     return arr;
     
     
 end
 
 
-
+--hmmm yes, i do not quite understand this one which is why it currently doesn't work. Once i do i will let you know.
 gates.simulate = function ()
 
     local preparedGates = {};
@@ -253,20 +274,20 @@ gates.simulate = function ()
         preparedGates[i] = {a = false, b = false, handeld = false}
     end
 
-    for i = 1, #arrStart_block do
-        for b = 1, #arrStart_block[i].output do
-            if(arrStart_block[i].output[b].connect.name ~= nil) then
+    for i = 1, #arrStartBlock do
+        for b = 1, #arrStartBlock[i].output do
+            if(arrStartBlock[i].output[b].connect.name ~= nil) then
 
-                if(arrStart_block[i].output[b].connect.port == "a") then
-                    rectangles[gates.getIndex(arrStart_block[i].output[b].connect.name)].input.a.status = arrStart_block[i].output[b].status;
-                    preparedGates[arrStart_block[i].output[b].connect.name].a = true;
+                if(arrStartBlock[i].output[b].connect.port == "a") then
+                    rectangles[gates.getIndex(arrStartBlock[i].output[b].connect.name)].input.a.status = arrStartBlock[i].output[b].status;
+                    preparedGates[arrStartBlock[i].output[b].connect.name].a = true;
                     
                   
                     
                 end  
-                if(arrStart_block[i].output[b].connect.port == "b") then
-                    rectangles[gates.getIndex(arrStart_block[i].output[b].connect.name)].input.b.status = arrStart_block[i].output[b].status;
-                    preparedGates[arrStart_block[i].output[b].connect.name].b = true;
+                if(arrStartBlock[i].output[b].connect.port == "b") then
+                    rectangles[gates.getIndex(arrStartBlock[i].output[b].connect.name)].input.b.status = arrStartBlock[i].output[b].status;
+                    preparedGates[arrStartBlock[i].output[b].connect.name].b = true;
 
                 end    
             end    
