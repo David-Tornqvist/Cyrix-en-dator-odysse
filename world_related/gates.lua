@@ -224,14 +224,14 @@ gates.simulate = function ()
 
                 if(arrStartBlock[i].output[b].connect.port == "a") then
                     arrGates[gates.getIndex(arrStartBlock[i].output[b].connect.name)].input.a.status = arrStartBlock[i].output[b].status;
-                    preparedGates[arrStartBlock[i].output[b].connect.name].a = true;
+                    preparedGates[gates.getIndex(arrStartBlock[i].output[b].connect.name)].a = true;
                     
                   
                     
                 end  
                 if(arrStartBlock[i].output[b].connect.port == "b") then
                     arrGates[gates.getIndex(arrStartBlock[i].output[b].connect.name)].input.b.status = arrStartBlock[i].output[b].status;
-                    preparedGates[arrStartBlock[i].output[b].connect.name].b = true;
+                    preparedGates[gates.getIndex(arrStartBlock[i].output[b].connect.name)].b = true;
 
                 end    
             end    
@@ -241,17 +241,17 @@ gates.simulate = function ()
 
     for i = 1, #arrGates do
         if(arrGates[i].input.a.connect ~= nil and arrGates[i].input.b.connect == nil) then
-            preparedGates[arrGates[i].name].b = true;
+            preparedGates[i].b = true;
         end 
         if(arrGates[i].input.b.connect ~= nil and arrGates[i].input.a.connect == nil) then
-            preparedGates[arrGates[i].name].a = true;
+            preparedGates[i].a = true;
         end    
     end
 
     for i = 1, #arrGates do
         if(arrGates[i].input.a.connect == nil and arrGates[i].input.b.connect == nil) then
            
-            preparedGates[arrGates[i].name].handeld = true;
+            preparedGates[i].handeld = true;
         end    
     end
 
