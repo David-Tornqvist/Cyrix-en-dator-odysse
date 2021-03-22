@@ -210,6 +210,18 @@ end
 
 
 --hmmm yes, i do not quite understand this one which is why it currently doesn't work. Once i do i will let you know.
+--So basically what it does is that it creates an array for all the gates. Then it assigns wether or not the imputs of the gates are ready.
+--For example. It starts by handling all of the outputs from the starting block, setting the outputs of the correspongding gates and flagging
+--the inputs of the connected gates as ready to be handled.
+--Then it sets all non connected inputs as being ready to be handled(If one input is not connected it is considered a logical 0.
+--if both inputs are not connected the entire gate is considered handled)
+--
+--Afterwards it loops through all gates and handles gates which both imputs are ready to be handled until all gates have been handled
+--......
+--......
+--......
+--The matrix!
+
 gates.simulate = function ()
 
     local preparedGates = {};
@@ -300,9 +312,6 @@ gates.simulate = function ()
             if(preparedGates[i].handeld == false) then allGatesHandeld = false end
         end
 
-
-        i = i + 1;
-        if(i > 10000)then break end
 
     end
 end   
