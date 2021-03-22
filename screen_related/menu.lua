@@ -41,7 +41,6 @@ menu.click = function (mousex,mousey,button)
             buttons[i].funct();
         end    
     end
-
 end
 
 
@@ -51,7 +50,6 @@ menu.draw = function ()
     for i = 1, #buttons do
         drawMenuElements(buttons[i]);
     end
-
 end
 
 return menu;

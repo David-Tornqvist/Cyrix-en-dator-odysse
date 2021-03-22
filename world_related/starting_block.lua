@@ -5,9 +5,11 @@ local starting_block = {};
 
 
 starting_block.load = function ()
+
     arrStart_block = {};
     startName = 10000000000000;
     first_startname = 10000000000000;
+
 end
 
 
@@ -22,12 +24,12 @@ starting_block.create = function (x,y,nOutput)
     for i = 1, nOutput do
         arrStart_block[#arrStart_block].output[i] = {connect = {name = nil, port = nil}, coords = {x = i*50, y = -40},status = false,clicked = false};
     end
-
 end
 
 
 
 starting_block.draw = function ()
+
     love.graphics.setColor(0,1,0,1);
     love.graphics.setLineWidth(5);
     
@@ -49,7 +51,6 @@ starting_block.draw = function ()
             end    
         end
     end
-    
 end
 
 
@@ -71,20 +72,13 @@ end
 
 
 starting_block.click = function (mousex,mousey,button)
+
     local x =  camera.screenToWorldcords(love.mouse.getX(),love.mouse.getY()).x;
     local y =  camera.screenToWorldcords(love.mouse.getX(),love.mouse.getY()).y;
 
-    
-
     for i = #arrStart_block, 1, -1 do
-        
-        
-
         for b = 1, #(arrStart_block[i].output) do
         
-        
-        
-
             if(button == 1 and x > (arrStart_block[i].coords.x + arrStart_block[i].output[b].coords.x - 10) and x < (arrStart_block[i].coords.x + arrStart_block[i].output[b].coords.x + 10) and y > (arrStart_block[i].coords.y + arrStart_block[i].output[b].coords.y - 10) and y < (arrStart_block[i].coords.y + arrStart_block[i].output[b].coords.y + 10)) then
                 arrStart_block[i].output[b].clicked = true;
                 portUpdate = true; 
@@ -99,7 +93,6 @@ starting_block.click = function (mousex,mousey,button)
             end    
 
         end    
-
     end
 end
 

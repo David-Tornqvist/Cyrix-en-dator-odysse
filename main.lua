@@ -54,7 +54,7 @@ end
 
 
 function love.wheelmoved(x,y)
-
+ 
     camera.update("scrl",y);
 
 end

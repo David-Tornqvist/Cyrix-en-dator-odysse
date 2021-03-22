@@ -114,13 +114,9 @@ gates.connect = function ()
             rectangles[gatepair.output.currentIndex].output.q.connect = {name = gatepair.input.gate_name, port = gatepair.input.port};  
         end
 
-        
-
         gates.IOrelease();
  
     end    
-
-
 end
 
 
@@ -166,7 +162,6 @@ gates.update = function ()
 
         end 
     end
-
 end
 
 
@@ -201,12 +196,6 @@ gates.draw = function ()
             love.graphics.circle("line",rectangles[i].x + rectangles[i].output.q.coords.x,rectangles[i].y + rectangles[i].output.q.coords.y,20);
             
         end    
-    
-        
-        
-        
-        
-
     end
 end
 
@@ -351,9 +340,6 @@ gates.simulate = function ()
         if(i > 10000)then break end
 
     end
-    
-
-
 end   
 
 
