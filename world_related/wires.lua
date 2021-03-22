@@ -16,69 +16,126 @@ wires.draw = function ()
     love.graphics.setLineWidth(5);
     love.graphics.setColor(0, 1, 0, 1);
 
-    for i = 1, #rectangles do
+    for i = 1, #arrGates do
         
-        if(rectangles[i].input.a.connect ~= nil) then
+        if(arrGates[i].input.a.connect ~= nil) then
 
             love.graphics.setColor(0, 1, 0, 1);
 
-            if(rectangles[i].input.a.status) then love.graphics.setColor(1, 0, 0, 1); end
+            if(arrGates[i].input.a.status) then love.graphics.setColor(1, 0, 0, 1); end
 
-            if(rectangles[i].input.a.connect < firstStartBlockName) then
+            if(arrGates[i].input.a.connect < firstStartBlockName) then
 
-                local currentIndexOfOutputGate = gates.getIndex(rectangles[i].input.a.connect);
-                love.graphics.line( rectangles[i].x + rectangles[i].input.a.coords.x,
-                                    rectangles[i].y + rectangles[i].input.a.coords.y,
-                                    rectangles[currentIndexOfOutputGate].x + rectangles[currentIndexOfOutputGate].output.q.coords.x,
-                                    rectangles[currentIndexOfOutputGate].y + rectangles[currentIndexOfOutputGate].output.q.coords.y);
+                local currentIndexOfOutputGate = gates.getIndex(arrGates[i].input.a.connect);
+                love.graphics.line( arrGates[i].x + arrGates[i].input.a.coords.x,
+                                    arrGates[i].y + arrGates[i].input.a.coords.y,
+                                    arrGates[currentIndexOfOutputGate].x + arrGates[currentIndexOfOutputGate].output.q.coords.x,
+                                    arrGates[currentIndexOfOutputGate].y + arrGates[currentIndexOfOutputGate].output.q.coords.y);
             
             else
 
-                local currentIndexOfOutputGate = starting_block.getIndex(rectangles[i].input.a.connect);   
+                local currentIndexOfOutputGate = starting_block.getIndex(arrGates[i].input.a.connect);   
                
-                love.graphics.line( rectangles[i].x + rectangles[i].input.a.coords.x,
-                                    rectangles[i].y + rectangles[i].input.a.coords.y,
+                love.graphics.line( arrGates[i].x + arrGates[i].input.a.coords.x,
+                                    arrGates[i].y + arrGates[i].input.a.coords.y,
 
                                     arrStartBlock[currentIndexOfOutputGate].coords.x + 
-                                        arrStartBlock[currentIndexOfOutputGate].output[rectangles[i].input.a.connect-firstStartBlockName].coords.x,
+                                        arrStartBlock[currentIndexOfOutputGate].output[arrGates[i].input.a.connect-firstStartBlockName].coords.x,
 
                                     arrStartBlock[currentIndexOfOutputGate].coords.y + 
-                                        arrStartBlock[currentIndexOfOutputGate].output[rectangles[i].input.a.connect-firstStartBlockName].coords.y);    
+                                        arrStartBlock[currentIndexOfOutputGate].output[arrGates[i].input.a.connect-firstStartBlockName].coords.y);    
             end    
         end  
         
-        if(rectangles[i].input.b.connect ~= nil) then
+        if(arrGates[i].input.b.connect ~= nil) then
 
             love.graphics.setColor(0,1,0,1);
 
-            if(rectangles[i].input.b.status) then love.graphics.setColor(1, 0, 0, 1); end
+            if(arrGates[i].input.b.status) then love.graphics.setColor(1, 0, 0, 1); end
             
-            if(rectangles[i].input.b.connect < firstStartBlockName) then
-                local currentIndexOfOutputGate = gates.getIndex(rectangles[i].input.b.connect);
+            if(arrGates[i].input.b.connect < firstStartBlockName) then
+                local currentIndexOfOutputGate = gates.getIndex(arrGates[i].input.b.connect);
                
-                love.graphics.line( rectangles[i].x + rectangles[i].input.b.coords.x, 
-                                    rectangles[i].y + rectangles[i].input.b.coords.y,
+                love.graphics.line( arrGates[i].x + arrGates[i].input.b.coords.x, 
+                                    arrGates[i].y + arrGates[i].input.b.coords.y,
                                     
-                                    rectangles[currentIndexOfOutputGate].x + 
-                                        rectangles[currentIndexOfOutputGate].output.q.coords.x,
+                                    arrGates[currentIndexOfOutputGate].x + 
+                                        arrGates[currentIndexOfOutputGate].output.q.coords.x,
                                     
-                                    rectangles[currentIndexOfOutputGate].y + 
-                                        rectangles[currentIndexOfOutputGate].output.q.coords.y);
+                                    arrGates[currentIndexOfOutputGate].y + 
+                                        arrGates[currentIndexOfOutputGate].output.q.coords.y);
             
                 else
-                local currentIndexOfOutputGate = starting_block.getIndex(rectangles[i].input.b.connect);
+                local currentIndexOfOutputGate = starting_block.getIndex(arrGates[i].input.b.connect);
        
-                love.graphics.line( rectangles[i].x + rectangles[i].input.b.coords.x,
-                                    rectangles[i].y + rectangles[i].input.b.coords.y,
+                love.graphics.line( arrGates[i].x + arrGates[i].input.b.coords.x,
+                                    arrGates[i].y + arrGates[i].input.b.coords.y,
                                     
                                     arrStartBlock[currentIndexOfOutputGate].coords.x + 
-                                        arrStartBlock[currentIndexOfOutputGate].output[rectangles[i].input.b.connect-firstStartBlockName].coords.x,
+                                        arrStartBlock[currentIndexOfOutputGate].output[arrGates[i].input.b.connect-firstStartBlockName].coords.x,
                                         
                                     arrStartBlock[currentIndexOfOutputGate].coords.y + 
-                                        arrStartBlock[currentIndexOfOutputGate].output[rectangles[i].input.b.connect-firstStartBlockName].coords.y);    
+                                        arrStartBlock[currentIndexOfOutputGate].output[arrGates[i].input.b.connect-firstStartBlockName].coords.y);    
             end    
         end 
     end
+end
+
+
+
+--wires.connect first loops through all the gates and determines which two gates have been clicked. Then, if two gates have been clicked. Connects them
+--by setting the connected input/output names of the corresponding ports to the correct names.
+wires.connect = function ()
+    
+    local gatepair = {input = {gateName = nil, port = nil, currentIndex = nil}, output = {gateName = nil, rank = nil, currentIndex = nil}}
+    
+    for i = 1, #arrGates do
+        if(arrGates[i].input.a.clicked) then
+            gatepair.input.gateName = arrGates[i].name;
+            gatepair.input.port = "a";
+            gatepair.input.currentIndex = i;
+        end    
+        if (arrGates[i].input.b.clicked) then
+            gatepair.input.gateName = arrGates[i].name;
+            gatepair.input.port = "b"; 
+            gatepair.input.currentIndex = i;
+        end    
+        if (arrGates[i].output.q.clicked) then     
+            gatepair.output.gateName = arrGates[i].name;
+            gatepair.output.currentIndex = i;
+            gatepair.output.rank = arrGates[i].rank;   
+        end      
+    end
+
+    for i = 1, #arrStartBlock do
+        for b = 1, #arrStartBlock[i].output do
+            if(arrStartBlock[i].output[b].clicked)then
+                gatepair.output.gateName = arrStartBlock[i].name + b;
+                gatepair.output.currentIndex = i;
+                gatepair.output.rank = 0;
+            end    
+        end
+    end
+
+    if((gatepair.input.gateName ~= nil) and (gatepair.output.gateName ~= nil)) then
+        if(gatepair.input.port == "a") then
+            arrGates[gatepair.input.currentIndex].input.a.connect = gatepair.output.gateName;
+        end
+        if(gatepair.input.port == "b") then
+            arrGates[gatepair.input.currentIndex].input.b.connect = gatepair.output.gateName;
+        end    
+        arrGates[gatepair.input.currentIndex].rank = gatepair.output.rank + 1;
+        if(gatepair.output.gateName >= firstStartBlockName) then 
+
+            arrStartBlock[starting_block.getIndex(gatepair.output.gateName)].output[gatepair.output.gateName-firstStartBlockName].connect = 
+            {name = gatepair.input.gateName, port = gatepair.input.port};
+        else
+            arrGates[gatepair.output.currentIndex].output.q.connect = {name = gatepair.input.gateName, port = gatepair.input.port};  
+        end
+
+        gates.IOrelease();
+ 
+    end    
 end
 
 

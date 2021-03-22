@@ -32,7 +32,7 @@ function love.mousepressed(mousex, mousey, button)
 
     gates.click(mousex, mousey, button);
     starting_block.click(mousey, mousey, button);
-    gates.connect(); 
+    wires.connect(); 
     menu.click(mousex, mousey, button);
 
     if(portUpdate == false) then
