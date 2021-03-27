@@ -209,19 +209,9 @@ gates.setFirst = function (arr, index)
 end
 
 
---hmmm yes, i do not quite understand this one which is why it currently doesn't work. Once i do i will let you know.
---So basically what it does is that it creates an array for all the gates. Then it assigns wether or not the imputs of the gates are ready.
---For example. It starts by handling all of the outputs from the starting block, setting the outputs of the correspongding gates and flagging
---the inputs of the connected gates as ready to be handled.
---Then it sets all non connected inputs as being ready to be handled(If one input is not connected it is considered a logical 0.
---if both inputs are not connected the entire gate is considered handled)
---
---Afterwards it loops through all gates and handles gates which both imputs are ready to be handled until all gates have been handled
---......
---......
---......
---The matrix!
 
+--First it sets all the gates connected to starting block acording to the outputs of the starting block
+--Then it loops through all the gates and sets their inputs acording to their outputs multiple times until all the signals have propagated through the circuit
 gates.simulate = function ()
 
     for i = 1, #arrStartBlock do
@@ -279,9 +269,6 @@ gates.simulate = function ()
         if(b > #arrGates) then b = 1 end
 
     end
-
-   
-
 end 
 
 
