@@ -1,5 +1,5 @@
 local camera = require "screen_related.camera";
-local starting_block = require "world_related.starting_block"
+
 
 local gates = {};
 

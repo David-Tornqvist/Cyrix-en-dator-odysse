@@ -35,7 +35,6 @@ function love.mousepressed(mousex, mousey, button)
     menu.click(mousex, mousey, button);
     gates.click(mousex, mousey, button);
     wires.connect(); 
-    gates.simulate();
 
     if(portUpdate == false) then
         gates.IOrelease();
