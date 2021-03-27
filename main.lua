@@ -30,16 +30,21 @@ function love.mousepressed(mousex, mousey, button)
 
     portUpdate = false;
 
-    gates.click(mousex, mousey, button);
     starting_block.click(mousey, mousey, button);
-    wires.connect(); 
+    
     menu.click(mousex, mousey, button);
+    gates.click(mousex, mousey, button);
+    wires.connect(); 
+    gates.simulate();
 
     if(portUpdate == false) then
         gates.IOrelease();
     end
 
     camera.update("mPush", button);
+ 
+
+
 end
 
 
@@ -65,9 +70,10 @@ love.update = function(dt)
 
     gates.update();
 
-    gates.simulate();
-
     camera.update("pan");
+
+    
+    
 
 end
 

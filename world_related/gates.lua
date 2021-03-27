@@ -224,96 +224,65 @@ end
 
 gates.simulate = function ()
 
-    local preparedGates = {};
-    
-    for i = 0, #arrGates do
-        preparedGates[i] = {a = false, b = false, handeld = false}
-    end
-
     for i = 1, #arrStartBlock do
         for b = 1, #arrStartBlock[i].output do
             if(arrStartBlock[i].output[b].connect.name ~= nil) then
 
                 if(arrStartBlock[i].output[b].connect.port == "a") then
+                    print(arrStartBlock[i].output[b].connect.name);
                     arrGates[gates.getIndex(arrStartBlock[i].output[b].connect.name)].input.a.status = arrStartBlock[i].output[b].status;
-                    preparedGates[gates.getIndex(arrStartBlock[i].output[b].connect.name)].a = true;
-                    
-                  
-                    
-                end  
-                if(arrStartBlock[i].output[b].connect.port == "b") then
-                    arrGates[gates.getIndex(arrStartBlock[i].output[b].connect.name)].input.b.status = arrStartBlock[i].output[b].status;
-                    preparedGates[gates.getIndex(arrStartBlock[i].output[b].connect.name)].b = true;
+                end
 
+                if(arrStartBlock[i].output[b].connect.port == "b") then
+                    print(arrStartBlock[i].output[b].connect.name);
+                    arrGates[gates.getIndex(arrStartBlock[i].output[b].connect.name)].input.b.status = arrStartBlock[i].output[b].status;
                 end    
             end    
         end
     end
 
-
-    for i = 1, #arrGates do
-        if(arrGates[i].input.a.connect ~= nil and arrGates[i].input.b.connect == nil) then
-            preparedGates[i].b = true;
-        end 
-        if(arrGates[i].input.b.connect ~= nil and arrGates[i].input.a.connect == nil) then
-            preparedGates[i].a = true;
-        end    
-    end
-
-    for i = 1, #arrGates do
-        if(arrGates[i].input.a.connect == nil and arrGates[i].input.b.connect == nil) then
-           
-            preparedGates[i].handeld = true;
-        end    
-    end
-
-
-    local allGatesHandeld = false
-    local i = 0;
-
-    while (allGatesHandeld == false) do
-
-        for i = 1, #preparedGates do
-            
-                if(preparedGates[i].a and preparedGates[i].b) then
-                    if(arrGates[gates.getIndex(i)].type == "and") then
-                        if(arrGates[gates.getIndex(i)].input.a.status and arrGates[gates.getIndex(i)].input.b.status) then
-                            arrGates[gates.getIndex(i)].output.q.status = true;
-                        else
-                            arrGates[gates.getIndex(i)].output.q.status = false;   
-                        end    
-                    end
-                    
-                    if(arrGates[gates.getIndex(i)].type == "or") then
-                        if(arrGates[gates.getIndex(i)].input.a.status or arrGates[gates.getIndex(i)].input.b.status) then
-                            arrGates[gates.getIndex(i)].output.q.status = true;
-                        else
-                            arrGates[gates.getIndex(i)].output.q.status = false;   
-                        end    
-                    end    
-                    if(arrGates[gates.getIndex(i)].output.q.connect.name ~= nil) then
-                        if(arrGates[gates.getIndex(i)].output.q.connect.port == "a") then
-                            arrGates[gates.getIndex(arrGates[gates.getIndex(i)].output.q.connect.name)].input.a.status = arrGates[gates.getIndex(i)].output.q.status;
-                            preparedGates[gates.getIndex(arrGates[gates.getIndex(i)].output.q.connect.name)].a = true;
-                        end  
-                        if(arrGates[gates.getIndex(i)].output.q.connect.port == "b") then
-                            arrGates[gates.getIndex(arrGates[gates.getIndex(i)].output.q.connect.name)].input.b.status = arrGates[gates.getIndex(i)].output.q.status;
-                            preparedGates[gates.getIndex(arrGates[gates.getIndex(i)].output.q.connect.name)].b = true;
-                        end  
-                    end    
-                    preparedGates[i].handeld = true;    
-                end
-            
-        end
-    
-        allGatesHandeld = true;
-    
-        for i = 1, #preparedGates do
-            if(preparedGates[i].handeld == false) then allGatesHandeld = false end
-        end
+    local b = 1;
+   
+    for i = 1, (#arrGates) * (#arrGates) do
         
+        if(arrGates[b].type == "and") then
+                           
+            if(arrGates[b].input.a.status and arrGates[b].input.b.status) then
+                arrGates[b].output.q.status = true;
+            else
+                arrGates[b].output.q.status = false;   
+            end    
+        end
+            
+        if(arrGates[b].type == "or") then
+                    
+            if(arrGates[b].input.a.status or arrGates[b].input.b.status) then
+                arrGates[b].output.q.status = true;
+            else
+                arrGates[b].output.q.status = false;   
+            end    
+        end    
+
+    
+                    
+        if(arrGates[b].output.q.connect.port == "a") then
+            print(arrGates[b].output.q.connect.name);
+            arrGates[gates.getIndex(arrGates[b].output.q.connect.name)].input.a.status = arrGates[b].output.q.status;
+        end  
+
+        if(arrGates[b].output.q.connect.port == "b") then
+            print(arrGates[b].output.q.connect.name);
+            arrGates[gates.getIndex(arrGates[b].output.q.connect.name)].input.b.status = arrGates[b].output.q.status;
+        end   
+
+        b = b + 1;
+        if(b > #arrGates) then b = 1 end
+
     end
-end   
+
+   
+
+end 
 
 
 
