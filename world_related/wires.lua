@@ -89,23 +89,27 @@ wires.connect = function ()
     
     local gatepair = {input = {gateName = nil, port = nil, currentIndex = nil}, output = {gateName = nil, rank = nil, currentIndex = nil}}
     
+    
     for i = 1, #arrGates do
-        if(arrGates[i].input.a.clicked) then
-            gatepair.input.gateName = arrGates[i].name;
-            gatepair.input.port = "a";
-            gatepair.input.currentIndex = i;
+        if(arrGates[i].type ~= "node") then
+            if(arrGates[i].input.a.clicked) then
+                gatepair.input.gateName = arrGates[i].name;
+                gatepair.input.port = "a";
+                gatepair.input.currentIndex = i;
+            end    
+            if (arrGates[i].input.b.clicked) then
+                gatepair.input.gateName = arrGates[i].name;
+                gatepair.input.port = "b"; 
+                gatepair.input.currentIndex = i;
+            end    
+            if (arrGates[i].output.q.clicked) then     
+                gatepair.output.gateName = arrGates[i].name;
+                gatepair.output.currentIndex = i;
+                gatepair.output.rank = arrGates[i].rank;   
+            end   
         end    
-        if (arrGates[i].input.b.clicked) then
-            gatepair.input.gateName = arrGates[i].name;
-            gatepair.input.port = "b"; 
-            gatepair.input.currentIndex = i;
-        end    
-        if (arrGates[i].output.q.clicked) then     
-            gatepair.output.gateName = arrGates[i].name;
-            gatepair.output.currentIndex = i;
-            gatepair.output.rank = arrGates[i].rank;   
-        end      
     end
+       
 
     for i = 1, #arrStartBlock do
         for b = 1, #arrStartBlock[i].output do

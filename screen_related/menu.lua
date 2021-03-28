@@ -31,6 +31,10 @@ local buttons = {
         gates.create("not");
     end},
 
+    {x = 50, y = 150, width = 40, height = 40, color = {0, 1, 0, 1}, graphics = {shape = "circle", text = "Node"}, funct = function ()
+        gates.create("node");
+    end},
+
 };
 
 

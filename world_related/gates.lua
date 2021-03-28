@@ -31,7 +31,7 @@ gates.click = function (mouseX, mouseY, button)
     --loops through all currently created gates
     for i = #arrGates, 1, -1 do
 
-        if(arrGates[i].type ~= "not")then
+        if((arrGates[i].type ~= "not") and (arrGates[i].type ~= "node") )then
                 --checks if either of the two inputs a,b or the output q is clicked
             if( button == 1 and x > (arrGates[i].x + arrGates[i].input.a.coords.x - 10) and x < (arrGates[i].x + arrGates[i].input.a.coords.x + 10) 
                 and y > (arrGates[i].y + arrGates[i].input.a.coords.y - 10) and y < (arrGates[i].y + arrGates[i].input.a.coords.y + 10)) then
@@ -107,10 +107,12 @@ end
 
 gates.IOrelease = function ()
     for i = 1, #arrGates do
-        arrGates[i].input.a.clicked = false;
-        arrGates[i].input.b.clicked = false;
-        arrGates[i].output.q.clicked = false;
-
+        
+        if (arrGates[i].type ~= "node") then
+            arrGates[i].input.a.clicked = false;
+            arrGates[i].input.b.clicked = false;
+            arrGates[i].output.q.clicked = false; 
+        end
     end
 
     for i = 1, #arrStartBlock do
@@ -173,20 +175,22 @@ gates.draw = function ()
         love.graphics.setColor(0, 0, 1, 1);
         love.graphics.setLineWidth(5);
 
-        if(arrGates[i].clicked) then
-            love.graphics.setLineWidth(10)
-            love.graphics.rectangle("line", arrGates[i].x, arrGates[i].y, arrGates[i].width, arrGates[i].height);
-
-        elseif(arrGates[i].input.a.clicked) then
-            love.graphics.circle("line", arrGates[i].x + arrGates[i].input.a.coords.x, arrGates[i].y + arrGates[i].input.a.coords.y, 20);
-
-        elseif (arrGates[i].input.b.clicked) then  
-            love.graphics.circle("line", arrGates[i].x + arrGates[i].input.b.coords.x, arrGates[i].y + arrGates[i].input.b.coords.y, 20);
-            
-        elseif (arrGates[i].output.q.clicked) then   
-            love.graphics.circle("line", arrGates[i].x + arrGates[i].output.q.coords.x, arrGates[i].y + arrGates[i].output.q.coords.y, 20);
-            
-        end    
+        if(arrGates[i].type ~= "node")then
+            if(arrGates[i].clicked) then
+                love.graphics.setLineWidth(10)
+                love.graphics.rectangle("line", arrGates[i].x, arrGates[i].y, arrGates[i].width, arrGates[i].height);
+    
+            elseif(arrGates[i].input.a.clicked) then
+                love.graphics.circle("line", arrGates[i].x + arrGates[i].input.a.coords.x, arrGates[i].y + arrGates[i].input.a.coords.y, 20);
+    
+            elseif (arrGates[i].input.b.clicked) then  
+                love.graphics.circle("line", arrGates[i].x + arrGates[i].input.b.coords.x, arrGates[i].y + arrGates[i].input.b.coords.y, 20);
+                
+            elseif (arrGates[i].output.q.clicked) then   
+                love.graphics.circle("line", arrGates[i].x + arrGates[i].output.q.coords.x, arrGates[i].y + arrGates[i].output.q.coords.y, 20);
+                
+            end     
+        end
     end
 end
 
@@ -334,6 +338,24 @@ gates.create = function (type)
                 output = {
                         q = {connect = {name = nil, port = nil}, coords = {x = 103, y = 40}, status = false, clicked = false}}, 
             rank = 1, --unused variable 
+            name = gateName};
+            
+
+
+    elseif(type == "node") then
+
+        local width = 200;
+        local height = 200;
+        
+        arrGates[#arrGates + 1] = {
+            x = love.mouse.getX(), y = love.mouse.getY(), width = width, height = height, 
+            clicked = true, clickedOffsetY = height/2, clickedOffsetX = width/2, 
+            type = "node",    
+                input = {
+                        a = {connect = nil, coords = {x = 100, y = 100},     status = false, clicked = false}, 
+                        b = {connect = nil, coords = {x = nil, y = nil},    status = false, clicked = false}}, 
+                outputs = {}, 
+            rank = 1, --unused variable 
             name = gateName};        
     end
 
@@ -447,16 +469,18 @@ gates.simulate = function ()
 
 
     
-                    
-        if(arrGates[b].output.q.connect.port == "a") then
-            print(arrGates[b].output.q.connect.name);
-            arrGates[gates.getIndex(arrGates[b].output.q.connect.name)].input.a.status = arrGates[b].output.q.status;
-        end  
-
-        if(arrGates[b].output.q.connect.port == "b") then
-            print(arrGates[b].output.q.connect.name);
-            arrGates[gates.getIndex(arrGates[b].output.q.connect.name)].input.b.status = arrGates[b].output.q.status;
-        end   
+        if (arrGates[b].type ~= "node") then
+            if(arrGates[b].output.q.connect.port == "a") then
+                print(arrGates[b].output.q.connect.name);
+                arrGates[gates.getIndex(arrGates[b].output.q.connect.name)].input.a.status = arrGates[b].output.q.status;
+            end  
+    
+            if(arrGates[b].output.q.connect.port == "b") then
+                print(arrGates[b].output.q.connect.name);
+                arrGates[gates.getIndex(arrGates[b].output.q.connect.name)].input.b.status = arrGates[b].output.q.status;
+            end    
+        end            
+        
 
         b = b + 1;
         if(b > #arrGates) then b = 1 end
