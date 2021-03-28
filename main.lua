@@ -12,7 +12,7 @@ love.load = function()
     gates.load();
     starting_block.load();
 
-    starting_block.create(500, 900, 64);
+    starting_block.create(500, 900, 8);
 
 end    
 
@@ -42,7 +42,7 @@ function love.mousepressed(mousex, mousey, button)
 
     camera.update("mPush", button);
  
-
+    gates.simulate();
 
 end
 

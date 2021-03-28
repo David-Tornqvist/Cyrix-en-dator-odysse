@@ -89,7 +89,7 @@ startingBlock.click = function (mouseX, mouseY, button)
                                 y < (arrStartBlock[i].coords.y + arrStartBlock[i].output[b].coords.y + 10)) then
                 arrStartBlock[i].output[b].clicked = true;
                 portUpdate = true; 
-                gates.simulate();
+               
               
                 
             end    
@@ -100,7 +100,7 @@ startingBlock.click = function (mouseX, mouseY, button)
                                 y < (arrStartBlock[i].coords.y+arrStartBlock[i].dimensions.height/2 + 20)) then
 
                 arrStartBlock[i].output[b].status = not arrStartBlock[i].output[b].status;
-                gates.simulate();
+    
 
             end    
 

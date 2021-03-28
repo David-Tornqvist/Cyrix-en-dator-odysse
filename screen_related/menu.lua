@@ -3,13 +3,34 @@ local gates = require "world_related.gates";
 local menu = {};
 
 local buttons = {
-    {x = 0, y = 0, width = 40, height = 40, color = {0, 1, 0, 1}, graphics = {shape = "circle", text = "and"}, funct = function ()
+    {x = 0, y = 0, width = 40, height = 40, color = {0, 1, 0, 1}, graphics = {shape = "circle", text = "And"}, funct = function ()
         gates.create("and");
     end},
 
-    {x = 0, y = 100, width = 40, height = 40, color = {0, 1, 0, 1}, graphics = {shape = "circle", text = "or"}, funct = function ()
+    {x = 50, y = 0, width = 40, height = 40, color = {0, 1, 0, 1}, graphics = {shape = "circle", text = "Nand"}, funct = function ()
+        gates.create("nand");
+    end},
+
+    {x = 0, y = 50, width = 40, height = 40, color = {0, 1, 0, 1}, graphics = {shape = "circle", text = "Or"}, funct = function ()
         gates.create("or");
-    end}
+    end},
+
+    {x = 50, y = 50, width = 40, height = 40, color = {0, 1, 0, 1}, graphics = {shape = "circle", text = "Nor"}, funct = function ()
+        gates.create("nor");
+    end},
+
+    {x = 0, y = 100, width = 40, height = 40, color = {0, 1, 0, 1}, graphics = {shape = "circle", text = "Xor"}, funct = function ()
+        gates.create("xor");
+    end},
+
+    {x = 50, y = 100, width = 40, height = 40, color = {0, 1, 0, 1}, graphics = {shape = "circle", text = "Xnor"}, funct = function ()
+        gates.create("xnor");
+    end},
+
+    {x = 0, y = 150, width = 40, height = 40, color = {0, 1, 0, 1}, graphics = {shape = "circle", text = "Not"}, funct = function ()
+        gates.create("not");
+    end},
+
 };
 
 
