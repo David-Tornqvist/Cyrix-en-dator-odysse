@@ -119,7 +119,7 @@ wires.connect = function ()
         end
     end
 
-    if((gatepair.input.gateName ~= nil) and (gatepair.output.gateName ~= nil) and ((arrGates[gatepair.output.currentIndex].output.q.connect == nil) or (arrGates[gatepair.output.currentIndex].output.q.connect.name == nil))) then
+    if((gatepair.input.gateName ~= nil) and (gatepair.output.gateName ~= nil)) then
         if(gatepair.input.port == "a") then
             arrGates[gatepair.input.currentIndex].input.a.connect = gatepair.output.gateName;
         end
@@ -142,13 +142,13 @@ wires.connect = function ()
             if(arrGates[gatepair.output.currentIndex].type == "node") then
                 arrGates[gatepair.output.currentIndex].output.q.connect[#arrGates[gatepair.output.currentIndex].output.q.connect + 1] = 
                 {name = gatepair.input.gateName, port = gatepair.input.port};  
-            end 
+            end
+            
         end
-    end 
 
-    if((gatepair.input.gateName ~= nil) and (gatepair.output.gateName ~= nil)) then
         gates.IOrelease();
-    end   
+
+    end    
 end
 
 
