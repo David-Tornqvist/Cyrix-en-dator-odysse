@@ -91,38 +91,21 @@ wires.connect = function ()
     
     
     for i = 1, #arrGates do
-        if(arrGates[i].type ~= "node") then
-            if(arrGates[i].input.a.clicked) then
-                gatepair.input.gateName = arrGates[i].name;
-                gatepair.input.port = "a";
-                gatepair.input.currentIndex = i;
-            end    
-            if (arrGates[i].input.b.clicked) then
-                gatepair.input.gateName = arrGates[i].name;
-                gatepair.input.port = "b"; 
-                gatepair.input.currentIndex = i;
-            end    
-            if (arrGates[i].output.q.clicked) then     
-                gatepair.output.gateName = arrGates[i].name;
-                gatepair.output.currentIndex = i;
-                gatepair.output.rank = arrGates[i].rank;   
-            end   
-        end
-        
-        if(arrGates[i].type == "node") then
-            if(arrGates[i].input.a.clicked) then
-                gatepair.input.gateName = arrGates[i].name;
-                gatepair.input.port = "a";
-                gatepair.input.currentIndex = i;
-            end
-
-            if (arrGates[i].output.q.clicked) then
-                gatepair.output.gateName = arrGates[i].name;
-                gatepair.output.currentIndex = i;
-                gatepair.output.rank = arrGates[i].rank;   
-            end
-            
-        end
+        if(arrGates[i].input.a.clicked) then
+            gatepair.input.gateName = arrGates[i].name;
+            gatepair.input.port = "a";
+            gatepair.input.currentIndex = i;
+        end    
+        if (arrGates[i].input.b.clicked) then
+            gatepair.input.gateName = arrGates[i].name;
+            gatepair.input.port = "b"; 
+            gatepair.input.currentIndex = i;
+        end    
+        if (arrGates[i].output.q.clicked) then     
+            gatepair.output.gateName = arrGates[i].name;
+            gatepair.output.currentIndex = i;
+            gatepair.output.rank = arrGates[i].rank;   
+        end   
     end
        
 
@@ -151,7 +134,16 @@ wires.connect = function ()
             arrStartBlock[starting_block.getIndex(gatepair.output.gateName)].output[gatepair.output.gateName-firstStartBlockName].connect = 
             {name = gatepair.input.gateName, port = gatepair.input.port};
         else
-            arrGates[gatepair.output.currentIndex].output.q.connect = {name = gatepair.input.gateName, port = gatepair.input.port};  
+
+            if(arrGates[gatepair.output.currentIndex].type ~= "node") then
+                arrGates[gatepair.output.currentIndex].output.q.connect = {name = gatepair.input.gateName, port = gatepair.input.port};  
+            end
+
+            if(arrGates[gatepair.output.currentIndex].type == "node") then
+                arrGates[gatepair.output.currentIndex].output.q.connect[#arrGates[gatepair.output.currentIndex].output.q.connect + 1] = 
+                {name = gatepair.input.gateName, port = gatepair.input.port};  
+            end
+            
         end
 
         gates.IOrelease();

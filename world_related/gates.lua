@@ -68,9 +68,9 @@ gates.click = function (mouseX, mouseY, button)
                 break   
                       
             end   
-        end
 
-        if(arrGates[i].type == "not") then
+
+        elseif(arrGates[i].type == "not") then
             if( button == 2 and x > (arrGates[i].x + arrGates[i].input.a.coords.x - 10) and x < (arrGates[i].x + arrGates[i].input.a.coords.x + 10) 
                 and y > (arrGates[i].y + arrGates[i].input.a.coords.y - 10) and y < (arrGates[i].y + arrGates[i].input.a.coords.y + 10)) then
 
@@ -99,9 +99,10 @@ gates.click = function (mouseX, mouseY, button)
                 break   
 
             end
-        end
 
-        if(arrGates[i].type == "node") then
+
+
+        elseif(arrGates[i].type == "node") then
             
             if( button == 1 and x > arrGates[i].x and x < (arrGates[i].x + arrGates[i].width) and y > arrGates[i].y and y < (arrGates[i].y + arrGates[i].height)) then
                 
@@ -110,6 +111,10 @@ gates.click = function (mouseX, mouseY, button)
                     arrGates[i].clicked = true;
 
                 end
+
+                arrGates = gates.setFirst(arrGates, i);
+                
+                break
             
             elseif ( button == 2 and x > arrGates[i].x and x < (arrGates[i].x + arrGates[i].width) and y > arrGates[i].y and y < (arrGates[i].y + arrGates[i].height)) then
                 
@@ -127,6 +132,14 @@ gates.click = function (mouseX, mouseY, button)
     
                         if(arrGates[b].output.q.clicked) then
                             outputHasBeenclicked = true;    
+                        end
+                    end
+                end
+
+                for c = 1, #arrStartBlock do
+                    for d = 1, #arrStartBlock[c].output do
+                        if(arrStartBlock[c].output[d].clicked) then
+                           outputHasBeenclicked = true; 
                         end
                     end
                 end
@@ -211,6 +224,9 @@ gates.draw = function ()
         elseif(arrGates[i].type == "not") then
             love.graphics.draw(notGateImg.file, arrGates[i].x, arrGates[i].y, 0, arrGates[i].width/notGateImg.width, arrGates[i].height/notGateImg.width);
         elseif(arrGates[i].type == "node") then
+            if(arrGates[i].input.a.status)then
+                love.graphics.setColor(1, 0, 0, 1);
+            end
             love.graphics.circle("fill", arrGates[i].x + arrGates[i].width/2, arrGates[i].y + arrGates[i].width/2, arrGates[i].width/2);     
         end    
 
@@ -502,28 +518,51 @@ gates.simulate = function ()
                 arrGates[b].output.q.status = false;   
             end
             
-            
+
 
         elseif(arrGates[b].type == "not") then
                     
             arrGates[b].output.q.status = not(arrGates[b].input.a.status);
-          
+
+
+
+        elseif(arrGates[b].type == "node") then
+
+            arrGates[b].output.q.status = arrGates[b].input.a.status;
+
         end    
 
 
-    
+
         if (arrGates[b].type ~= "node") then
+
             if(arrGates[b].output.q.connect.port == "a") then
-                print(arrGates[b].output.q.connect.name);
                 arrGates[gates.getIndex(arrGates[b].output.q.connect.name)].input.a.status = arrGates[b].output.q.status;
             end  
     
             if(arrGates[b].output.q.connect.port == "b") then
-                print(arrGates[b].output.q.connect.name);
                 arrGates[gates.getIndex(arrGates[b].output.q.connect.name)].input.b.status = arrGates[b].output.q.status;
             end    
-        end            
+        end
+
+        if (arrGates[b].type == "node") then
+
+            for c = 1, #arrGates[b].output.q.connect do
+                
+                if(arrGates[b].output.q.connect[c].port == "a") then
+                    arrGates[gates.getIndex(arrGates[b].output.q.connect[c].name)].input.a.status = arrGates[b].output.q.status;
+                end 
+
+                if(arrGates[b].output.q.connect[c].port == "b") then
+                    arrGates[gates.getIndex(arrGates[b].output.q.connect[c].name)].input.b.status = arrGates[b].output.q.status;
+                end 
+
+            end
+            
+            
+        end
         
+
 
         b = b + 1;
         if(b > #arrGates) then b = 1 end
