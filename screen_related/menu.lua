@@ -68,6 +68,7 @@ menu.click = function (mouseX, mouseY, button)
     for i = 1, #buttons do
         if(clickTerm(mouseX, mouseY, button, i)) then
             buttons[i].funct();
+            portUpdate = true;
         end    
     end
 end

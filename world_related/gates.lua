@@ -36,23 +36,31 @@ gates.click = function (mouseX, mouseY, button)
             if( button == 2 and x > (arrGates[i].x + arrGates[i].input.a.coords.x - 10) and x < (arrGates[i].x + arrGates[i].input.a.coords.x + 10) 
                 and y > (arrGates[i].y + arrGates[i].input.a.coords.y - 10) and y < (arrGates[i].y + arrGates[i].input.a.coords.y + 10)) then
 
+                gates.IOrelease("inputs");    
                 arrGates[i].input.a.clicked = true;
                 portUpdate = true;
 
-            elseif (button == 2 and x > (arrGates[i].x + arrGates[i].input.b.coords.x - 10) and x < (arrGates[i].x + arrGates[i].input.b.coords.x + 10) 
+            end        
+            
+            if (button == 2 and x > (arrGates[i].x + arrGates[i].input.b.coords.x - 10) and x < (arrGates[i].x + arrGates[i].input.b.coords.x + 10) 
                     and y > (arrGates[i].y + arrGates[i].input.b.coords.y - 10) and y < (arrGates[i].y + arrGates[i].input.b.coords.y + 10)) then  
           
+                gates.IOrelease("inputs");        
                 arrGates[i].input.b.clicked = true;
                 portUpdate = true;
 
-            elseif (button == 2 and x > (arrGates[i].x + arrGates[i].output.q.coords.x - 10) and x < (arrGates[i].x + arrGates[i].output.q.coords.x + 10) 
+            end 
+            
+            if (button == 2 and x > (arrGates[i].x + arrGates[i].output.q.coords.x - 10) and x < (arrGates[i].x + arrGates[i].output.q.coords.x + 10) 
                     and y > (arrGates[i].y + arrGates[i].output.q.coords.y - 10) and y < (arrGates[i].y + arrGates[i].output.q.coords.y + 10)) then
-
+        
+                gates.IOrelease("outputs");         
                 arrGates[i].output.q.clicked = true;
                 portUpdate = true;
+            end    
             
                 --or if the gate itself where clicked
-            elseif( button == 1 and x > arrGates[i].x and x < (arrGates[i].x + arrGates[i].width) and y > arrGates[i].y and y < (arrGates[i].y + arrGates[i].height)) then
+            if( button == 1 and x > arrGates[i].x and x < (arrGates[i].x + arrGates[i].width) and y > arrGates[i].y and y < (arrGates[i].y + arrGates[i].height)) then
               
                 if (arrGates[i].clicked == false) then    
                 
@@ -74,12 +82,14 @@ gates.click = function (mouseX, mouseY, button)
             if( button == 2 and x > (arrGates[i].x + arrGates[i].input.a.coords.x - 10) and x < (arrGates[i].x + arrGates[i].input.a.coords.x + 10) 
                 and y > (arrGates[i].y + arrGates[i].input.a.coords.y - 10) and y < (arrGates[i].y + arrGates[i].input.a.coords.y + 10)) then
 
+                gates.IOrelease("inputs");     
                 arrGates[i].input.a.clicked = true;
                 portUpdate = true;
 
             elseif (button == 2 and x > (arrGates[i].x + arrGates[i].output.q.coords.x - 10) and x < (arrGates[i].x + arrGates[i].output.q.coords.x + 10) 
                     and y > (arrGates[i].y + arrGates[i].output.q.coords.y - 10) and y < (arrGates[i].y + arrGates[i].output.q.coords.y + 10)) then
 
+                gates.IOrelease("outputs"); 
                 arrGates[i].output.q.clicked = true;
                 portUpdate = true;
                 
@@ -159,19 +169,46 @@ end
 
 
 
-gates.IOrelease = function ()
-    for i = 1, #arrGates do
+gates.IOrelease = function (IO)
+    if(IO == nil) then
+        for i = 1, #arrGates do
         
-        arrGates[i].input.a.clicked = false;
-        arrGates[i].input.b.clicked = false;
-        arrGates[i].output.q.clicked = false;
-
+            arrGates[i].input.a.clicked = false;
+            arrGates[i].input.b.clicked = false;
+            arrGates[i].output.q.clicked = false;
+    
+        end
+    
+        for i = 1, #arrStartBlock do
+            for b = 1, #arrStartBlock[i].output do
+                arrStartBlock[i].output[b].clicked = false;
+            end
+        end 
     end
 
-    for i = 1, #arrStartBlock do
-        for b = 1, #arrStartBlock[i].output do
-            arrStartBlock[i].output[b].clicked = false;
+    if(IO == "inputs") then
+        for i = 1, #arrGates do
+            
+            arrGates[i].input.a.clicked = false;
+            arrGates[i].input.b.clicked = false;
+
         end
+    end
+
+    if(IO == "outputs") then
+
+        for i = 1, #arrGates do
+        
+            arrGates[i].output.q.clicked = false;
+
+        end
+        
+        for i = 1, #arrStartBlock do
+            for b = 1, #arrStartBlock[i].output do
+                arrStartBlock[i].output[b].clicked = false;
+            end
+        end 
+    
     end
 end
 
@@ -235,16 +272,21 @@ gates.draw = function ()
 
         if(arrGates[i].type ~= "node")then
             if(arrGates[i].clicked) then
+                
                 love.graphics.setLineWidth(10)
                 love.graphics.rectangle("line", arrGates[i].x, arrGates[i].y, arrGates[i].width, arrGates[i].height);
+
+            end
     
-            elseif(arrGates[i].input.a.clicked) then
+            if(arrGates[i].input.a.clicked) then
                 love.graphics.circle("line", arrGates[i].x + arrGates[i].input.a.coords.x, arrGates[i].y + arrGates[i].input.a.coords.y, 20);
-    
-            elseif (arrGates[i].input.b.clicked) then  
+            end
+
+            if (arrGates[i].input.b.clicked) then  
                 love.graphics.circle("line", arrGates[i].x + arrGates[i].input.b.coords.x, arrGates[i].y + arrGates[i].input.b.coords.y, 20);
-                
-            elseif (arrGates[i].output.q.clicked) then   
+            end    
+            
+            if (arrGates[i].output.q.clicked) then   
                 love.graphics.circle("line", arrGates[i].x + arrGates[i].output.q.coords.x, arrGates[i].y + arrGates[i].output.q.coords.y, 20);
                 
             end     

@@ -87,6 +87,8 @@ startingBlock.click = function (mouseX, mouseY, button)
                                 x < (arrStartBlock[i].coords.x + arrStartBlock[i].output[b].coords.x + 10) and 
                                 y > (arrStartBlock[i].coords.y + arrStartBlock[i].output[b].coords.y - 10) and 
                                 y < (arrStartBlock[i].coords.y + arrStartBlock[i].output[b].coords.y + 10)) then
+                
+                gates.IOrelease("outputs");
                 arrStartBlock[i].output[b].clicked = true;
                 portUpdate = true; 
                
