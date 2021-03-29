@@ -107,7 +107,22 @@ wires.connect = function ()
                 gatepair.output.currentIndex = i;
                 gatepair.output.rank = arrGates[i].rank;   
             end   
-        end    
+        end
+        
+        if(arrGates[i].type == "node") then
+            if(arrGates[i].input.a.clicked) then
+                gatepair.input.gateName = arrGates[i].name;
+                gatepair.input.port = "a";
+                gatepair.input.currentIndex = i;
+            end
+
+            if (arrGates[i].output.q.clicked) then
+                gatepair.output.gateName = arrGates[i].name;
+                gatepair.output.currentIndex = i;
+                gatepair.output.rank = arrGates[i].rank;   
+            end
+            
+        end
     end
        
 
@@ -117,7 +132,7 @@ wires.connect = function ()
                 gatepair.output.gateName = arrStartBlock[i].name + b;
                 gatepair.output.currentIndex = i;
                 gatepair.output.rank = 0;
-            end    
+            end
         end
     end
 
@@ -129,6 +144,8 @@ wires.connect = function ()
             arrGates[gatepair.input.currentIndex].input.b.connect = gatepair.output.gateName;
         end    
         arrGates[gatepair.input.currentIndex].rank = gatepair.output.rank + 1;
+
+        
         if(gatepair.output.gateName >= firstStartBlockName) then 
 
             arrStartBlock[starting_block.getIndex(gatepair.output.gateName)].output[gatepair.output.gateName-firstStartBlockName].connect = 

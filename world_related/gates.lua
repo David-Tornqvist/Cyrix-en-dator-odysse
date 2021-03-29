@@ -33,19 +33,19 @@ gates.click = function (mouseX, mouseY, button)
 
         if((arrGates[i].type ~= "not") and (arrGates[i].type ~= "node") )then
                 --checks if either of the two inputs a,b or the output q is clicked
-            if( button == 1 and x > (arrGates[i].x + arrGates[i].input.a.coords.x - 10) and x < (arrGates[i].x + arrGates[i].input.a.coords.x + 10) 
+            if( button == 2 and x > (arrGates[i].x + arrGates[i].input.a.coords.x - 10) and x < (arrGates[i].x + arrGates[i].input.a.coords.x + 10) 
                 and y > (arrGates[i].y + arrGates[i].input.a.coords.y - 10) and y < (arrGates[i].y + arrGates[i].input.a.coords.y + 10)) then
 
                 arrGates[i].input.a.clicked = true;
                 portUpdate = true;
 
-            elseif (button == 1 and x > (arrGates[i].x + arrGates[i].input.b.coords.x - 10) and x < (arrGates[i].x + arrGates[i].input.b.coords.x + 10) 
+            elseif (button == 2 and x > (arrGates[i].x + arrGates[i].input.b.coords.x - 10) and x < (arrGates[i].x + arrGates[i].input.b.coords.x + 10) 
                     and y > (arrGates[i].y + arrGates[i].input.b.coords.y - 10) and y < (arrGates[i].y + arrGates[i].input.b.coords.y + 10)) then  
           
                 arrGates[i].input.b.clicked = true;
                 portUpdate = true;
 
-            elseif (button == 1 and x > (arrGates[i].x + arrGates[i].output.q.coords.x - 10) and x < (arrGates[i].x + arrGates[i].output.q.coords.x + 10) 
+            elseif (button == 2 and x > (arrGates[i].x + arrGates[i].output.q.coords.x - 10) and x < (arrGates[i].x + arrGates[i].output.q.coords.x + 10) 
                     and y > (arrGates[i].y + arrGates[i].output.q.coords.y - 10) and y < (arrGates[i].y + arrGates[i].output.q.coords.y + 10)) then
 
                 arrGates[i].output.q.clicked = true;
@@ -70,14 +70,14 @@ gates.click = function (mouseX, mouseY, button)
             end   
         end
 
-        if(arrGates[i].type == "not")then
-            if( button == 1 and x > (arrGates[i].x + arrGates[i].input.a.coords.x - 10) and x < (arrGates[i].x + arrGates[i].input.a.coords.x + 10) 
+        if(arrGates[i].type == "not") then
+            if( button == 2 and x > (arrGates[i].x + arrGates[i].input.a.coords.x - 10) and x < (arrGates[i].x + arrGates[i].input.a.coords.x + 10) 
                 and y > (arrGates[i].y + arrGates[i].input.a.coords.y - 10) and y < (arrGates[i].y + arrGates[i].input.a.coords.y + 10)) then
 
                 arrGates[i].input.a.clicked = true;
                 portUpdate = true;
 
-            elseif (button == 1 and x > (arrGates[i].x + arrGates[i].output.q.coords.x - 10) and x < (arrGates[i].x + arrGates[i].output.q.coords.x + 10) 
+            elseif (button == 2 and x > (arrGates[i].x + arrGates[i].output.q.coords.x - 10) and x < (arrGates[i].x + arrGates[i].output.q.coords.x + 10) 
                     and y > (arrGates[i].y + arrGates[i].output.q.coords.y - 10) and y < (arrGates[i].y + arrGates[i].output.q.coords.y + 10)) then
 
                 arrGates[i].output.q.clicked = true;
@@ -100,6 +100,47 @@ gates.click = function (mouseX, mouseY, button)
 
             end
         end
+
+        if(arrGates[i].type == "node") then
+            
+            if( button == 1 and x > arrGates[i].x and x < (arrGates[i].x + arrGates[i].width) and y > arrGates[i].y and y < (arrGates[i].y + arrGates[i].height)) then
+                
+                if (arrGates[i].clicked == false) then    
+                
+                    arrGates[i].clicked = true;
+
+                end
+            
+            elseif ( button == 2 and x > arrGates[i].x and x < (arrGates[i].x + arrGates[i].width) and y > arrGates[i].y and y < (arrGates[i].y + arrGates[i].height)) then
+                
+                
+
+                local inputHasBeenClicked = false;
+                local outputHasBeenclicked = false;
+
+                for b = 1, #arrGates do
+
+                    if(arrGates[b].type ~= "node") then
+                        if(arrGates[b].input.a.clicked or arrGates[b].input.b.clicked) then
+                            inputHasBeenClicked = true;
+                        end
+    
+                        if(arrGates[b].output.q.clicked) then
+                            outputHasBeenclicked = true;    
+                        end
+                    end
+                end
+
+                if(outputHasBeenclicked) then
+                    arrGates[i].input.a.clicked = true;
+                end
+
+                if(inputHasBeenClicked) then
+                    arrGates[i].output.q.clicked = true;
+                end
+
+            end
+        end
     end
 end    
 
@@ -108,11 +149,10 @@ end
 gates.IOrelease = function ()
     for i = 1, #arrGates do
         
-        if (arrGates[i].type ~= "node") then
-            arrGates[i].input.a.clicked = false;
-            arrGates[i].input.b.clicked = false;
-            arrGates[i].output.q.clicked = false; 
-        end
+        arrGates[i].input.a.clicked = false;
+        arrGates[i].input.b.clicked = false;
+        arrGates[i].output.q.clicked = false;
+
     end
 
     for i = 1, #arrStartBlock do
@@ -169,7 +209,9 @@ gates.draw = function ()
         elseif(arrGates[i].type == "xnor") then
             love.graphics.draw(xnorGateImg.file, arrGates[i].x, arrGates[i].y, 0, arrGates[i].width/xnorGateImg.width, arrGates[i].height/xnorGateImg.width);
         elseif(arrGates[i].type == "not") then
-            love.graphics.draw(notGateImg.file, arrGates[i].x, arrGates[i].y, 0, arrGates[i].width/notGateImg.width, arrGates[i].height/notGateImg.width); 
+            love.graphics.draw(notGateImg.file, arrGates[i].x, arrGates[i].y, 0, arrGates[i].width/notGateImg.width, arrGates[i].height/notGateImg.width);
+        elseif(arrGates[i].type == "node") then
+            love.graphics.circle("fill", arrGates[i].x + arrGates[i].width/2, arrGates[i].y + arrGates[i].width/2, arrGates[i].width/2);     
         end    
 
         love.graphics.setColor(0, 0, 1, 1);
@@ -344,17 +386,18 @@ gates.create = function (type)
 
     elseif(type == "node") then
 
-        local width = 200;
-        local height = 200;
+        local width = 30;
+        local height = 30;
         
         arrGates[#arrGates + 1] = {
             x = love.mouse.getX(), y = love.mouse.getY(), width = width, height = height, 
             clicked = true, clickedOffsetY = height/2, clickedOffsetX = width/2, 
             type = "node",    
                 input = {
-                        a = {connect = nil, coords = {x = 100, y = 100},     status = false, clicked = false}, 
+                        a = {connect = nil, coords = {x = 15, y = 15},     status = false, clicked = false}, 
                         b = {connect = nil, coords = {x = nil, y = nil},    status = false, clicked = false}}, 
-                outputs = {}, 
+                output = {
+                        q = {connect = {}, coords = {x = 15, y = 15}, status = false, clicked = false}}, 
             rank = 1, --unused variable 
             name = gateName};        
     end

@@ -44,6 +44,8 @@ function love.mousepressed(mousex, mousey, button)
  
     gates.simulate();
 
+    print(button);
+
 end
 
 

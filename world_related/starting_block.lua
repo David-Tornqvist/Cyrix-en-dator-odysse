@@ -83,7 +83,7 @@ startingBlock.click = function (mouseX, mouseY, button)
     for i = #arrStartBlock, 1, -1 do
         for b = 1, #(arrStartBlock[i].output) do
         
-            if(button == 1 and  x > (arrStartBlock[i].coords.x + arrStartBlock[i].output[b].coords.x - 10) and 
+            if(button == 2 and  x > (arrStartBlock[i].coords.x + arrStartBlock[i].output[b].coords.x - 10) and 
                                 x < (arrStartBlock[i].coords.x + arrStartBlock[i].output[b].coords.x + 10) and 
                                 y > (arrStartBlock[i].coords.y + arrStartBlock[i].output[b].coords.y - 10) and 
                                 y < (arrStartBlock[i].coords.y + arrStartBlock[i].output[b].coords.y + 10)) then
