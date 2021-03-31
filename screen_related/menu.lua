@@ -35,6 +35,9 @@ local buttons = {
         gates.create("node");
     end},
 
+    {x = 0, y = 200, width = 40, height = 40, color = {1, 1, 0, 1}, graphics = {shape = "delete"}, funct = function ()
+        tools.activate("delete");
+    end},
 };
 
 
@@ -49,7 +52,22 @@ local function drawMenuElements(button)
         love.graphics.setColor(0,0,0,1);
         love.graphics.print(button.graphics.text, button.x + button.width/4.5, button.y + button.height/3.5);
 
-    end    
+    end
+    
+    if (button.graphics.shape == "delete") then
+        
+        if(isDelete == false)then
+            love.graphics.setColor(button.color[1], button.color[2], button.color[3], button.color[4]);
+        else
+            love.graphics.setColor(1, 0, 0, 1);
+        end    
+
+        love.graphics.circle("fill", button.x + button.width/2, button.y + button.height/2, button.width/2);
+
+        love.graphics.setColor(0,0,0,1);
+        love.graphics.print("Del", button.x + button.width/4.5, button.y + button.height/3.5);
+
+    end
 end
 
 

@@ -36,21 +36,27 @@ gates.click = function (mouseX, mouseY, button)
             if( button == 2 and x > (arrGates[i].x + arrGates[i].input.a.coords.x - 10) and x < (arrGates[i].x + arrGates[i].input.a.coords.x + 10) 
                 and y > (arrGates[i].y + arrGates[i].input.a.coords.y - 10) and y < (arrGates[i].y + arrGates[i].input.a.coords.y + 10)) then
 
-                gates.IOrelease("inputs");    
-                arrGates[i].input.a.clicked = true;
-                portUpdate = true;
-
+                if isDelete == false then
+                    gates.IOrelease("inputs");    
+                    arrGates[i].input.a.clicked = true;
+                    portUpdate = true;
+                else
+                    tools.delete(arrGates[i].gateName,"a");
+                end
             end        
             
             if (button == 2 and x > (arrGates[i].x + arrGates[i].input.b.coords.x - 10) and x < (arrGates[i].x + arrGates[i].input.b.coords.x + 10) 
                     and y > (arrGates[i].y + arrGates[i].input.b.coords.y - 10) and y < (arrGates[i].y + arrGates[i].input.b.coords.y + 10)) then  
-          
-                gates.IOrelease("inputs");        
-                arrGates[i].input.b.clicked = true;
-                portUpdate = true;
-
+                
+                if isDelete == false then
+                    gates.IOrelease("inputs");        
+                    arrGates[i].input.b.clicked = true;
+                    portUpdate = true;
+                else
+                    tools.delete(arrGates[i].gateName,"b");        
+                end
             end 
-            
+
             if (button == 2 and x > (arrGates[i].x + arrGates[i].output.q.coords.x - 10) and x < (arrGates[i].x + arrGates[i].output.q.coords.x + 10) 
                     and y > (arrGates[i].y + arrGates[i].output.q.coords.y - 10) and y < (arrGates[i].y + arrGates[i].output.q.coords.y + 10)) then
         

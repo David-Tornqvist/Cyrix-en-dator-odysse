@@ -3,7 +3,7 @@ local gates = require "world_related.gates";
 local menu = require "screen_related.menu";
 local wires = require "world_related.wires";
 local starting_block = require "world_related.starting_block";
-
+local tools = require "world_related.tools";
 
 
 love.load = function()
@@ -11,6 +11,7 @@ love.load = function()
     camera.load();
     gates.load();
     starting_block.load();
+    tools.load();
 
     starting_block.create(500, 900, 3);
 
