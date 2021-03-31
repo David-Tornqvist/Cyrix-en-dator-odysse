@@ -1,11 +1,11 @@
 local camera = require "screen_related.camera";
-local gates = require "world_related.gates"
+local gates = require "world_related.gates";
+local tools = require "world_related.tools"
 local startingBlock = {};
 
 
 
 startingBlock.load = function ()
-
     arrStartBlock = {};
     startName = 10000000000000;
     firstStartBlockName = 10000000000000;
@@ -59,7 +59,7 @@ end
 
 
 --epic fail
-startingBlock.getIndex = function (name)
+starting_block_getIndex = function (name)
     for i = 1, #arrStartBlock do
        -- print(name);
        -- print(arrStartBlock[i].name);
@@ -88,9 +88,14 @@ startingBlock.click = function (mouseX, mouseY, button)
                                 y > (arrStartBlock[i].coords.y + arrStartBlock[i].output[b].coords.y - 10) and 
                                 y < (arrStartBlock[i].coords.y + arrStartBlock[i].output[b].coords.y + 10)) then
                 
-                gates.IOrelease("outputs");
-                arrStartBlock[i].output[b].clicked = true;
-                portUpdate = true; 
+                if isDelete == false then
+                    gates.IOrelease("outputs");
+                    arrStartBlock[i].output[b].clicked = true;
+                    portUpdate = true;
+                else
+                    tools.delete(arrStartBlock[i].name,b);
+                end
+                 
                
               
                 

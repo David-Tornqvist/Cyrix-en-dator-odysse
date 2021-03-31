@@ -26,7 +26,7 @@ wires.draw = function ()
 
             if(arrGates[i].input.a.connect < firstStartBlockName) then
 
-                local currentIndexOfOutputGate = gates.getIndex(arrGates[i].input.a.connect);
+                local currentIndexOfOutputGate = getindex(arrGates[i].input.a.connect);
                 love.graphics.line( arrGates[i].x + arrGates[i].input.a.coords.x,
                                     arrGates[i].y + arrGates[i].input.a.coords.y,
                                     arrGates[currentIndexOfOutputGate].x + arrGates[currentIndexOfOutputGate].output.q.coords.x,
@@ -34,7 +34,7 @@ wires.draw = function ()
             
             else
 
-                local currentIndexOfOutputGate = starting_block.getIndex(arrGates[i].input.a.connect);   
+                local currentIndexOfOutputGate = starting_block_getIndex(arrGates[i].input.a.connect);   
                
                 love.graphics.line( arrGates[i].x + arrGates[i].input.a.coords.x,
                                     arrGates[i].y + arrGates[i].input.a.coords.y,
@@ -54,7 +54,7 @@ wires.draw = function ()
             if(arrGates[i].input.b.status) then love.graphics.setColor(1, 0, 0, 1); end
             
             if(arrGates[i].input.b.connect < firstStartBlockName) then
-                local currentIndexOfOutputGate = gates.getIndex(arrGates[i].input.b.connect);
+                local currentIndexOfOutputGate = getindex(arrGates[i].input.b.connect);
                
                 love.graphics.line( arrGates[i].x + arrGates[i].input.b.coords.x, 
                                     arrGates[i].y + arrGates[i].input.b.coords.y,
@@ -66,7 +66,7 @@ wires.draw = function ()
                                         arrGates[currentIndexOfOutputGate].output.q.coords.y);
             
                 else
-                local currentIndexOfOutputGate = starting_block.getIndex(arrGates[i].input.b.connect);
+                local currentIndexOfOutputGate = starting_block_getIndex(arrGates[i].input.b.connect);
        
                 love.graphics.line( arrGates[i].x + arrGates[i].input.b.coords.x,
                                     arrGates[i].y + arrGates[i].input.b.coords.y,
@@ -131,7 +131,7 @@ wires.connect = function ()
         
         if(gatepair.output.gateName >= firstStartBlockName) then 
 
-            arrStartBlock[starting_block.getIndex(gatepair.output.gateName)].output[gatepair.output.gateName-firstStartBlockName].connect = 
+            arrStartBlock[starting_block_getIndex(gatepair.output.gateName)].output[gatepair.output.gateName-firstStartBlockName].connect = 
             {name = gatepair.input.gateName, port = gatepair.input.port};
         else
 

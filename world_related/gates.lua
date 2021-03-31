@@ -1,7 +1,19 @@
 local camera = require "screen_related.camera";
+local tools = require "world_related.tools"
+
+
 
 
 local gates = {};
+
+getindex = function (name)
+    for i = 1, #arrGates do
+    
+        if(arrGates[i].name == name) then
+            return i;
+        end        
+    end
+end
 
 
 
@@ -18,6 +30,8 @@ gates.load = function ()
     notGateImg = {file = love.graphics.newImage("graphics/not_gate.png"), width = 1080, height = 1080};
 
     gateName = 1;
+
+    
 
 end
 
@@ -41,10 +55,10 @@ gates.click = function (mouseX, mouseY, button)
                     arrGates[i].input.a.clicked = true;
                     portUpdate = true;
                 else
-                    tools.delete(arrGates[i].gateName,"a");
+                    tools.delete(arrGates[i].name,"a");
                 end
             end        
-            
+
             if (button == 2 and x > (arrGates[i].x + arrGates[i].input.b.coords.x - 10) and x < (arrGates[i].x + arrGates[i].input.b.coords.x + 10) 
                     and y > (arrGates[i].y + arrGates[i].input.b.coords.y - 10) and y < (arrGates[i].y + arrGates[i].input.b.coords.y + 10)) then  
                 
@@ -53,16 +67,20 @@ gates.click = function (mouseX, mouseY, button)
                     arrGates[i].input.b.clicked = true;
                     portUpdate = true;
                 else
-                    tools.delete(arrGates[i].gateName,"b");        
+                    tools.delete(arrGates[i].name,"b");        
                 end
             end 
 
             if (button == 2 and x > (arrGates[i].x + arrGates[i].output.q.coords.x - 10) and x < (arrGates[i].x + arrGates[i].output.q.coords.x + 10) 
                     and y > (arrGates[i].y + arrGates[i].output.q.coords.y - 10) and y < (arrGates[i].y + arrGates[i].output.q.coords.y + 10)) then
         
-                gates.IOrelease("outputs");         
-                arrGates[i].output.q.clicked = true;
-                portUpdate = true;
+                if isDelete == false then
+                    gates.IOrelease("outputs");         
+                    arrGates[i].output.q.clicked = true;
+                    portUpdate = true;
+                else
+                    tools.delete(arrGates[i].name,"q");
+                end        
             end    
             
                 --or if the gate itself where clicked
@@ -88,16 +106,25 @@ gates.click = function (mouseX, mouseY, button)
             if( button == 2 and x > (arrGates[i].x + arrGates[i].input.a.coords.x - 10) and x < (arrGates[i].x + arrGates[i].input.a.coords.x + 10) 
                 and y > (arrGates[i].y + arrGates[i].input.a.coords.y - 10) and y < (arrGates[i].y + arrGates[i].input.a.coords.y + 10)) then
 
-                gates.IOrelease("inputs");     
-                arrGates[i].input.a.clicked = true;
-                portUpdate = true;
-
+                if isDelete == false then
+                    gates.IOrelease("inputs");     
+                    arrGates[i].input.a.clicked = true;
+                    portUpdate = true;
+                else
+                    tools.delete(arrGates[i].name,"a");
+                end
+                
             elseif (button == 2 and x > (arrGates[i].x + arrGates[i].output.q.coords.x - 10) and x < (arrGates[i].x + arrGates[i].output.q.coords.x + 10) 
                     and y > (arrGates[i].y + arrGates[i].output.q.coords.y - 10) and y < (arrGates[i].y + arrGates[i].output.q.coords.y + 10)) then
 
-                gates.IOrelease("outputs"); 
-                arrGates[i].output.q.clicked = true;
-                portUpdate = true;
+                if isDelete == false then
+                    gates.IOrelease("outputs"); 
+                    arrGates[i].output.q.clicked = true;
+                    portUpdate = true;
+                else
+                    tools.delete(arrGates[i].name,"q");
+                end
+               
                 
             elseif( button == 1 and x > arrGates[i].x and x < (arrGates[i].x + arrGates[i].width) and y > arrGates[i].y and y < (arrGates[i].y + arrGates[i].height)) then
               
@@ -172,6 +199,7 @@ gates.click = function (mouseX, mouseY, button)
         end
     end
 end    
+
 
 
 
@@ -299,18 +327,6 @@ gates.draw = function ()
         end
     end
 end
-
-
-
-gates.getIndex = function (name)
-    for i = 1, #arrGates do
-    
-        if(arrGates[i].name == name) then
-            return i;
-        end        
-    end
-end
-
 
 
 gates.create = function (type)
@@ -492,13 +508,11 @@ gates.simulate = function ()
             if(arrStartBlock[i].output[b].connect.name ~= nil) then
 
                 if(arrStartBlock[i].output[b].connect.port == "a") then
-                    print(arrStartBlock[i].output[b].connect.name);
-                    arrGates[gates.getIndex(arrStartBlock[i].output[b].connect.name)].input.a.status = arrStartBlock[i].output[b].status;
+                    arrGates[getindex(arrStartBlock[i].output[b].connect.name)].input.a.status = arrStartBlock[i].output[b].status;
                 end
 
                 if(arrStartBlock[i].output[b].connect.port == "b") then
-                    print(arrStartBlock[i].output[b].connect.name);
-                    arrGates[gates.getIndex(arrStartBlock[i].output[b].connect.name)].input.b.status = arrStartBlock[i].output[b].status;
+                    arrGates[getindex(arrStartBlock[i].output[b].connect.name)].input.b.status = arrStartBlock[i].output[b].status;
                 end    
             end    
         end
@@ -585,11 +599,11 @@ gates.simulate = function ()
         if (arrGates[b].type ~= "node") then
 
             if(arrGates[b].output.q.connect.port == "a") then
-                arrGates[gates.getIndex(arrGates[b].output.q.connect.name)].input.a.status = arrGates[b].output.q.status;
+                arrGates[getindex(arrGates[b].output.q.connect.name)].input.a.status = arrGates[b].output.q.status;
             end  
     
             if(arrGates[b].output.q.connect.port == "b") then
-                arrGates[gates.getIndex(arrGates[b].output.q.connect.name)].input.b.status = arrGates[b].output.q.status;
+                arrGates[getindex(arrGates[b].output.q.connect.name)].input.b.status = arrGates[b].output.q.status;
             end    
         end
 
@@ -598,11 +612,11 @@ gates.simulate = function ()
             for c = 1, #arrGates[b].output.q.connect do
                 
                 if(arrGates[b].output.q.connect[c].port == "a") then
-                    arrGates[gates.getIndex(arrGates[b].output.q.connect[c].name)].input.a.status = arrGates[b].output.q.status;
+                    arrGates[getindex(arrGates[b].output.q.connect[c].name)].input.a.status = arrGates[b].output.q.status;
                 end 
 
                 if(arrGates[b].output.q.connect[c].port == "b") then
-                    arrGates[gates.getIndex(arrGates[b].output.q.connect[c].name)].input.b.status = arrGates[b].output.q.status;
+                    arrGates[getindex(arrGates[b].output.q.connect[c].name)].input.b.status = arrGates[b].output.q.status;
                 end 
 
             end

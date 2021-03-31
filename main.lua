@@ -6,6 +6,8 @@ local starting_block = require "world_related.starting_block";
 local tools = require "world_related.tools";
 
 
+
+
 love.load = function()
   
     camera.load();
@@ -44,8 +46,6 @@ function love.mousepressed(mousex, mousey, button)
     camera.update("mPush", button);
  
     gates.simulate();
-
-    print(button);
 
 end
 
