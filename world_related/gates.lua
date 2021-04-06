@@ -86,16 +86,23 @@ gates.click = function (mouseX, mouseY, button)
                 --or if the gate itself where clicked
             if( button == 1 and x > arrGates[i].x and x < (arrGates[i].x + arrGates[i].width) and y > arrGates[i].y and y < (arrGates[i].y + arrGates[i].height)) then
               
-                if (arrGates[i].clicked == false) then    
+                if isDelete == false then
+                    
+                    if (arrGates[i].clicked == false) then    
                 
-                    arrGates[i].clicked = true;
-
-                end
+                        arrGates[i].clicked = true;
+                        
     
-                arrGates[i].clickedOffsetX = x - arrGates[i].x;
-                arrGates[i].clickedOffsetY = y - arrGates[i].y;
+                    end
 
-                arrGates = gates.setFirst(arrGates, i);
+                    arrGates[i].clickedOffsetX = x - arrGates[i].x;
+                    arrGates[i].clickedOffsetY = y - arrGates[i].y;
+
+                    arrGates = gates.setFirst(arrGates, i);
+
+                else
+                    tools.deleteGate(arrGates[i].name);    
+                end
         
                 break   
                       
