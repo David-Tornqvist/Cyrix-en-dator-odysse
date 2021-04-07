@@ -134,17 +134,21 @@ gates.click = function (mouseX, mouseY, button)
                
                 
             elseif( button == 1 and x > arrGates[i].x and x < (arrGates[i].x + arrGates[i].width) and y > arrGates[i].y and y < (arrGates[i].y + arrGates[i].height)) then
-              
-                if (arrGates[i].clicked == false) then    
+            
+                if isDelete == false then
+                    if (arrGates[i].clicked == false) then    
                 
-                    arrGates[i].clicked = true;
-
-                end
+                        arrGates[i].clicked = true;
     
-                arrGates[i].clickedOffsetX = x - arrGates[i].x;
-                arrGates[i].clickedOffsetY = y - arrGates[i].y;
-
-                arrGates = gates.setFirst(arrGates, i);
+                    end
+        
+                    arrGates[i].clickedOffsetX = x - arrGates[i].x;
+                    arrGates[i].clickedOffsetY = y - arrGates[i].y;
+    
+                    arrGates = gates.setFirst(arrGates, i);
+                else
+                    tools.deleteGate(arrGates[i].name);     
+                end
         
                 break   
 
@@ -156,13 +160,18 @@ gates.click = function (mouseX, mouseY, button)
             
             if( button == 1 and x > arrGates[i].x and x < (arrGates[i].x + arrGates[i].width) and y > arrGates[i].y and y < (arrGates[i].y + arrGates[i].height)) then
                 
-                if (arrGates[i].clicked == false) then    
+                if isDelete == false then
+                    if (arrGates[i].clicked == false) then    
                 
-                    arrGates[i].clicked = true;
-
+                        arrGates[i].clicked = true;
+    
+                    end
+    
+                    arrGates = gates.setFirst(arrGates, i);
+                else
+                    tools.deleteGate(arrGates[i].name);          
                 end
-
-                arrGates = gates.setFirst(arrGates, i);
+                
                 
                 break
             

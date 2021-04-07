@@ -15,7 +15,7 @@ love.load = function()
     starting_block.load();
     tools.load();
 
-    starting_block.create(500, 900, 3);
+    starting_block.create(500, 900, 16);
 
 end    
 
