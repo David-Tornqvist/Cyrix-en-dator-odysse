@@ -50,6 +50,23 @@ tools.delete = function (gateName,port)
         
 
     
+    if ((gateName < firstStartBlockName) and (gateName > goalblockFirstStart)) then
+
+        if (iGoalblock.entity.inputs[port].connect - firstStartBlockName) < 0 then
+            if(arrGates[getindex(iGoalblock.entity.inputs[port].connect)].type ~= "node") then
+                arrGates[getindex(iGoalblock.entity.inputs[port].connect)].output.q.connect.name = nil;
+                arrGates[getindex(iGoalblock.entity.inputs[port].connect)].output.q.connect.port = nil;
+            end
+        else
+            arrStartBlock[starting_block_getIndex(gateName)].output[iGoalblock.entity.inputs[port].connect - firstStartBlockName].connect.name = nil;
+            arrStartBlock[starting_block_getIndex(gateName)].output[iGoalblock.entity.inputs[port].connect - firstStartBlockName].connect.port = nil;
+        end
+     
+        
+        iGoalblock.entity.inputs[port].connect = nil;
+    end
+
+    
 
     if gateName < firstStartBlockName then
         if (port == "q") then

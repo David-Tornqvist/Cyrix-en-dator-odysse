@@ -15,7 +15,7 @@ goalblock.load = function ()
             iGoalblock.entity = {coords = {x = x, y = y}, dimensions = {width = (nInput + 1)*50, height = 100}, inputs = {}, name = goalblockFirstStart};
             
             for i = 1, nInput do
-                iGoalblock.entity.inputs[i] = {connect = {name = nil, port = nil}, coords = {x = i*50, y = 140}, status = false, clicked = false};
+                iGoalblock.entity.inputs[i] = {connect = nil, coords = {x = i*50, y = 140}, status = false, clicked = false};
             end
         end,
 
