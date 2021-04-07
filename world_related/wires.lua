@@ -125,13 +125,15 @@ wires.connect = function ()
 
     if((gatepair.input.gateName ~= nil) and (gatepair.output.gateName ~= nil)) then
 
-        tools.delete(gatepair.input.gateName,gatepair.input.port);
+        
         
         if(gatepair.input.port == "a") then
+            tools.delete(gatepair.input.gateName,gatepair.input.port);
             arrGates[gatepair.input.currentIndex].input.a.connect = gatepair.output.gateName;
         end
 
         if(gatepair.input.port == "b") then
+            tools.delete(gatepair.input.gateName,gatepair.input.port);
             arrGates[gatepair.input.currentIndex].input.b.connect = gatepair.output.gateName;
         end    
         
@@ -141,11 +143,13 @@ wires.connect = function ()
 
         if(gatepair.output.gateName >= firstStartBlockName) then 
 
+            tools.delete(gatepair.output.gateName,gatepair.output.gateName-firstStartBlockName);
             arrStartBlock[starting_block_getIndex(gatepair.output.gateName)].output[gatepair.output.gateName-firstStartBlockName].connect = 
             {name = gatepair.input.gateName, port = gatepair.input.port};
         else
 
             if(arrGates[gatepair.output.currentIndex].type ~= "node") then
+                tools.delete(gatepair.output.gateName,"q");
                 arrGates[gatepair.output.currentIndex].output.q.connect = {name = gatepair.input.gateName, port = gatepair.input.port};  
             end
 
