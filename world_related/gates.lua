@@ -234,6 +234,10 @@ gates.IOrelease = function (IO)
                 arrStartBlock[i].output[b].clicked = false;
             end
         end 
+
+        for b = 1, #iGoalblock.entity.inputs do
+            iGoalblock.entity.inputs[b].clicked = false;
+        end
     end
 
     if(IO == "inputs") then
@@ -241,6 +245,10 @@ gates.IOrelease = function (IO)
             
             arrGates[i].input.a.clicked = false;
             arrGates[i].input.b.clicked = false;
+
+            for b = 1, #iGoalblock.entity.inputs do
+                iGoalblock.entity.inputs[b].clicked = false;
+            end
 
         end
     end

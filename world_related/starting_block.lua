@@ -1,6 +1,7 @@
 local camera = require "screen_related.camera";
 local gates = require "world_related.gates";
-local tools = require "world_related.tools"
+local tools = require "world_related.tools";
+
 local startingBlock = {};
 
 

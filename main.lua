@@ -4,6 +4,7 @@ local menu = require "screen_related.menu";
 local wires = require "world_related.wires";
 local starting_block = require "world_related.starting_block";
 local tools = require "world_related.tools";
+local goalblock = require "world_related.goal_block"
 
 
 
@@ -14,6 +15,8 @@ love.load = function()
     gates.load();
     starting_block.load();
     tools.load();
+    goalblock.load();
+    iGoalblock.create(500,0,16);
 
     starting_block.create(500, 900, 16);
 
@@ -35,7 +38,8 @@ function love.mousepressed(mousex, mousey, button)
     portUpdate = false;
 
     starting_block.click(mousey, mousey, button);
-    
+    iGoalblock.click(button);
+
     menu.click(mousex, mousey, button);
     gates.click(mousex, mousey, button);
     wires.connect(); 
@@ -90,6 +94,7 @@ love.draw = function()
     love.graphics.translate(translate.x, translate.y);
 
     starting_block.draw();
+    iGoalblock.draw();
     gates.draw();
     wires.draw();
 
