@@ -39,6 +39,14 @@ local function scrl(y)
     local bmouse = camera.screenToWorldcords(love.mouse.getX(), love.mouse.getY());
 
     zoom = zoom + 0.1*y;
+
+    if zoom > 4 then
+        zoom = 4;
+    end
+
+    if zoom < 0.06 then
+        zoom = 0.06
+    end
  
     --mouse-screencoords translated to mouse-worldcoords before zoom
     local amouse = camera.screenToWorldcords(love.mouse.getX(), love.mouse.getY());

@@ -146,6 +146,7 @@ wires.connect = function ()
             tools.delete(gatepair.output.gateName,gatepair.output.gateName-firstStartBlockName);
             arrStartBlock[starting_block_getIndex(gatepair.output.gateName)].output[gatepair.output.gateName-firstStartBlockName].connect = 
             {name = gatepair.input.gateName, port = gatepair.input.port};
+            
         else
 
             if(arrGates[gatepair.output.currentIndex].type ~= "node") then
