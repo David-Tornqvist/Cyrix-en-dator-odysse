@@ -133,22 +133,34 @@ end
 
 tools.deleteGate = function (gateName)
 
+
+
     if arrGates[getindex(gateName)].input.a.connect ~= nil then
-        if arrGates[getindex(arrGates[getindex(gateName)].input.a.connect)].type ~= "node" then
-            tools.delete(gateName,"a");
+        if (arrGates[getindex(gateName)].input.a.connect - firstStartBlockName) < 0 then
+            if arrGates[getindex(arrGates[getindex(gateName)].input.a.connect)].type ~= "node" then
+                tools.delete(gateName,"a");
+            else
+                tools.deleteNodeWire(arrGates[getindex(gateName)].input.a.connect, tools.findNodeOutputIndex(arrGates[getindex(gateName)].input.a.connect, gateName));        
+            end
         else
-            tools.deleteNodeWire(arrGates[getindex(gateName)].input.a.connect, tools.findNodeOutputIndex(arrGates[getindex(gateName)].input.a.connect, gateName));        
+            tools.delete(gateName,"a");    
         end
     end
 
+
+
     if arrGates[getindex(gateName)].input.b.connect ~= nil then
-        if arrGates[getindex(arrGates[getindex(gateName)].input.b.connect)].type ~= "node" then
-            tools.delete(gateName,"b");
+        if (arrGates[getindex(gateName)].input.b.connect - firstStartBlockName) < 0 then
+            if arrGates[getindex(arrGates[getindex(gateName)].input.b.connect)].type ~= "node" then
+                tools.delete(gateName,"b");
+            else
+                tools.deleteNodeWire(arrGates[getindex(gateName)].input.b.connect, tools.findNodeOutputIndex(arrGates[getindex(gateName)].input.b.connect, gateName));        
+            end 
         else
-            tools.deleteNodeWire(arrGates[getindex(gateName)].input.b.connect, tools.findNodeOutputIndex(arrGates[getindex(gateName)].input.b.connect, gateName));        
+            tools.delete(gateName,"b");
         end
     end
-    
+
 
 
     if arrGates[getindex(gateName)].type ~= "node" then

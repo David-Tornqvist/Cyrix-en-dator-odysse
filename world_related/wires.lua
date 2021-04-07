@@ -1,5 +1,6 @@
 local gates = require "world_related.gates";
 local starting_block = require "world_related.starting_block";
+local tools = require "world_related.tools"
 
 local wires = {};
 
@@ -109,6 +110,7 @@ wires.connect = function ()
     end
        
 
+
     for i = 1, #arrStartBlock do
         for b = 1, #arrStartBlock[i].output do
             if(arrStartBlock[i].output[b].clicked)then
@@ -119,16 +121,24 @@ wires.connect = function ()
         end
     end
 
+
+
     if((gatepair.input.gateName ~= nil) and (gatepair.output.gateName ~= nil)) then
+
+        tools.delete(gatepair.input.gateName,gatepair.input.port);
+        
         if(gatepair.input.port == "a") then
             arrGates[gatepair.input.currentIndex].input.a.connect = gatepair.output.gateName;
         end
+
         if(gatepair.input.port == "b") then
             arrGates[gatepair.input.currentIndex].input.b.connect = gatepair.output.gateName;
         end    
+        
         arrGates[gatepair.input.currentIndex].rank = gatepair.output.rank + 1;
 
-        
+
+
         if(gatepair.output.gateName >= firstStartBlockName) then 
 
             arrStartBlock[starting_block_getIndex(gatepair.output.gateName)].output[gatepair.output.gateName-firstStartBlockName].connect = 

@@ -24,6 +24,7 @@ end
 function love.keypressed(key)
 
     if(key == "escape")then love.event.quit(); end
+    if (key == "a") then gates.simulate(); end
 
 end
 
@@ -44,7 +45,7 @@ function love.mousepressed(mousex, mousey, button)
     end
 
     camera.update("mPush", button);
- 
+
     gates.simulate();
 
 end
@@ -56,6 +57,7 @@ function love.mousereleased(x, y, button)
     gates.release(button);
 
     camera.update("mRel", button);
+    
 end
 
 
@@ -73,10 +75,7 @@ love.update = function(dt)
     gates.update();
 
     camera.update("pan");
-
     
-    
-
 end
 
 
