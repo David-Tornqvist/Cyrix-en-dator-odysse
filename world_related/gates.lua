@@ -203,6 +203,12 @@ gates.click = function (mouseX, mouseY, button)
                     end
                 end
 
+                for d = 1, #iGoalblock.entity.inputs do
+                    if(iGoalblock.entity.inputs[d].clicked) then
+                       inputHasBeenClicked = true; 
+                    end
+                end
+
                 if(outputHasBeenclicked) then
                     arrGates[i].input.a.clicked = true;
                 end
