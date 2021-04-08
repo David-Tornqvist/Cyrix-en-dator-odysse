@@ -80,40 +80,39 @@ wires.draw = function ()
                                         arrStartBlock[currentIndexOfOutputGate].output[arrGates[i].input.b.connect-firstStartBlockName].coords.y);    
             end    
         end 
+    end
 
+    for b = 1, #iGoalblock.entity.inputs do
 
-
-        for b = 1, #iGoalblock.entity.inputs do
-            if iGoalblock.entity.inputs[b].connect ~= nil then
-                
-                love.graphics.setColor(0,1,0,1);
-
-                if(iGoalblock.entity.inputs[b].status) then love.graphics.setColor(1, 0, 0, 1); end
+        if iGoalblock.entity.inputs[b].connect ~= nil then
             
-                if(iGoalblock.entity.inputs[b].connect < firstStartBlockName) then
-                    local currentIndexOfOutputGate = getindex(iGoalblock.entity.inputs[b].connect);
-               
-                    love.graphics.line( iGoalblock.entity.coords.x + iGoalblock.entity.inputs[b].coords.x, 
-                                        iGoalblock.entity.coords.y + iGoalblock.entity.inputs[b].coords.y,
+            love.graphics.setColor(0,1,0,1);
+
+            if(iGoalblock.entity.inputs[b].status) then love.graphics.setColor(1, 0, 0, 1); end
+        
+            if(iGoalblock.entity.inputs[b].connect < firstStartBlockName) then
+                local currentIndexOfOutputGate = getindex(iGoalblock.entity.inputs[b].connect);
+           
+                love.graphics.line( iGoalblock.entity.coords.x + iGoalblock.entity.inputs[b].coords.x, 
+                                    iGoalblock.entity.coords.y + iGoalblock.entity.inputs[b].coords.y,
+                                
+                                    arrGates[currentIndexOfOutputGate].x + 
+                                    arrGates[currentIndexOfOutputGate].output.q.coords.x,
+                                
+                                    arrGates[currentIndexOfOutputGate].y + 
+                                    arrGates[currentIndexOfOutputGate].output.q.coords.y);
+        
+            else
+                local currentIndexOfOutputGate = starting_block_getIndex(iGoalblock.entity.inputs[b].connect);
+   
+                love.graphics.line( iGoalblock.entity.coords.x + iGoalblock.entity.inputs[b].coords.x,
+                                    iGoalblock.entity.coords.y + iGoalblock.entity.inputs[b].coords.y,
+                                
+                                    arrStartBlock[currentIndexOfOutputGate].coords.x + 
+                                        arrStartBlock[currentIndexOfOutputGate].output[iGoalblock.entity.inputs[b].connect-firstStartBlockName].coords.x,
                                     
-                                        arrGates[currentIndexOfOutputGate].x + 
-                                        arrGates[currentIndexOfOutputGate].output.q.coords.x,
-                                    
-                                        arrGates[currentIndexOfOutputGate].y + 
-                                        arrGates[currentIndexOfOutputGate].output.q.coords.y);
-            
-                else
-                    local currentIndexOfOutputGate = starting_block_getIndex(iGoalblock.entity.inputs[b].connect);
-       
-                    love.graphics.line( iGoalblock.entity.coords.x + iGoalblock.entity.inputs[b].coords.x,
-                                        iGoalblock.entity.coords.y + iGoalblock.entity.inputs[b].coords.y,
-                                    
-                                        arrStartBlock[currentIndexOfOutputGate].coords.x + 
-                                            arrStartBlock[currentIndexOfOutputGate].output[arrGates[i].input.b.connect-firstStartBlockName].coords.x,
-                                        
-                                        arrStartBlock[currentIndexOfOutputGate].coords.y + 
-                                            arrStartBlock[currentIndexOfOutputGate].output[arrGates[i].input.b.connect-firstStartBlockName].coords.y);    
-                end
+                                    arrStartBlock[currentIndexOfOutputGate].coords.y + 
+                                        arrStartBlock[currentIndexOfOutputGate].output[iGoalblock.entity.inputs[b].connect-firstStartBlockName].coords.y);    
             end
         end
     end
@@ -170,22 +169,34 @@ wires.connect = function ()
     if((gatepair.input.gateName ~= nil) and (gatepair.output.gateName ~= nil)) then
 
         
+        if (gatepair.input.gateName >= goalblockFirstStart) then
+
+            if (gatepair.input.port > 0) then
         
-        if(gatepair.input.port == "a") then
-            tools.delete(gatepair.input.gateName,gatepair.input.port);
-            arrGates[gatepair.input.currentIndex].input.a.connect = gatepair.output.gateName;
+                if  (gatepair.output.gateName < firstStartBlockName) then
+                    --print(gatepair.output.gateName,gatepair.input.port);
+                    tools.delete(gatepair.output.gateName,gatepair.input.port);
+                    iGoalblock.entity.inputs[gatepair.input.port].connect = gatepair.output.gateName;
+                
+                else
+                    tools.delete(gatepair.output.gateName,starting_block.findPortThatConnect(gatepair.input.gateName));
+                    iGoalblock.entity.inputs[gatepair.input.port].connect = gatepair.output.gateName;
+
+                end
+
+            end
+        else
+            if(gatepair.input.port == "a") then
+                tools.delete(gatepair.input.gateName,gatepair.input.port);
+                arrGates[gatepair.input.currentIndex].input.a.connect = gatepair.output.gateName;
+            end
+    
+            if(gatepair.input.port == "b") then
+                tools.delete(gatepair.input.gateName,gatepair.input.port);
+                arrGates[gatepair.input.currentIndex].input.b.connect = gatepair.output.gateName;
+            end
         end
 
-        if(gatepair.input.port == "b") then
-            tools.delete(gatepair.input.gateName,gatepair.input.port);
-            arrGates[gatepair.input.currentIndex].input.b.connect = gatepair.output.gateName;
-        end
-        
-        if (gatepair.input.port > 0) then
-            tools.delete(gatepair.input.gateName,gatepair.input.port);
-            iGoalblock.entity.inputs[gatepair.input.port].connect = gatepair.output.gateName;
-        end
-        
 
 
         if(gatepair.output.gateName >= firstStartBlockName) then 
@@ -210,8 +221,8 @@ wires.connect = function ()
 
         gates.IOrelease();
 
-        print("här är connecten för goal_block");
-        print(iGoalblock.entity.inputs[gatepair.input.port].connect);
+        --print("här är connecten för goal_block");
+        --print(iGoalblock.entity.inputs[gatepair.input.port].connect);
 
     end    
 end

@@ -14,6 +14,79 @@ tools.delete = function (gateName,port)
 
     local gate = arrGates[getindex(gateName)];
 
+    if gateName < firstStartBlockName then
+        if (port == "q") then
+
+            if (gate.output.q.connect.name ~= nil) then
+
+
+                if (gate.output.q.connect.name < goalblockFirstStart) then
+
+                    if(gate.output.q.connect.port == "a" and arrGates[getindex(gate.output.q.connect.name)] ~= nil) then
+                        arrGates[getindex(gate.output.q.connect.name)].input.a.connect = nil;
+                        arrGates[getindex(gate.output.q.connect.name)].input.a.status = false;
+                    end
+            
+                    if(gate.output.q.connect.port == "b" and arrGates[getindex(gate.output.q.connect.name)] ~= nil) then
+                        arrGates[getindex(gate.output.q.connect.name)].input.b.connect = nil;
+                        arrGates[getindex(gate.output.q.connect.name)].input.b.status = false;
+                    end
+                
+                else    
+                    iGoalblock.entity.inputs[gate.output.q.connect.port].connect = nil;
+                    iGoalblock.entity.inputs[gate.output.q.connect.port].name = nil;
+                end
+                
+    
+                   
+    
+                
+                arrGates[getindex(gateName)].output.q.connect.name = nil;
+                arrGates[getindex(gateName)].output.q.connect.port = nil; 
+            end
+        end
+    else
+
+        if(port ~= nil) then
+            if arrStartBlock[starting_block_getIndex(gateName)].output[port].connect.name ~= nil then
+
+                if arrStartBlock[starting_block_getIndex(gateName)].output[port].connect.name < goalblockFirstStart then
+
+                    if( arrStartBlock[starting_block_getIndex(gateName)].output[port].connect.port == "a" and 
+                        arrGates[getindex(arrStartBlock[starting_block_getIndex(gateName)].output[port].connect.name)] ~= nil) then
+        
+                            arrGates[getindex(arrStartBlock[starting_block_getIndex(gateName)].output[port].connect.name)].input.a.connect = nil;
+                            arrGates[getindex(arrStartBlock[starting_block_getIndex(gateName)].output[port].connect.name)].input.a.status = false;
+        
+                    end
+        
+                    if( arrStartBlock[starting_block_getIndex(gateName)].output[port].connect.port == "b" and 
+                        arrGates[getindex(arrStartBlock[starting_block_getIndex(gateName)].output[port].connect.name)] ~= nil) then
+        
+                            arrGates[getindex(arrStartBlock[starting_block_getIndex(gateName)].output[port].connect.name)].input.b.connect = nil;
+                            arrGates[getindex(arrStartBlock[starting_block_getIndex(gateName)].output[port].connect.name)].input.b.status = false;
+        
+                        end
+                else
+
+                    local index = iGoalblock.findPortThatConnect(firstStartBlockName + port);
+
+                    print(port);
+                    print(firstStartBlockName);
+                    print(index);
+
+                    iGoalblock.entity.inputs[index].connect = nil;
+                    iGoalblock.entity.inputs[index].status = false;
+
+                end     
+            end
+        
+            arrStartBlock[starting_block_getIndex(gateName)].output[port].connect.name = nil;
+            arrStartBlock[starting_block_getIndex(gateName)].output[port].connect.port = nil;
+        
+        end
+    end
+
 
     if (port == "a" and (gate.input.a.connect ~= nil)) then
 
@@ -47,66 +120,25 @@ tools.delete = function (gateName,port)
         arrGates[getindex(gateName)].input.b.connect = nil;
             
     end
-        
-
     
-    if ((gateName < firstStartBlockName) and (gateName > goalblockFirstStart)) then
+    if ((gateName < firstStartBlockName) and (gateName >= goalblockFirstStart)) then
 
-        if (iGoalblock.entity.inputs[port].connect - firstStartBlockName) < 0 then
-            if(arrGates[getindex(iGoalblock.entity.inputs[port].connect)].type ~= "node") then
-                arrGates[getindex(iGoalblock.entity.inputs[port].connect)].output.q.connect.name = nil;
-                arrGates[getindex(iGoalblock.entity.inputs[port].connect)].output.q.connect.port = nil;
+        if (iGoalblock.entity.inputs[port].connect ~= nil) then
+           
+            if (iGoalblock.entity.inputs[port].connect - firstStartBlockName) < 0 then
+                if(arrGates[getindex(iGoalblock.entity.inputs[port].connect)].type ~= "node") then
+                    arrGates[getindex(iGoalblock.entity.inputs[port].connect)].output.q.connect.name = nil;
+                    arrGates[getindex(iGoalblock.entity.inputs[port].connect)].output.q.connect.port = nil;
+                end
+            else
+                arrStartBlock[starting_block_getIndex(gateName)].output[iGoalblock.entity.inputs[port].connect - firstStartBlockName].connect.name = nil;
+                arrStartBlock[starting_block_getIndex(gateName)].output[iGoalblock.entity.inputs[port].connect - firstStartBlockName].connect.port = nil;
             end
-        else
-            arrStartBlock[starting_block_getIndex(gateName)].output[iGoalblock.entity.inputs[port].connect - firstStartBlockName].connect.name = nil;
-            arrStartBlock[starting_block_getIndex(gateName)].output[iGoalblock.entity.inputs[port].connect - firstStartBlockName].connect.port = nil;
-        end
-     
-        
-        iGoalblock.entity.inputs[port].connect = nil;
-    end
-
-    
-
-    if gateName < firstStartBlockName then
-        if (port == "q") then
-
-            if(gate.output.q.connect.port == "a" and arrGates[getindex(gate.output.q.connect.name)] ~= nil) then
-                arrGates[getindex(gate.output.q.connect.name)].input.a.connect = nil;
-                arrGates[getindex(gate.output.q.connect.name)].input.a.status = false;
-            end
-    
-            if(gate.output.q.connect.port == "b" and arrGates[getindex(gate.output.q.connect.name)] ~= nil) then
-                arrGates[getindex(gate.output.q.connect.name)].input.b.connect = nil;
-                arrGates[getindex(gate.output.q.connect.name)].input.b.status = false;
-            end
+         
             
-            arrGates[getindex(gateName)].output.q.connect.name = nil;
-            arrGates[getindex(gateName)].output.q.connect.port = nil;
+            iGoalblock.entity.inputs[port].connect = nil;
+            
         end
-    else
-        
-        if( arrStartBlock[starting_block_getIndex(gateName)].output[port].connect.port == "a" and 
-            arrGates[getindex(arrStartBlock[starting_block_getIndex(gateName)].output[port].connect.name)] ~= nil) then
-
-                arrGates[getindex(arrStartBlock[starting_block_getIndex(gateName)].output[port].connect.name)].input.a.connect = nil;
-                arrGates[getindex(arrStartBlock[starting_block_getIndex(gateName)].output[port].connect.name)].input.a.status = false;
-
-        end
-
-        if( arrStartBlock[starting_block_getIndex(gateName)].output[port].connect.port == "b" and 
-            arrGates[getindex(arrStartBlock[starting_block_getIndex(gateName)].output[port].connect.name)] ~= nil) then
-
-                arrGates[getindex(arrStartBlock[starting_block_getIndex(gateName)].output[port].connect.name)].input.b.connect = nil;
-                arrGates[getindex(arrStartBlock[starting_block_getIndex(gateName)].output[port].connect.name)].input.b.status = false;
-
-        end
-
-        
-
-        arrStartBlock[starting_block_getIndex(gateName)].output[port].connect.name = nil;
-        arrStartBlock[starting_block_getIndex(gateName)].output[port].connect.port = nil;
-        
     end
 end
 

@@ -116,6 +116,15 @@ startingBlock.click = function (mouseX, mouseY, button)
     end
 end
 
+startingBlock.findPortThatConnect = function (gateName)
+
+    for i = 1, #arrStartBlock[1].output do
+        if arrStartBlock[1].output[i].connect.name == gateName then
+            return i;
+        end
+    end
+    
+end
 
 
 return startingBlock

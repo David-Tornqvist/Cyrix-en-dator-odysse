@@ -68,6 +68,17 @@ goalblock.load = function ()
                     end
                 end    
             end    
+        end,
+
+        findPortThatConnect = function (gateName)
+        
+            for i = 1, #iGoalblock.entity.inputs do
+                print(iGoalblock.entity.inputs[i].connect);
+                if iGoalblock.entity.inputs[i].connect == gateName then
+                    return i;
+                end
+            end
+            
         end
     }
 end
