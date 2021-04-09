@@ -56,20 +56,17 @@ gates.click = function (mouseX, mouseY, button)
                     portUpdate = true;
                 else
                 
-                    if arrGates[i].input.a.connect < firstStartBlockName then
-                        if arrGates[getindex(arrGates[i].input.a.connect)].type ~= "node" then
-                            tools.delete(arrGates[i].name,"a");
+                    if arrGates[i].input.a.connect ~= nil then
+                        if arrGates[i].input.a.connect < firstStartBlockName then
+                            if arrGates[getindex(arrGates[i].input.a.connect)].type ~= "node" then
+                                tools.delete(arrGates[i].name,"a");
+                            else
+                                tools.deleteNodeWire(arrGates[i].input.a.connect,tools.findNodeOutputIndex(arrGates[i].input.a.connect,arrGates[i].name,"a"));
+                            end
                         else
-                            tools.deleteNodeWire(arrGates[i].input.a.connect,tools.findNodeOutputIndex(arrGates[i].input.a.connect,arrGates[i].name,"a"));
+                            tools.delete(arrGates[i].name,"a");    
                         end
-                    else
-                        tools.delete(arrGates[i].name,"a");    
-                    end
-                    
-                    
-                    
-                   
-                    
+                    end    
                 end
             end        
 
@@ -81,16 +78,20 @@ gates.click = function (mouseX, mouseY, button)
                     arrGates[i].input.b.clicked = true;
                     portUpdate = true;
                 else
-                    
-                    if arrGates[i].input.a.connect < firstStartBlockName then
-                        if arrGates[getindex(arrGates[i].input.b.connect)].type ~= "node" then
-                            tools.delete(arrGates[i].name,"b");
+
+                    if arrGates[i].input.b.connect ~= nil then
+                        if arrGates[i].input.b.connect < firstStartBlockName then
+                            if arrGates[getindex(arrGates[i].input.b.connect)].type ~= "node" then
+                                tools.delete(arrGates[i].name,"b");
+                            else
+                                tools.deleteNodeWire(arrGates[i].input.b.connect,tools.findNodeOutputIndex(arrGates[i].input.b.connect,arrGates[i].name,"b"));
+                            end
                         else
-                            tools.deleteNodeWire(arrGates[i].input.b.connect,tools.findNodeOutputIndex(arrGates[i].input.b.connect,arrGates[i].name,"b"));
+                            tools.delete(arrGates[i].name,"b");   
                         end
-                    else
-                        tools.delete(arrGates[i].name,"b");   
                     end
+                    
+                    
 
                     
                 end
@@ -660,8 +661,6 @@ gates.simulate = function ()
         if (arrGates[b].type ~= "node") then
 
             if arrGates[b].output.q.connect.name ~= nil then
-
-                print(arrGates[b].output.q.connect.name);
 
                 if arrGates[b].output.q.connect.name < goalblockFirstStart then
 

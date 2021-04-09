@@ -46,6 +46,7 @@ startingBlock.draw = function ()
             
             
             love.graphics.circle("fill", arrStartBlock[i].coords.x + arrStartBlock[i].output[b].coords.x, arrStartBlock[i].coords.y+arrStartBlock[i].dimensions.height/2,20)
+            love.graphics.print(tools.numTolet(b),arrStartBlock[i].coords.x + arrStartBlock[i].output[b].coords.x,arrStartBlock[i].coords.y+arrStartBlock[i].dimensions.height/2 + 30);
             love.graphics.setColor(0, 1, 0, 1);
 
             if(arrStartBlock[i].output[b].clicked)then
@@ -124,6 +125,29 @@ startingBlock.findPortThatConnect = function (gateName)
         end
     end
     
+end
+
+startingBlock.getOutputs = function ()
+
+    local a = {};
+
+    for i = 1, #arrStartBlock[1].output do
+        a[#arrStartBlock[1].output - i + 1] = arrStartBlock[1].output[i].status
+    end
+
+    return a;
+    
+end
+
+startingBlock.setOutputs = function (arr)
+
+    for i = 1, #arrStartBlock[1].output do
+        if arr[#arrStartBlock[1].output - i + 1] == 1 then
+            arrStartBlock[1].output[i].status = true;
+        else
+            arrStartBlock[1].output[i].status = false;
+        end
+    end
 end
 
 

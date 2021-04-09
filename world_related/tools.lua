@@ -234,6 +234,86 @@ tools.deleteGate = function (gateName)
     
 end
 
+tools.pow = function (base,exponential)
+    
+    local a = base;
+    
+    for i = 1, (exponential - 1) do
+        a = a*base
+    end
+
+    if exponential == 0 then
+        a = 1;
+    end
+
+    return a;
+
+end
+
+tools.binaryToDecimal = function (arr)
+
+    local a = 0;
+
+
+    if arr[1] == 1 or arr[1] == 0 then
+        for i = 1, #arr do
+            if arr[i] == 1 then
+                a = a + tools.pow(2,(i-1));
+            end
+        end
+    else
+        for i = 1, #arr do
+            if arr[i] then
+                a = a + tools.pow(2,(i-1));
+            end
+        end    
+    end
+    
+
+    return a;
+    
+end
+
+tools.decimalToBinary = function (dec,nDig)
+
+    local exp = 0;
+    local bin = {};
+
+    for i = 1, nDig do
+        bin[i] = 0;
+    end
+
+    while tools.pow(2,exp) < dec do
+        exp = exp + 1;
+    end
+
+    for i = exp, 0, -1 do
+        if ((dec / tools.pow(2,i)) >= 1) then
+            bin[i + 1] = 1;
+            dec = dec - tools.pow(2,i)
+        end
+    end
+
+    return(bin);
+    
+end
+
+tools.findBinaryDigit = function (dec,dig)
+
+    local bin = tools.decimalToBinary(dec,dig);
+
+    return bin[dig];
+    
+end
+
+tools.numTolet = function (num)
+
+    local alphabet = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
+
+    return alphabet[num];
+    
+end
+
 
 
 return tools
