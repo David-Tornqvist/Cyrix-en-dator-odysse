@@ -65,10 +65,14 @@ goalblock.load = function ()
                         portUpdate = true;
                     else
                         if iGoalblock.entity.inputs[b].connect ~= nil then
-                            if arrGates[getindex(iGoalblock.entity.inputs[b].connect)].type ~= "node" then
-                                tools.delete(iGoalblock.entity.name,b);
+                            if iGoalblock.entity.inputs[b].connect < firstStartBlockName then
+                                if arrGates[getindex(iGoalblock.entity.inputs[b].connect)].type ~= "node" then
+                                    tools.delete(iGoalblock.entity.name,b);
+                                else
+                                    tools.deleteNodeWire(iGoalblock.entity.inputs[b].connect,tools.findNodeOutputIndex(iGoalblock.entity.inputs[b].connect,iGoalblock.entity.name));
+                                end 
                             else
-                                tools.deleteNodeWire(iGoalblock.entity.inputs[b].connect,tools.findNodeOutputIndex(iGoalblock.entity.inputs[b].connect,iGoalblock.entity.name));
+                                tools.delete(iGoalblock.entity.name,b);
                             end
                         end
                     end

@@ -202,7 +202,7 @@ wires.connect = function ()
                     tools.delete(gatepair.output.gateName,gatepair.input.port);
                     iGoalblock.entity.inputs[gatepair.input.port].connect = gatepair.output.gateName;
                 else
-                    tools.delete(gatepair.output.gateName,starting_block.findPortThatConnect(gatepair.input.gateName));
+                    --tools.delete(gatepair.output.gateName,starting_block.findPortThatConnect(gatepair.input.gateName));
                     iGoalblock.entity.inputs[gatepair.input.port].connect = gatepair.output.gateName;    
 
                 end
