@@ -628,13 +628,26 @@ gates.simulate = function ()
 
         if (arrGates[b].type ~= "node") then
 
-            if(arrGates[b].output.q.connect.port == "a") then
-                arrGates[getindex(arrGates[b].output.q.connect.name)].input.a.status = arrGates[b].output.q.status;
-            end  
-    
-            if(arrGates[b].output.q.connect.port == "b") then
-                arrGates[getindex(arrGates[b].output.q.connect.name)].input.b.status = arrGates[b].output.q.status;
-            end    
+            if arrGates[b].output.q.connect.name ~= nil then
+
+                print(arrGates[b].output.q.connect.name);
+
+                if arrGates[b].output.q.connect.name < goalblockFirstStart then
+
+                    if(arrGates[b].output.q.connect.port == "a") then
+                        arrGates[getindex(arrGates[b].output.q.connect.name)].input.a.status = arrGates[b].output.q.status;
+                    end  
+            
+                    if(arrGates[b].output.q.connect.port == "b") then
+                        arrGates[getindex(arrGates[b].output.q.connect.name)].input.b.status = arrGates[b].output.q.status;
+                    end   
+                   
+                else
+                    
+                    iGoalblock.entity.inputs[arrGates[b].output.q.connect.port].status = arrGates[b].output.q.status;        
+                end 
+            end
+ 
         end
 
         if (arrGates[b].type == "node") then
