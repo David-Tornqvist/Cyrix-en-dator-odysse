@@ -133,6 +133,7 @@ tools.delete = function (gateName,port)
          
             
             iGoalblock.entity.inputs[port].connect = nil;
+            iGoalblock.entity.inputs[port].status = false;
             
         end
     end
@@ -152,9 +153,8 @@ tools.deleteNodeWire = function (nodeName,portNum)
                 arrGates[getindex(arrGates[getindex(nodeName)].output.q.connect[portNum].name)].input.b.status = false;
             end
         else
-            local index = iGoalblock.findPortThatConnect(nodeName);
-            iGoalblock.entity.inputs[index].connect = nil;
-            iGoalblock.entity.inputs[index].status = false;
+            iGoalblock.entity.inputs[portNum].connect = nil;
+            iGoalblock.entity.inputs[portNum].status = false;
         end
        
                     
@@ -176,11 +176,18 @@ tools.deleteNodeOutputs = function (gateName)
     end
 end 
 
-tools.findNodeOutputIndex = function (nodeName,gateName)
+tools.findNodeOutputIndex = function (nodeName,gateName,port)
     for i = 1, #arrGates[getindex(nodeName)].output.q.connect do
-        if(arrGates[getindex(nodeName)].output.q.connect[i].name == gateName) then
-            return i;
+        if gateName < goalblockFirstStart then
+            if(arrGates[getindex(nodeName)].output.q.connect[i].name == gateName) and (arrGates[getindex(nodeName)].output.q.connect[i].port == port)  then
+                return i;
+            end
+        else
+            if ((arrGates[getindex(nodeName)].output.q.connect[i].name == gateName) and (arrGates[getindex(nodeName)].output.q.connect[i].port == port)) then
+                return i;
+            end    
         end
+        
     end
 end
 
@@ -193,7 +200,7 @@ tools.deleteGate = function (gateName)
             if arrGates[getindex(arrGates[getindex(gateName)].input.a.connect)].type ~= "node" then
                 tools.delete(gateName,"a");
             else
-                tools.deleteNodeWire(arrGates[getindex(gateName)].input.a.connect, tools.findNodeOutputIndex(arrGates[getindex(gateName)].input.a.connect, gateName));        
+                tools.deleteNodeWire(arrGates[getindex(gateName)].input.a.connect, tools.findNodeOutputIndex(arrGates[getindex(gateName)].input.a.connect, gateName,"a"));        
             end
         else
             tools.delete(gateName,"a");    
@@ -207,7 +214,7 @@ tools.deleteGate = function (gateName)
             if arrGates[getindex(arrGates[getindex(gateName)].input.b.connect)].type ~= "node" then
                 tools.delete(gateName,"b");
             else
-                tools.deleteNodeWire(arrGates[getindex(gateName)].input.b.connect, tools.findNodeOutputIndex(arrGates[getindex(gateName)].input.b.connect, gateName));        
+                tools.deleteNodeWire(arrGates[getindex(gateName)].input.b.connect, tools.findNodeOutputIndex(arrGates[getindex(gateName)].input.b.connect, gateName,"b"));        
             end 
         else
             tools.delete(gateName,"b");

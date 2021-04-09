@@ -55,7 +55,21 @@ gates.click = function (mouseX, mouseY, button)
                     arrGates[i].input.a.clicked = true;
                     portUpdate = true;
                 else
-                    tools.delete(arrGates[i].name,"a");
+                
+                    if arrGates[i].input.a.connect < firstStartBlockName then
+                        if arrGates[getindex(arrGates[i].input.a.connect)].type ~= "node" then
+                            tools.delete(arrGates[i].name,"a");
+                        else
+                            tools.deleteNodeWire(arrGates[i].input.a.connect,tools.findNodeOutputIndex(arrGates[i].input.a.connect,arrGates[i].name,"a"));
+                        end
+                    else
+                        tools.delete(arrGates[i].name,"a");    
+                    end
+                    
+                    
+                    
+                   
+                    
                 end
             end        
 
@@ -67,7 +81,18 @@ gates.click = function (mouseX, mouseY, button)
                     arrGates[i].input.b.clicked = true;
                     portUpdate = true;
                 else
-                    tools.delete(arrGates[i].name,"b");        
+                    
+                    if arrGates[i].input.a.connect < firstStartBlockName then
+                        if arrGates[getindex(arrGates[i].input.b.connect)].type ~= "node" then
+                            tools.delete(arrGates[i].name,"b");
+                        else
+                            tools.deleteNodeWire(arrGates[i].input.b.connect,tools.findNodeOutputIndex(arrGates[i].input.b.connect,arrGates[i].name,"b"));
+                        end
+                    else
+                        tools.delete(arrGates[i].name,"b");   
+                    end
+
+                    
                 end
             end 
 
@@ -537,13 +562,19 @@ gates.simulate = function ()
         for b = 1, #arrStartBlock[i].output do
             if(arrStartBlock[i].output[b].connect.name ~= nil) then
 
-                if(arrStartBlock[i].output[b].connect.port == "a") then
-                    arrGates[getindex(arrStartBlock[i].output[b].connect.name)].input.a.status = arrStartBlock[i].output[b].status;
+                if arrStartBlock[i].output[b].connect.name < goalblockFirstStart then
+                    if(arrStartBlock[i].output[b].connect.port == "a") then
+                        arrGates[getindex(arrStartBlock[i].output[b].connect.name)].input.a.status = arrStartBlock[i].output[b].status;
+                    end
+    
+                    if(arrStartBlock[i].output[b].connect.port == "b") then
+                        arrGates[getindex(arrStartBlock[i].output[b].connect.name)].input.b.status = arrStartBlock[i].output[b].status;
+                    end
+                else
+                    iGoalblock.entity.inputs[arrStartBlock[i].output[b].connect.port].status = arrStartBlock[i].output[b].status
                 end
 
-                if(arrStartBlock[i].output[b].connect.port == "b") then
-                    arrGates[getindex(arrStartBlock[i].output[b].connect.name)].input.b.status = arrStartBlock[i].output[b].status;
-                end    
+                
             end    
         end
     end
@@ -653,18 +684,21 @@ gates.simulate = function ()
         if (arrGates[b].type == "node") then
 
             for c = 1, #arrGates[b].output.q.connect do
-                
-                if(arrGates[b].output.q.connect[c].port == "a") then
-                    arrGates[getindex(arrGates[b].output.q.connect[c].name)].input.a.status = arrGates[b].output.q.status;
-                end 
 
-                if(arrGates[b].output.q.connect[c].port == "b") then
-                    arrGates[getindex(arrGates[b].output.q.connect[c].name)].input.b.status = arrGates[b].output.q.status;
-                end 
-
+                if arrGates[b].output.q.connect[c].name ~= nil then
+                    if arrGates[b].output.q.connect[c].name < goalblockFirstStart then
+                        if(arrGates[b].output.q.connect[c].port == "a") then
+                            arrGates[getindex(arrGates[b].output.q.connect[c].name)].input.a.status = arrGates[b].output.q.status;
+                        end 
+        
+                        if(arrGates[b].output.q.connect[c].port == "b") then
+                            arrGates[getindex(arrGates[b].output.q.connect[c].name)].input.b.status = arrGates[b].output.q.status;
+                        end 
+                    else
+                        iGoalblock.entity.inputs[arrGates[b].output.q.connect[c].port].status = arrGates[b].output.q.status;    
+                    end 
+                end
             end
-            
-            
         end
         
 

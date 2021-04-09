@@ -69,7 +69,8 @@ goalblock.load = function ()
                                 if arrGates[getindex(iGoalblock.entity.inputs[b].connect)].type ~= "node" then
                                     tools.delete(iGoalblock.entity.name,b);
                                 else
-                                    tools.deleteNodeWire(iGoalblock.entity.inputs[b].connect,tools.findNodeOutputIndex(iGoalblock.entity.inputs[b].connect,iGoalblock.entity.name));
+                                    print(tools.findNodeOutputIndex(iGoalblock.entity.inputs[b].connect,iGoalblock.entity.name,b));
+                                    tools.deleteNodeWire(iGoalblock.entity.inputs[b].connect,tools.findNodeOutputIndex(iGoalblock.entity.inputs[b].connect,iGoalblock.entity.name,b));
                                 end 
                             else
                                 tools.delete(iGoalblock.entity.name,b);
