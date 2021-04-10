@@ -14,8 +14,7 @@ SetOutPath $INSTDIR
 # define what to install and place it in the output path
 
 File changes.txt
-File cyrix_a_computer_odyssus.exe
-File cyrix.love
+File cyrix.exe
 File game.ico
 File license.txt
 File love.dll
@@ -30,6 +29,7 @@ File OpenAL32.dll
 File readme.txt
 File SDL2.dll
 
-CreateShortcut "$DESKTOP\cyrix.lnk" "$PROGRAMFILES\cyrix\cyrix_a_computer_odyssus.exe"
+CreateShortcut "$DESKTOP\cyrix.lnk" "$PROGRAMFILES\cyrix\cyrix.exe"
+CreateShortcut "$SMPROGRAMS\cyrix.lnk" "$PROGRAMFILES\cyrix\cyrix.exe"
 
 SectionEnd
