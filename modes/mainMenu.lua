@@ -25,6 +25,10 @@ loadMainMenu = function ()
     end
 
     love.mousemoved = function (x, y)
+
+        x = x / screenScale;
+        y = y / screenScale;
+
         if x > 886 and x < 948 and
            y > 502 and y < 532 then
             spelaHover = true;
@@ -56,6 +60,9 @@ loadMainMenu = function ()
     end
 
     love.mousepressed = function (x,y)
+
+        x = x / screenScale;
+        y = y / screenScale;
 
         if x > 886 and x < 948 and
            y > 502 and y < 532 then

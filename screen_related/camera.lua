@@ -78,7 +78,7 @@ end
 
 local function updatePan ()
 
-    local mouse = {x = love.mouse.getX(), y = love.mouse.getY();}; 
+    local mouse = {x = love.mouse.getX() / screenScale, y = love.mouse.getY() / screenScale;}; 
 
     if(isPan) then
         translate.x = translate.x + (mouse.x - prevX)/screenScale/zoom;

@@ -24,6 +24,10 @@ gameOver.load = function ()
     end
 
     love.mousemoved = function (x,y)
+
+        x = x / screenScale;
+        y = y / screenScale;
+
         if x > 845 and x < 1045 and
            y > 600 and y < 630 then
             menuHover = true;

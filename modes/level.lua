@@ -24,12 +24,13 @@ level.load = function (start,goal)
 
     function love.mousepressed(mousex, mousey, button)
 
+        menu.click(mousex, mousey, button);
+
         portUpdate = false;
     
         starting_block.click(mousey, mousey, button);
         iGoalblock.click(button);
     
-        menu.click(mousex, mousey, button);
         gates.click(mousex, mousey, button);
         wires.connect(); 
     
@@ -59,6 +60,9 @@ level.load = function (start,goal)
     end
 
     love.mousemoved = function (x,y)
+
+        x = x / screenScale;
+        y = y / screenScale;
 
 
         for i = 1, #arrGates do
