@@ -21,12 +21,12 @@ gates.load = function ()
 
     arrGates = {};
 
-    andGateImg = {file = love.graphics.newImage("graphics/And_gate.png"), width = 1080, height = 1080};
-    orGateImg = {file = love.graphics.newImage("graphics/Or_gate.png"), width = 1080, height = 1080};
-    norGateImg = {file = love.graphics.newImage("graphics/Nor_gate.png"), width = 1080, height = 1080};
-    nandGateImg = {file = love.graphics.newImage("graphics/Nand_gate.png"), width = 1080, height = 1080};
-    xorGateImg = {file = love.graphics.newImage("graphics/Xor_gate.png"), width = 1080, height = 1080};
-    xnorGateImg = {file = love.graphics.newImage("graphics/Xnor_gate.png"), width = 1080, height = 1080};
+    andGateImg = {file = love.graphics.newImage("graphics/and_gate.png"), width = 1080, height = 1080};
+    orGateImg = {file = love.graphics.newImage("graphics/or_gate.png"), width = 1080, height = 1080};
+    norGateImg = {file = love.graphics.newImage("graphics/nor_gate.png"), width = 1080, height = 1080};
+    nandGateImg = {file = love.graphics.newImage("graphics/nand_gate.png"), width = 1080, height = 1080};
+    xorGateImg = {file = love.graphics.newImage("graphics/xor_gate.png"), width = 1080, height = 1080};
+    xnorGateImg = {file = love.graphics.newImage("graphics/xnor_gate.png"), width = 1080, height = 1080};
     notGateImg = {file = love.graphics.newImage("graphics/not_gate.png"), width = 1080, height = 1080};
 
     gateName = 1;

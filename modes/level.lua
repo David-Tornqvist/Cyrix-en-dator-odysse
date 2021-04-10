@@ -5,7 +5,7 @@ local wires = require "world_related.wires";
 local starting_block = require "world_related.starting_block";
 local tools = require "world_related.tools";
 local goalblock = require "world_related.goal_block";
-local gameOver = require "modes.gameOver"
+local gameOver = require "modes.gameover"
 
 local level = {};
 

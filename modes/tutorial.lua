@@ -23,7 +23,7 @@ local tutorial = {}
         love.graphics.setColor(1,1,1,1);
 
         love.draw = function ()
-            love.graphics.draw(love.graphics.newImage("graphics/tutorial/Slide_" .. slide .. ".png"),0,0,0,0.5,0.5);
+            love.graphics.draw(love.graphics.newImage("graphics/tutorial/slide_" .. slide .. ".png"),0,0,0,0.5,0.5);
         end
 
     end

@@ -5,7 +5,7 @@ local wires = require "world_related.wires";
 local starting_block = require "world_related.starting_block";
 local tools = require "world_related.tools";
 local goalblock = require "world_related.goal_block";
-local MainMenu = require "modes.mainMenu";
+local MainMenu = require "modes.mainmenu";
 
 love.load = function()
 
@@ -19,7 +19,7 @@ love.load = function()
     camera.load();
     loadMainMenu();
 
-    soundtack = love.audio.newSource("audio/FreedomCrags.mp3", "stream"); 
+    soundtack = love.audio.newSource("audio/freedomCrags.mp3", "stream"); 
     soundtack:setLooping(true);
     soundtack:play();
 

@@ -1,5 +1,5 @@
 local level = require "modes.level";
-local frenzyMode = require "modes.frenzyMode"
+local frenzyMode = require "modes.frenzymode"
 local tutorial = require "modes.tutorial"
 
 loadMainMenu = function ()
