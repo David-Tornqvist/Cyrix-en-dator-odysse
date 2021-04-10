@@ -314,6 +314,13 @@ tools.numTolet = function (num)
     
 end
 
+tools.drawScore = function ()
+    love.graphics.print("Score: " .. score, 0, 300);
+end
+
+tools.drawTime = function ()
+    love.graphics.print("Tid: " .. maxtime - math.floor(time), 0, 320);
+end
 
 
 return tools
