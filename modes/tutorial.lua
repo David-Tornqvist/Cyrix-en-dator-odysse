@@ -2,6 +2,8 @@ local tutorial = {}
 
     tutorial.load = function ()
 
+        tutImage = love.graphics.newImage("graphics/tutorial/slide_1.png")
+
         slide = 1;
         
         love.mousemoved = function ()
@@ -9,6 +11,7 @@ local tutorial = {}
 
         love.mousepressed = function ()
             slide = slide + 1;
+            tutImage = love.graphics.newImage("graphics/tutorial/slide_" .. slide .. ".png");
             if slide == 15 then
                 loadMainMenu();
             end
@@ -24,7 +27,7 @@ local tutorial = {}
 
         love.draw = function ()
             love.graphics.scale(screenScale, screenScale);
-            love.graphics.draw(love.graphics.newImage("graphics/tutorial/slide_" .. slide .. ".png"),0,0,0,0.5,0.5);
+            love.graphics.draw(tutImage,0,0,0,0.5,0.5);
         end
 
     end
