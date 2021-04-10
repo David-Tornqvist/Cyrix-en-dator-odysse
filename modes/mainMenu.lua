@@ -101,6 +101,8 @@ loadMainMenu = function ()
         --love.graphics.setColor(1,1,1,1);
         --love.graphics.rectangle("fill", 1800,50,70,30);
 
+        love.graphics.scale(screenScale, screenScale);
+
         love.graphics.setColor(0,1,0,1);
         love.graphics.print("Cyrix, en dator odyssé",650,200,0,4,4);
 

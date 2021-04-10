@@ -34,6 +34,8 @@ gameOver.load = function ()
 
     love.draw = function ()
 
+        love.graphics.scale(screenScale, screenScale);
+
         love.graphics.setColor(0,1,0,1);
         love.graphics.print("Tiden tog slut!",750,200,0,4,4);
         love.graphics.print("score: " .. score, 870, 400, 0, 2, 2);
