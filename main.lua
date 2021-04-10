@@ -17,7 +17,10 @@ love.load = function()
     end
     
     camera.load();
+    music = true;
+
     loadMainMenu();
+
 
     soundtack = love.audio.newSource("audio/freedomCrags.mp3", "stream"); 
     soundtack:setLooping(true);

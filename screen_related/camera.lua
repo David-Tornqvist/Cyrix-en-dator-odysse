@@ -3,10 +3,10 @@ local camera = {};
 
 
 camera.load = function ()
-    
-    love.window.setMode(love.graphics.getWidth(), love.graphics.getWidth()*9/16, {fullscreen = true});
-
     local gameWidth = 1920;
+    
+    love.window.setMode(gameWidth, gameWidth*9/16, {fullscreen = true});
+
     screenScale = (love.graphics.getWidth()/gameWidth);
     zoom = 1;
     translate = {x = 0, y = 0};

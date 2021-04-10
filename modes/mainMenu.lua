@@ -7,7 +7,6 @@ loadMainMenu = function ()
     local tutorialHover = false;
     local spelaHover = false;
     local avslutaHover = false;
-    local music = true;
     local musicHover = false;
 
     local exit = function ()
