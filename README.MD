@@ -4,6 +4,6 @@ Bygg så många logiska kretsar du hinner på 5 minuter och försök få ett så
 Kolla gärna på tutorialen i spelet om du sitter fast.
 
 Länk till installer:
-https://drive.google.com/file/d/1LOm2vZA7mwzVAOk6xn6YhJiiRQE3uzDr/view?usp=sharing
+https://drive.google.com/file/d/1U1SeYAz5GOJ5F0z2PKbnstlT1ghHi1PD/view?usp=sharing
 
 Programmering, musik och grafik: David Törnqvist
