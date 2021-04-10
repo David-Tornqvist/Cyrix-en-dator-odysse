@@ -11,10 +11,14 @@ local tutorial = {}
 
         love.mousepressed = function ()
             slide = slide + 1;
-            tutImage = love.graphics.newImage("graphics/tutorial/slide_" .. slide .. ".png");
             if slide == 15 then
                 loadMainMenu();
             end
+            if slide < 15 then
+                tutImage = love.graphics.newImage("graphics/tutorial/slide_" .. slide .. ".png");
+            end
+           
+            
         end
 
         love.keypressed = function (key)
