@@ -23,7 +23,7 @@ startingBlock.create = function (x, y, nOutput)
 
 
     for i = 1, nOutput do
-        arrStartBlock[#arrStartBlock].output[i] = {connect = {name = nil, port = nil}, coords = {x = i*50, y = -40}, status = false, clicked = false};
+        arrStartBlock[#arrStartBlock].output[i] = {connect = {name = nil, port = nil}, coords = {x = i*50, y = -40}, status = false, clicked = false, hover = false};
     end
 end
 
@@ -49,7 +49,7 @@ startingBlock.draw = function ()
             love.graphics.print(tools.numTolet(b),arrStartBlock[i].coords.x + arrStartBlock[i].output[b].coords.x,arrStartBlock[i].coords.y+arrStartBlock[i].dimensions.height/2 + 30);
             love.graphics.setColor(0, 1, 0, 1);
 
-            if(arrStartBlock[i].output[b].clicked)then
+            if(arrStartBlock[i].output[b].clicked or arrStartBlock[i].output[b].hover)then
                 love.graphics.setColor(0, 0, 1, 1);
                 love.graphics.circle("line", arrStartBlock[i].coords.x + arrStartBlock[i].output[b].coords.x, arrStartBlock[i].coords.y + arrStartBlock[i].output[b].coords.y, 20);
                 love.graphics.setColor(0, 1, 0, 1);

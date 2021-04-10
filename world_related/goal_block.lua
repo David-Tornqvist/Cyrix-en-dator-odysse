@@ -17,7 +17,7 @@ goalblock.load = function ()
                                 truthTable = {}};
             
             for i = 1, nInput do
-                iGoalblock.entity.inputs[i] = {connect = nil, coords = {x = i*50, y = 140}, status = false, clicked = false, correct = false};
+                iGoalblock.entity.inputs[i] = {connect = nil, coords = {x = i*50, y = 140}, status = false, clicked = false, hover = false, correct = false};
                 iGoalblock.entity.truthTable[i] = {};
                 for b = 0, tools.pow(2,#arrStartBlock[1].output) - 1 do
                     if love.math.random() > 0.5 then
@@ -84,7 +84,7 @@ goalblock.load = function ()
 
                 love.graphics.setColor(0, 1, 0, 1);
 
-                if(iGoalblock.entity.inputs[b].clicked)then
+                if(iGoalblock.entity.inputs[b].clicked or iGoalblock.entity.inputs[b].hover)then
 
                     love.graphics.setColor(0, 0, 1, 1);
                     love.graphics.circle("line", iGoalblock.entity.coords.x + iGoalblock.entity.inputs[b].coords.x, iGoalblock.entity.coords.y + iGoalblock.entity.inputs[b].coords.y, 20);

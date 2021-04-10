@@ -368,15 +368,15 @@ gates.draw = function ()
 
             end
     
-            if(arrGates[i].input.a.clicked) then
+            if(arrGates[i].input.a.clicked or arrGates[i].input.a.hover) then
                 love.graphics.circle("line", arrGates[i].x + arrGates[i].input.a.coords.x, arrGates[i].y + arrGates[i].input.a.coords.y, 20);
             end
 
-            if (arrGates[i].input.b.clicked) then  
+            if (arrGates[i].input.b.clicked or arrGates[i].input.b.hover) then  
                 love.graphics.circle("line", arrGates[i].x + arrGates[i].input.b.coords.x, arrGates[i].y + arrGates[i].input.b.coords.y, 20);
             end    
             
-            if (arrGates[i].output.q.clicked) then   
+            if (arrGates[i].output.q.clicked or arrGates[i].output.q.hover) then   
                 love.graphics.circle("line", arrGates[i].x + arrGates[i].output.q.coords.x, arrGates[i].y + arrGates[i].output.q.coords.y, 20);
                 
             end     
@@ -537,6 +537,10 @@ gates.create = function (type)
             rank = 1, --unused variable 
             name = gateName};        
     end
+
+    arrGates[#arrGates].input.a.hover = false;
+    arrGates[#arrGates].input.b.hover = false;
+    arrGates[#arrGates].output.q.hover = false; 
 
     gateName = gateName + 1;
 
