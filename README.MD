@@ -1,7 +1,6 @@
-#Cyrix, a computer odyssey
+Cyrix, en dator odyssé
 
-This is a game aimed at teaching the basics of how computers work in a fun and interactive way.
+Bygg så många logiska kretsar du hinner på 5 minuter och försök få ett så högt score som möjligt!
+Kolla gärna på tutorialen i spelet om du sitter fast.
 
-Look in the tutorial if you need help
-
-/David Törnqvist
+Programmering, musik och grafik: David Törnqvist
