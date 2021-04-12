@@ -11,7 +11,7 @@ frenzyMode.load = function ()
     
 end
 
-frenzyMode_update = function ()
+frenzyModeUpdate = function ()
 
     levelComplete = false;
     score = score + 1;

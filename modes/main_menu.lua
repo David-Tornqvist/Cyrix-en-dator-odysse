@@ -1,5 +1,5 @@
 local level = require "modes.level";
-local frenzyMode = require "modes.frenzymode"
+local frenzyMode = require "modes.frenzy_mode"
 local tutorial = require "modes.tutorial"
 
 loadMainMenu = function ()
@@ -10,11 +10,12 @@ loadMainMenu = function ()
     local musicHover = false;
 
     local exit = function ()
-        love.filesystem.write("hScore", highscore);
+        love.filesystem.write("hScore", highScore);
         love.event.quit(); 
     end
 
     local toggleMusic = function ()
+
         if music == true then
             soundtack:pause()
             music = false;
@@ -22,6 +23,7 @@ loadMainMenu = function ()
             soundtack:play();
             music = true;    
         end
+
     end
 
     love.mousemoved = function (x, y)
@@ -91,12 +93,9 @@ loadMainMenu = function ()
             toggleMusic();
 
         end
-
     end
 
     function love.keypressed(key)
-
-        
 
         if (key == "escape") then 
             exit();
@@ -105,8 +104,6 @@ loadMainMenu = function ()
     end
 
     love.draw = function ()
-        --love.graphics.setColor(1,1,1,1);
-        --love.graphics.rectangle("fill", 1800,50,70,30);
 
         love.graphics.scale(screenScale, screenScale);
 
@@ -122,12 +119,14 @@ loadMainMenu = function ()
         if spelaHover then
             love.graphics.setColor(1,0,0,1);
         end
+
         love.graphics.print("spela",886,500,0,2,2);
         love.graphics.setColor(0,1,0,1);
 
         if avslutaHover then
             love.graphics.setColor(1,0,0,1);
         end
+
         love.graphics.print("avsluta",886,900,0,2,2);
         love.graphics.setColor(0,1,0,1);
 
@@ -144,10 +143,8 @@ loadMainMenu = function ()
         love.graphics.print("musik",1800,50,0,2,2);
         love.graphics.setColor(0,1,0,1);
 
-
-
-
-        love.graphics.print("Highscore: " .. highscore, 845, 600, 0, 2, 2);
+        love.graphics.print("highScore: " .. highScore, 845, 600, 0, 2, 2);
         love.graphics.print("Grafik, programmering och musik: David Törnqvist", 0, 1060);
+
     end
 end

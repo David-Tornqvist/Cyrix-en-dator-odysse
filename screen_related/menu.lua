@@ -41,8 +41,6 @@ local buttons = {
     end},
 };
 
-
-
 local function drawMenuElements(button)
 
     if(button.graphics.shape == "circle") then
@@ -71,7 +69,6 @@ local function drawMenuElements(button)
     end
 end
 
-
 --returns wether or not the button at [i] was clicked
 local function clickTerm(mouseX, mouseY, button, i)
    
@@ -80,25 +77,24 @@ local function clickTerm(mouseX, mouseY, button, i)
 
 end
 
-
-
 menu.click = function (mouseX, mouseY, button)
     
     for i = 1, #buttons do
+
         if(clickTerm(mouseX, mouseY, button, i)) then
             buttons[i].funct();
             portUpdate = true;
+
         end    
     end
 end
-
-
 
 menu.draw = function ()
     
     for i = 1, #buttons do
         drawMenuElements(buttons[i]);
     end
+
 end
 
 return menu;

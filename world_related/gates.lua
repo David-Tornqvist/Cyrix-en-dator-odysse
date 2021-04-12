@@ -1,9 +1,6 @@
 local camera = require "screen_related.camera";
 local tools = require "world_related.tools"
 
-
-
-
 local gates = {};
 
 getindex = function (name)
@@ -14,8 +11,6 @@ getindex = function (name)
         end        
     end
 end
-
-
 
 gates.load = function ()
 
@@ -31,16 +26,12 @@ gates.load = function ()
 
     gateName = 1;
 
-    
-
 end
-
-
 
 gates.click = function (mouseX, mouseY, button)
 
-    local x =  camera.screenToWorldcords(mouseX, mouseY).x;
-    local y =  camera.screenToWorldcords(mouseX, mouseY).y;
+    local x =  camera.screenToWorldCoords(mouseX, mouseY).x;
+    local y =  camera.screenToWorldCoords(mouseX, mouseY).y;
     
     --loops through all currently created gates
     for i = #arrGates, 1, -1 do
@@ -90,10 +81,6 @@ gates.click = function (mouseX, mouseY, button)
                             tools.delete(arrGates[i].name,"b");   
                         end
                     end
-                    
-                    
-
-                    
                 end
             end 
 
@@ -118,7 +105,6 @@ gates.click = function (mouseX, mouseY, button)
                 
                         arrGates[i].clicked = true;
                         
-    
                     end
 
                     arrGates[i].clickedOffsetX = x - arrGates[i].x;
@@ -133,7 +119,6 @@ gates.click = function (mouseX, mouseY, button)
                 break   
                       
             end   
-
 
         elseif(arrGates[i].type == "not") then
             if( button == 2 and x > (arrGates[i].x + arrGates[i].input.a.coords.x - 10) and x < (arrGates[i].x + arrGates[i].input.a.coords.x + 10) 
@@ -157,8 +142,7 @@ gates.click = function (mouseX, mouseY, button)
                 else
                     tools.delete(arrGates[i].name,"q");
                 end
-               
-                
+  
             elseif( button == 1 and x > arrGates[i].x and x < (arrGates[i].x + arrGates[i].width) and y > arrGates[i].y and y < (arrGates[i].y + arrGates[i].height)) then
             
                 if isDelete == false then
@@ -180,8 +164,6 @@ gates.click = function (mouseX, mouseY, button)
 
             end
 
-
-
         elseif(arrGates[i].type == "node") then
             
             if( button == 1 and x > arrGates[i].x and x < (arrGates[i].x + arrGates[i].width) and y > arrGates[i].y and y < (arrGates[i].y + arrGates[i].height)) then
@@ -194,19 +176,17 @@ gates.click = function (mouseX, mouseY, button)
                     end
     
                     arrGates = gates.setFirst(arrGates, i);
+                    
                 else
                     tools.deleteGate(arrGates[i].name);          
                 end
-                
                 
                 break
             
             elseif ( button == 2 and x > arrGates[i].x and x < (arrGates[i].x + arrGates[i].width) and y > arrGates[i].y and y < (arrGates[i].y + arrGates[i].height)) then
                 
-                
-
                 local inputHasBeenClicked = false;
-                local outputHasBeenclicked = false;
+                local outputHasBeenClicked = false;
 
                 for b = 1, #arrGates do
 
@@ -216,7 +196,7 @@ gates.click = function (mouseX, mouseY, button)
                         end
     
                         if(arrGates[b].output.q.clicked) then
-                            outputHasBeenclicked = true;    
+                            outputHasBeenClicked = true;    
                         end
                     end
                 end
@@ -224,25 +204,24 @@ gates.click = function (mouseX, mouseY, button)
                 for c = 1, #arrStartBlock do
                     for d = 1, #arrStartBlock[c].output do
                         if(arrStartBlock[c].output[d].clicked) then
-                           outputHasBeenclicked = true; 
+                           outputHasBeenClicked = true; 
                         end
                     end
                 end
 
-                for d = 1, #iGoalblock.entity.inputs do
-                    if(iGoalblock.entity.inputs[d].clicked) then
+                for d = 1, #iGoalBlock.entity.inputs do
+                    if(iGoalBlock.entity.inputs[d].clicked) then
                        inputHasBeenClicked = true; 
                     end
                 end
 
-                if(outputHasBeenclicked) then
+                if(outputHasBeenClicked) then
                     arrGates[i].input.a.clicked = true;
                 end
 
                 if(inputHasBeenClicked) then
                     arrGates[i].output.q.clicked = true;
                 end
-
             end
         end
     end
@@ -267,8 +246,8 @@ gates.IOrelease = function (IO)
             end
         end 
 
-        for b = 1, #iGoalblock.entity.inputs do
-            iGoalblock.entity.inputs[b].clicked = false;
+        for b = 1, #iGoalBlock.entity.inputs do
+            iGoalBlock.entity.inputs[b].clicked = false;
         end
     end
 
@@ -278,8 +257,8 @@ gates.IOrelease = function (IO)
             arrGates[i].input.a.clicked = false;
             arrGates[i].input.b.clicked = false;
 
-            for b = 1, #iGoalblock.entity.inputs do
-                iGoalblock.entity.inputs[b].clicked = false;
+            for b = 1, #iGoalBlock.entity.inputs do
+                iGoalBlock.entity.inputs[b].clicked = false;
             end
 
         end
@@ -317,8 +296,8 @@ end
 
 gates.update = function ()
     
-    local x = camera.screenToWorldcords(love.mouse.getX(),love.mouse.getY()).x;
-    local y = camera.screenToWorldcords(love.mouse.getX(),love.mouse.getY()).y;
+    local x = camera.screenToWorldCoords(love.mouse.getX(),love.mouse.getY()).x;
+    local y = camera.screenToWorldCoords(love.mouse.getX(),love.mouse.getY()).y;
 
     for i = 1, #arrGates do
         if(arrGates[i].clicked) then
@@ -404,8 +383,6 @@ gates.create = function (type)
             rank = 1, --unused variable 
             name = gateName}; 
 
-
-
     elseif(type == "or") then
 
         local width = 200;
@@ -422,8 +399,6 @@ gates.create = function (type)
                         q = {connect = {name = nil, port = nil}, coords = {x = 102, y = 10}, status = false, clicked = false}}, 
             rank = 1, --unused variable 
             name = gateName}; 
-
-
 
     elseif(type == "nor") then
 
@@ -442,8 +417,6 @@ gates.create = function (type)
             rank = 1, --unused variable 
             name = gateName}; 
 
-
-    
     elseif(type == "nand") then
 
         local width = 200;
@@ -460,8 +433,6 @@ gates.create = function (type)
                         q = {connect = {name = nil, port = nil}, coords = {x = 102, y = 10}, status = false, clicked = false}}, 
             rank = 1, --unused variable 
             name = gateName}; 
-
-
 
     elseif(type == "xor") then
 
@@ -480,8 +451,6 @@ gates.create = function (type)
             rank = 1, --unused variable 
             name = gateName}; 
 
-
-
     elseif(type == "xnor") then
 
         local width = 200;
@@ -499,8 +468,6 @@ gates.create = function (type)
             rank = 1, --unused variable 
             name = gateName};
 
-
-            
     elseif(type == "not") then
 
         local width = 200;
@@ -518,8 +485,6 @@ gates.create = function (type)
             rank = 1, --unused variable 
             name = gateName};
             
-
-
     elseif(type == "node") then
 
         local width = 30;
@@ -546,21 +511,16 @@ gates.create = function (type)
 
 end
 
-
-
 gates.setFirst = function (arr, index)
         
     local topIndex = table.remove(arr, index);
     arr[#arr + 1] = topIndex;
     return arr;
     
-    
 end
 
-
-
 --First it sets all the gates connected to starting block acording to the outputs of the starting block
---Then it loops through all the gates and sets their inputs acording to their outputs multiple times until all the signals have propagated through the circuit
+--Then it loops through all the gates and sets their inputs acording to their outputs the number of gates squared so that all signals propagate proberly
 gates.simulate = function ()
 
     for i = 1, #arrStartBlock do
@@ -576,10 +536,9 @@ gates.simulate = function ()
                         arrGates[getindex(arrStartBlock[i].output[b].connect.name)].input.b.status = arrStartBlock[i].output[b].status;
                     end
                 else
-                    iGoalblock.entity.inputs[arrStartBlock[i].output[b].connect.port].status = arrStartBlock[i].output[b].status
+                    iGoalBlock.entity.inputs[arrStartBlock[i].output[b].connect.port].status = arrStartBlock[i].output[b].status
                 end
 
-                
             end    
         end
     end
@@ -595,8 +554,6 @@ gates.simulate = function ()
             else
                 arrGates[b].output.q.status = false;   
             end    
-
-
             
         elseif(arrGates[b].type == "or") then
                     
@@ -606,8 +563,6 @@ gates.simulate = function ()
                 arrGates[b].output.q.status = false;   
             end    
 
-
-
         elseif(arrGates[b].type == "nand") then
                            
                 if(not(arrGates[b].input.a.status and arrGates[b].input.b.status)) then
@@ -615,9 +570,7 @@ gates.simulate = function ()
                 else
                     arrGates[b].output.q.status = false;   
                 end   
-                
-
-                
+                     
         elseif(arrGates[b].type == "nor") then
                     
             if(not(arrGates[b].input.a.status or arrGates[b].input.b.status)) then
@@ -625,8 +578,6 @@ gates.simulate = function ()
             else
                 arrGates[b].output.q.status = false;   
             end         
-        
-
         
         elseif(arrGates[b].type == "xor") then
                     
@@ -636,8 +587,6 @@ gates.simulate = function ()
                 arrGates[b].output.q.status = false;   
             end
 
-
-
         elseif(arrGates[b].type == "xnor") then
                     
             if(not((arrGates[b].input.a.status or arrGates[b].input.b.status) and (not (arrGates[b].input.a.status and arrGates[b].input.b.status)))) then
@@ -646,21 +595,15 @@ gates.simulate = function ()
                 arrGates[b].output.q.status = false;   
             end
             
-
-
         elseif(arrGates[b].type == "not") then
                     
             arrGates[b].output.q.status = not(arrGates[b].input.a.status);
-
-
 
         elseif(arrGates[b].type == "node") then
 
             arrGates[b].output.q.status = arrGates[b].input.a.status;
 
         end    
-
-
 
         if (arrGates[b].type ~= "node") then
 
@@ -678,7 +621,7 @@ gates.simulate = function ()
                    
                 else
                     
-                    iGoalblock.entity.inputs[arrGates[b].output.q.connect.port].status = arrGates[b].output.q.status;        
+                    iGoalBlock.entity.inputs[arrGates[b].output.q.connect.port].status = arrGates[b].output.q.status;        
                 end 
             end
  
@@ -689,6 +632,7 @@ gates.simulate = function ()
             for c = 1, #arrGates[b].output.q.connect do
 
                 if arrGates[b].output.q.connect[c].name ~= nil then
+
                     if arrGates[b].output.q.connect[c].name < goalblockFirstStart then
                         if(arrGates[b].output.q.connect[c].port == "a") then
                             arrGates[getindex(arrGates[b].output.q.connect[c].name)].input.a.status = arrGates[b].output.q.status;
@@ -698,20 +642,17 @@ gates.simulate = function ()
                             arrGates[getindex(arrGates[b].output.q.connect[c].name)].input.b.status = arrGates[b].output.q.status;
                         end 
                     else
-                        iGoalblock.entity.inputs[arrGates[b].output.q.connect[c].port].status = arrGates[b].output.q.status;    
+                        iGoalBlock.entity.inputs[arrGates[b].output.q.connect[c].port].status = arrGates[b].output.q.status;    
                     end 
+
                 end
             end
         end
         
-
-
         b = b + 1;
         if(b > #arrGates) then b = 1 end
 
     end
 end 
-
-
 
 return gates;

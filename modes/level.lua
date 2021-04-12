@@ -2,10 +2,10 @@ local camera = require "screen_related.camera";
 local gates = require "world_related.gates";
 local menu = require "screen_related.menu";
 local wires = require "world_related.wires";
-local starting_block = require "world_related.starting_block";
+local startingBlock = require "world_related.starting_block";
 local tools = require "world_related.tools";
-local goalblock = require "world_related.goal_block";
-local gameOver = require "modes.gameover"
+local goalBlock = require "world_related.goal_block";
+local gameOver = require "modes.game_over"
 
 local level = {};
 
@@ -15,23 +15,23 @@ level.load = function (start,goal)
     levelComplete = false
   
     gates.load();
-    starting_block.load();
+    startingBlock.load();
     tools.load();
-    goalblock.load();
-    starting_block.create(start.x, start.y, start.outputs);
-    iGoalblock.create(goal.x,goal.y, goal.inputs);
-    iGoalblock.simulate();
+    goalBlock.load();
+    startingBlock.create(start.x, start.y, start.outputs);
+    iGoalBlock.create(goal.x,goal.y, goal.inputs);
+    iGoalBlock.simulate();
 
-    function love.mousepressed(mousex, mousey, button)
+    function love.mousepressed(mouseX, mouseY, button)
 
-        menu.click(mousex, mousey, button);
+        menu.click(mouseX, mouseY, button);
 
         portUpdate = false;
     
-        starting_block.click(mousey, mousey, button);
-        iGoalblock.click(button);
+        startingBlock.click(mouseY, mouseY, button);
+        iGoalBlock.click(button);
     
-        gates.click(mousex, mousey, button);
+        gates.click(mouseX, mouseY, button);
         wires.connect(); 
     
         if(portUpdate == false) then
@@ -41,7 +41,8 @@ level.load = function (start,goal)
         camera.update("mPush", button);
     
         gates.simulate();
-        iGoalblock.simulate();
+        iGoalBlock.simulate();
+
     end
 
     function love.mousereleased(x, y, button)
@@ -55,7 +56,7 @@ level.load = function (start,goal)
     
     function love.wheelmoved(x, y)
  
-    camera.update("scrl", y);
+        camera.update("scrl", y);
 
     end
 
@@ -63,7 +64,6 @@ level.load = function (start,goal)
 
         x = x / screenScale;
         y = y / screenScale;
-
 
         for i = 1, #arrGates do
             if( x > (arrGates[i].x + arrGates[i].input.a.coords.x - 10) and x < (arrGates[i].x + arrGates[i].input.a.coords.x + 10) 
@@ -82,7 +82,6 @@ level.load = function (start,goal)
                 end
             end
             
-
             if( x > (arrGates[i].x + arrGates[i].output.q.coords.x - 10) and x < (arrGates[i].x + arrGates[i].output.q.coords.x + 10) 
                 and y > (arrGates[i].y + arrGates[i].output.q.coords.y - 10) and y < (arrGates[i].y + arrGates[i].output.q.coords.y + 10)) then
                     arrGates[i].output.q.hover = true;
@@ -105,15 +104,15 @@ level.load = function (start,goal)
             end
         end
 
-        for b = 1, #iGoalblock.entity.inputs do
-            if( x > (iGoalblock.entity.coords.x + iGoalblock.entity.inputs[b].coords.x - 10) and 
-                x < (iGoalblock.entity.coords.x + iGoalblock.entity.inputs[b].coords.x + 10) and 
-                y > (iGoalblock.entity.coords.y + iGoalblock.entity.inputs[b].coords.y - 10) and 
-                y < (iGoalblock.entity.coords.y + iGoalblock.entity.inputs[b].coords.y + 10)) then
+        for b = 1, #iGoalBlock.entity.inputs do
+            if( x > (iGoalBlock.entity.coords.x + iGoalBlock.entity.inputs[b].coords.x - 10) and 
+                x < (iGoalBlock.entity.coords.x + iGoalBlock.entity.inputs[b].coords.x + 10) and 
+                y > (iGoalBlock.entity.coords.y + iGoalBlock.entity.inputs[b].coords.y - 10) and 
+                y < (iGoalBlock.entity.coords.y + iGoalBlock.entity.inputs[b].coords.y + 10)) then
         
-                iGoalblock.entity.inputs[b].hover = true;
+                iGoalBlock.entity.inputs[b].hover = true;
             else
-                iGoalblock.entity.inputs[b].hover = false
+                iGoalBlock.entity.inputs[b].hover = false
             end    
         end
     end
@@ -132,7 +131,7 @@ level.load = function (start,goal)
     
 
         if levelComplete then
-            frenzyMode_update();
+            frenzyModeUpdate();
         end
         
     end
@@ -155,21 +154,18 @@ level.load = function (start,goal)
         love.graphics.scale(zoom, zoom);
         love.graphics.translate(translate.x, translate.y);
     
-        starting_block.draw();
-        iGoalblock.draw();
+        startingBlock.draw();
+        iGoalBlock.draw();
         gates.draw();
         wires.draw();
     
         love.graphics.pop();
     
-        iGoalblock.truthTableDraw();
+        iGoalBlock.truthTableDraw();
         tools.drawScore();
         tools.drawTime();
         menu.draw();
 
-
-        
-    
     end
 end
 

@@ -10,6 +10,7 @@ tools.activate = function (tool)
     end
 end
 
+--handles every type of gate diffrently but generally deletes all wires connected and then removes the gate from the gate array
 tools.delete = function (gateName,port)
 
     local gate = arrGates[getindex(gateName)];
@@ -18,7 +19,6 @@ tools.delete = function (gateName,port)
         if (port == "q") then
 
             if (gate.output.q.connect.name ~= nil) then
-
 
                 if (gate.output.q.connect.name < goalblockFirstStart) then
 
@@ -33,13 +33,9 @@ tools.delete = function (gateName,port)
                     end
                 
                 else    
-                    iGoalblock.entity.inputs[gate.output.q.connect.port].connect = nil;
-                    iGoalblock.entity.inputs[gate.output.q.connect.port].status = false;
+                    iGoalBlock.entity.inputs[gate.output.q.connect.port].connect = nil;
+                    iGoalBlock.entity.inputs[gate.output.q.connect.port].status = false;
                 end
-                
-    
-                   
-    
                 
                 arrGates[getindex(gateName)].output.q.connect.name = nil;
                 arrGates[getindex(gateName)].output.q.connect.port = nil; 
@@ -66,13 +62,13 @@ tools.delete = function (gateName,port)
                             arrGates[getindex(arrStartBlock[starting_block_getIndex(gateName)].output[port].connect.name)].input.b.connect = nil;
                             arrGates[getindex(arrStartBlock[starting_block_getIndex(gateName)].output[port].connect.name)].input.b.status = false;
         
-                        end
+                    end
                 else
 
-                    local index = iGoalblock.findPortThatConnect(firstStartBlockName + port);
+                    local index = iGoalBlock.findPortThatConnect(firstStartBlockName + port);
 
-                    iGoalblock.entity.inputs[index].connect = nil;
-                    iGoalblock.entity.inputs[index].status = false;
+                    iGoalBlock.entity.inputs[index].connect = nil;
+                    iGoalBlock.entity.inputs[index].status = false;
 
                 end     
             end
@@ -85,7 +81,6 @@ tools.delete = function (gateName,port)
 
 
     if (port == "a" and (gate.input.a.connect ~= nil)) then
-
             
         if (gate.input.a.connect - firstStartBlockName) < 0 then
             if(arrGates[getindex(gate.input.a.connect)].type ~= "node") then
@@ -96,21 +91,23 @@ tools.delete = function (gateName,port)
             arrStartBlock[starting_block_getIndex(gateName)].output[gate.input.a.connect - firstStartBlockName].connect.name = nil;
             arrStartBlock[starting_block_getIndex(gateName)].output[gate.input.a.connect - firstStartBlockName].connect.port = nil;
         end
-     
         
         arrGates[getindex(gateName)].input.a.connect = nil;
     
     elseif (port == "b" and (gate.input.b.connect ~= nil)) then
-
         
         if (gate.input.b.connect - firstStartBlockName) < 0 then
             if(arrGates[getindex(gate.input.b.connect)].type ~= "node") then
+
                 arrGates[getindex(gate.input.b.connect)].output.q.connect.name = nil;
                 arrGates[getindex(gate.input.b.connect)].output.q.connect.port = nil;
+
             end
         else
+
             arrStartBlock[starting_block_getIndex(gateName)].output[gate.input.b.connect - firstStartBlockName].connect.name = nil;
             arrStartBlock[starting_block_getIndex(gateName)].output[gate.input.b.connect - firstStartBlockName].connect.port = nil;
+
         end    
 
         arrGates[getindex(gateName)].input.b.connect = nil;
@@ -119,46 +116,57 @@ tools.delete = function (gateName,port)
     
     if ((gateName < firstStartBlockName) and (gateName >= goalblockFirstStart)) then
 
-        if (iGoalblock.entity.inputs[port].connect ~= nil) then
+        if (iGoalBlock.entity.inputs[port].connect ~= nil) then
            
-            if (iGoalblock.entity.inputs[port].connect - firstStartBlockName) < 0 then
-                if(arrGates[getindex(iGoalblock.entity.inputs[port].connect)].type ~= "node") then
-                    arrGates[getindex(iGoalblock.entity.inputs[port].connect)].output.q.connect.name = nil;
-                    arrGates[getindex(iGoalblock.entity.inputs[port].connect)].output.q.connect.port = nil;
+            if (iGoalBlock.entity.inputs[port].connect - firstStartBlockName) < 0 then
+                if(arrGates[getindex(iGoalBlock.entity.inputs[port].connect)].type ~= "node") then
+
+                    arrGates[getindex(iGoalBlock.entity.inputs[port].connect)].output.q.connect.name = nil;
+                    arrGates[getindex(iGoalBlock.entity.inputs[port].connect)].output.q.connect.port = nil;
+
                 end
             else
-                arrStartBlock[starting_block_getIndex(gateName)].output[iGoalblock.entity.inputs[port].connect - firstStartBlockName].connect.name = nil;
-                arrStartBlock[starting_block_getIndex(gateName)].output[iGoalblock.entity.inputs[port].connect - firstStartBlockName].connect.port = nil;
+
+                arrStartBlock[starting_block_getIndex(gateName)].output[iGoalBlock.entity.inputs[port].connect - firstStartBlockName].connect.name = nil;
+                arrStartBlock[starting_block_getIndex(gateName)].output[iGoalBlock.entity.inputs[port].connect - firstStartBlockName].connect.port = nil;
+
             end
          
-            
-            iGoalblock.entity.inputs[port].connect = nil;
-            iGoalblock.entity.inputs[port].status = false;
+            iGoalBlock.entity.inputs[port].connect = nil;
+            iGoalBlock.entity.inputs[port].status = false;
             
         end
     end
 end
 
+
+--finds the correct node output wire to delete
 tools.deleteNodeWire = function (nodeName,portNum)
 
     if arrGates[getindex(nodeName)].output.q.connect[portNum].name ~= nil then
+
         if arrGates[getindex(nodeName)].output.q.connect[portNum].name < goalblockFirstStart then
+
             if(arrGates[getindex(nodeName)].output.q.connect[portNum].port == "a") then
+
                 arrGates[getindex(arrGates[getindex(nodeName)].output.q.connect[portNum].name)].input.a.connect = nil;
                 arrGates[getindex(arrGates[getindex(nodeName)].output.q.connect[portNum].name)].input.a.status = false;
+
             end    
         
             if (arrGates[getindex(nodeName)].output.q.connect[portNum].port == "b") then
+
                 arrGates[getindex(arrGates[getindex(nodeName)].output.q.connect[portNum].name)].input.b.connect = nil;
                 arrGates[getindex(arrGates[getindex(nodeName)].output.q.connect[portNum].name)].input.b.status = false;
+
             end
         else
-            iGoalblock.entity.inputs[portNum].connect = nil;
-            iGoalblock.entity.inputs[portNum].status = false;
+
+            iGoalBlock.entity.inputs[portNum].connect = nil;
+            iGoalBlock.entity.inputs[portNum].status = false;
+
         end
        
-                    
-        
         arrGates[getindex(nodeName)].output.q.connect[portNum].port = nil;
         arrGates[getindex(nodeName)].output.q.connect[portNum].name = nil;
     
@@ -174,61 +182,66 @@ tools.deleteNodeOutputs = function (gateName)
         tools.deleteNodeWire(gateName,i);
         
     end
+
 end 
 
 tools.findNodeOutputIndex = function (nodeName,gateName,port)
+
     for i = 1, #arrGates[getindex(nodeName)].output.q.connect do
+
         if gateName < goalblockFirstStart then
+
             if(arrGates[getindex(nodeName)].output.q.connect[i].name == gateName) and (arrGates[getindex(nodeName)].output.q.connect[i].port == port)  then
                 return i;
             end
+
         else
+
             if ((arrGates[getindex(nodeName)].output.q.connect[i].name == gateName) and (arrGates[getindex(nodeName)].output.q.connect[i].port == port)) then
                 return i;
-            end    
+            end   
+
         end
-        
     end
 end
 
 tools.deleteGate = function (gateName)
 
-
-
     if arrGates[getindex(gateName)].input.a.connect ~= nil then
+
         if (arrGates[getindex(gateName)].input.a.connect - firstStartBlockName) < 0 then
+
             if arrGates[getindex(arrGates[getindex(gateName)].input.a.connect)].type ~= "node" then
                 tools.delete(gateName,"a");
             else
                 tools.deleteNodeWire(arrGates[getindex(gateName)].input.a.connect, tools.findNodeOutputIndex(arrGates[getindex(gateName)].input.a.connect, gateName,"a"));        
             end
+
         else
             tools.delete(gateName,"a");    
         end
     end
 
-
-
     if arrGates[getindex(gateName)].input.b.connect ~= nil then
+
         if (arrGates[getindex(gateName)].input.b.connect - firstStartBlockName) < 0 then
+
             if arrGates[getindex(arrGates[getindex(gateName)].input.b.connect)].type ~= "node" then
                 tools.delete(gateName,"b");
             else
                 tools.deleteNodeWire(arrGates[getindex(gateName)].input.b.connect, tools.findNodeOutputIndex(arrGates[getindex(gateName)].input.b.connect, gateName,"b"));        
             end 
+
         else
             tools.delete(gateName,"b");
         end
     end
-
-
 
     if arrGates[getindex(gateName)].type ~= "node" then
         tools.delete(gateName,"q");    
     else
         tools.deleteNodeOutputs(gateName);
     end
-    
 
     table.remove(arrGates,getindex(gateName));
     
@@ -254,22 +267,28 @@ tools.binaryToDecimal = function (arr)
 
     local a = 0;
 
-
     if arr[1] == 1 or arr[1] == 0 then
+
         for i = 1, #arr do
+
             if arr[i] == 1 then
                 a = a + tools.pow(2,(i-1));
             end
+
         end
+
     else
+
         for i = 1, #arr do
+
             if arr[i] then
                 a = a + tools.pow(2,(i-1));
             end
-        end    
+
+        end  
+
     end
     
-
     return a;
     
 end
@@ -315,11 +334,15 @@ tools.numTolet = function (num)
 end
 
 tools.drawScore = function ()
+
     love.graphics.print("Score: " .. score, 0, 300);
+
 end
 
 tools.drawTime = function ()
+
     love.graphics.print("Tid: " .. maxtime - math.floor(time), 0, 320);
+
 end
 
 

@@ -1,8 +1,7 @@
 local camera = {};
 
-
-
 camera.load = function ()
+
     local gameWidth = 1920;
 
     screenScale = (love.graphics.getWidth()/gameWidth);
@@ -13,28 +12,22 @@ camera.load = function ()
     
 end
 
-
-
-camera.screenToWorldcords = function (x, y)
+camera.screenToWorldCoords = function (x, y)
     
     return {x = x/screenScale/zoom - translate.x, y = y/screenScale/zoom - translate.y};
 
 end
 
-
-
-camera.worldToScreencords = function (x, y)
+camera.worldToScreenCoords = function (x, y)
     
     return {x = x*screenScale*zoom - translate.x, y = y*screenScale*zoom - translate.y};
 
 end
 
-
-
 local function scrl(y)
 
     --mouse-screencoords translated to mouse-worldcoords before zoom 
-    local bmouse = camera.screenToWorldcords(love.mouse.getX(), love.mouse.getY());
+    local bMouse = camera.screenToWorldCoords(love.mouse.getX(), love.mouse.getY());
 
     zoom = zoom + 0.1*y;
 
@@ -47,10 +40,10 @@ local function scrl(y)
     end
  
     --mouse-screencoords translated to mouse-worldcoords before zoom
-    local amouse = camera.screenToWorldcords(love.mouse.getX(), love.mouse.getY());
+    local aMouse = camera.screenToWorldCoords(love.mouse.getX(), love.mouse.getY());
 
     --diffrence to translate by such that mouse-worldcoords are unnafected
-    local d = {x = amouse.x - bmouse.x, y = amouse.y - bmouse.y}; 
+    local d = {x = aMouse.x - bMouse.x, y = aMouse.y - bMouse.y}; 
 
 
     translate.x = translate.x + d.x;
@@ -58,23 +51,17 @@ local function scrl(y)
 
 end
 
-
-
 local function setPan(button)
 
     if(button == 3) then isPan = true; end
 
 end
 
-
-
 local function resPan(button)
 
     if(button == 3) then isPan = false; end
 
 end
-
-
 
 local function updatePan ()
 
@@ -90,8 +77,6 @@ local function updatePan ()
 
 end  
 
-
-
 camera.update = function (type, value)
     
     if(type == "scrl") then scrl(value);
@@ -100,7 +85,5 @@ camera.update = function (type, value)
     elseif(type == "pan") then updatePan(); end    
 
 end
-
-
 
 return camera;
